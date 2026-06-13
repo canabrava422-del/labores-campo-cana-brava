@@ -308,17 +308,106 @@ html, body {
   border-bottom: 1px solid var(--borde);
 }
 
-/* ── LABOR SELECTOR ─────────────────────────── */
-.labor-selector {
-  background: white;
-  border-radius: var(--radio);
-  padding: 20px;
+/* ── LABOR GRID ──────────────────────────────── */
+.labor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   margin-bottom: 16px;
-  box-shadow: var(--sombra-card);
-  border: 1.5px solid var(--borde);
 }
 
-.labor-selector .section-title { margin-bottom: 14px; }
+.labor-card {
+  background: white;
+  border-radius: var(--radio);
+  padding: 16px 12px;
+  box-shadow: var(--sombra);
+  border: 2px solid var(--borde);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.18s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.labor-card:active { transform: scale(0.97); }
+
+.labor-card.selected {
+  border-color: var(--verde-campo);
+  background: var(--verde-menta);
+}
+
+.labor-card .lc-icon { font-size: 26px; line-height: 1; }
+.labor-card .lc-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--texto);
+  line-height: 1.3;
+}
+.labor-card.selected .lc-name { color: var(--verde-oscuro); }
+
+/* ── MINI TABLE VERIFICACIÓN ─────────────────── */
+.verify-table-wrap {
+  background: white;
+  border-radius: var(--radio);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra-card);
+  border: 1.5px solid var(--verde-claro);
+}
+
+.verify-table-wrap .section-title {
+  color: var(--verde-campo);
+  margin-bottom: 10px;
+}
+
+.verify-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.verify-table th {
+  background: var(--verde-menta);
+  color: var(--verde-oscuro);
+  font-weight: 600;
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.verify-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--borde);
+  color: var(--texto);
+  vertical-align: top;
+}
+
+.verify-table tr:last-child td { border-bottom: none; }
+.verify-table tr:nth-child(even) td { background: var(--fondo); }
+
+.verify-table .td-label {
+  font-weight: 600;
+  color: var(--texto-suave);
+  width: 45%;
+  font-size: 11px;
+}
+
+.verify-table .td-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--verde-oscuro);
+}
+
+.verify-empty {
+  text-align: center;
+  color: var(--texto-suave);
+  font-size: 12px;
+  padding: 12px 0;
+}
 
 .select-wrapper {
   position: relative;
@@ -711,7 +800,100 @@ select option { padding: 8px; }
 .empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--texto); }
 .empty-state p { font-size: 13px; }
 
-/* ── STATS CARD ─────────────────────────────── */
+/* ── ACUMULADO TABLE ─────────────────────────── */
+.acum-card {
+  background: white;
+  border-radius: var(--radio);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra-card);
+  border: 1.5px solid var(--borde);
+  margin-top: 8px;
+}
+
+.acum-card .section-title { color: var(--verde-campo); margin-bottom: 10px; }
+
+.acum-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  overflow-x: auto;
+  display: block;
+}
+
+.acum-table thead tr { background: var(--verde-menta); }
+.acum-table th {
+  padding: 7px 8px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--verde-oscuro);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.acum-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--borde);
+  color: var(--texto);
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.acum-table tr:last-child td { border-bottom: none; }
+.acum-table tr:nth-child(even) td { background: var(--fondo); }
+.acum-table .td-mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+.acum-table .td-date { color: var(--texto-suave); }
+.acum-table .td-user { color: var(--texto-suave); font-style: italic; }
+
+.acum-empty {
+  text-align: center;
+  padding: 16px;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+
+.dash-card {
+  background: white;
+  border-radius: var(--radio);
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--sombra-card);
+  border: 1.5px solid var(--borde);
+}
+
+.dash-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--texto-suave);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.dash-mang-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--borde);
+  font-size: 12px;
+}
+
+.dash-mang-row:last-child { border-bottom: none; }
+.dash-mang-row .dmr-label { color: var(--texto-suave); font-weight: 500; }
+.dash-mang-row .dmr-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--verde-oscuro); }
+.dash-mang-row .dmr-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+.dmr-badge.alto { background: #fdecea; color: var(--error); }
+.dmr-badge.medio { background: var(--amarillo-claro); color: #7d5a00; }
+.dmr-badge.bajo { background: var(--verde-menta); color: var(--verde-oscuro); }
+
+
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -978,20 +1160,36 @@ select option { padding: 8px; }
     <!-- ── TAB: REGISTRO ──────────────────── -->
     <div id="tab-registro" class="tab-panel active">
 
-      <!-- Selector de labor -->
-      <div class="labor-selector">
-        <div class="section-title">Labor a registrar</div>
-        <div class="select-wrapper">
-          <select id="labor-select" onchange="onLaborChange()">
-            <option value="">— Seleccionar labor —</option>
-            <option value="aplicacion">Aplicación</option>
-            <option value="limpieza">Limpieza de laterales</option>
-            <option value="plancero">Plan cero fuga</option>
-            <option value="manguera">Revisión de manguera</option>
-            <option value="purga">Purga con pig</option>
-            <option value="flushing">Instalación de flushing</option>
-            <option value="caudal">Medición de caudal</option>
-          </select>
+      <!-- Grid de labores -->
+      <div class="section-title">Selecciona la labor</div>
+      <div class="labor-grid">
+        <div class="labor-card" id="lc-aplicacion" onclick="selectLabor('aplicacion')">
+          <div class="lc-icon">🧪</div>
+          <div class="lc-name">Aplicación</div>
+        </div>
+        <div class="labor-card" id="lc-limpieza" onclick="selectLabor('limpieza')">
+          <div class="lc-icon">🧹</div>
+          <div class="lc-name">Limpieza de laterales</div>
+        </div>
+        <div class="labor-card" id="lc-plancero" onclick="selectLabor('plancero')">
+          <div class="lc-icon">🔍</div>
+          <div class="lc-name">Plan cero fuga</div>
+        </div>
+        <div class="labor-card" id="lc-manguera" onclick="selectLabor('manguera')">
+          <div class="lc-icon">🔧</div>
+          <div class="lc-name">Revisión de manguera</div>
+        </div>
+        <div class="labor-card" id="lc-purga" onclick="selectLabor('purga')">
+          <div class="lc-icon">💨</div>
+          <div class="lc-name">Purga con pig</div>
+        </div>
+        <div class="labor-card" id="lc-flushing" onclick="selectLabor('flushing')">
+          <div class="lc-icon">🔩</div>
+          <div class="lc-name">Instalación de flushing</div>
+        </div>
+        <div class="labor-card" id="lc-caudal" onclick="selectLabor('caudal')" style="grid-column:1/-1">
+          <div class="lc-icon">💧</div>
+          <div class="lc-name">Medición de caudal</div>
         </div>
       </div>
 
@@ -1038,10 +1236,12 @@ select option { padding: 8px; }
       </div>
     </div>
 
-    <!-- ── TAB: KPIs ──────────────────────── -->
+    <!-- ── TAB: DASHBOARD ────────────────── -->
     <div id="tab-kpis" class="tab-panel">
-      <div class="section-title">Indicadores de campo</div>
 
+      <div class="section-title">Dashboard · Caña Brava</div>
+
+      <!-- KPI Cards -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-val" id="kpi-total">—</div>
@@ -1049,23 +1249,48 @@ select option { padding: 8px; }
         </div>
         <div class="stat-card gold">
           <div class="stat-val" id="kpi-hoy">—</div>
-          <div class="stat-label">Registros hoy</div>
+          <div class="stat-label">Hoy</div>
         </div>
         <div class="stat-card blue">
-          <div class="stat-val" id="kpi-aplicaciones">—</div>
-          <div class="stat-label">Aplicaciones</div>
-        </div>
-        <div class="stat-card purple">
           <div class="stat-val" id="kpi-semana">—</div>
           <div class="stat-label">Esta semana</div>
         </div>
+        <div class="stat-card purple">
+          <div class="stat-val" id="kpi-aplicaciones">—</div>
+          <div class="stat-label">Aplicaciones</div>
+        </div>
       </div>
 
-      <div class="section-title" style="margin-top:8px;">Registros por labor</div>
-      <div id="kpi-labor-list" class="records-list" style="margin-top:10px;"></div>
+      <!-- Gráfica: Registros por labor -->
+      <div class="dash-card">
+        <div class="dash-card-title">Registros por labor</div>
+        <canvas id="chart-labor" height="220"></canvas>
+      </div>
 
-      <div class="section-title" style="margin-top:16px;">Por fundo</div>
-      <div id="kpi-fundo-list" class="records-list" style="margin-top:10px;"></div>
+      <!-- Gráfica: Registros por fundo -->
+      <div class="dash-card">
+        <div class="dash-card-title">Registros por fundo</div>
+        <canvas id="chart-fundo" height="160"></canvas>
+      </div>
+
+      <!-- Gráfica: Actividad últimos 14 días -->
+      <div class="dash-card">
+        <div class="dash-card-title">Actividad últimos 14 días</div>
+        <canvas id="chart-actividad" height="180"></canvas>
+      </div>
+
+      <!-- Gráfica: Registros por controlador -->
+      <div class="dash-card">
+        <div class="dash-card-title">Registros por controlador</div>
+        <canvas id="chart-controlador" height="180"></canvas>
+      </div>
+
+      <!-- Tabla resumen mangueras pendientes -->
+      <div class="dash-card">
+        <div class="dash-card-title">Resumen mangueras pendientes</div>
+        <div id="dash-mangueras"></div>
+      </div>
+
     </div>
 
     <!-- ── TAB: ADMIN ─────────────────────── -->
@@ -1073,6 +1298,29 @@ select option { padding: 8px; }
       <div id="admin-content"></div>
     </div>
 
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PANTALLA: FORMULARIO DE LABOR
+══════════════════════════════════════════════════ -->
+<div id="screen-form" class="screen">
+  <header class="app-header">
+    <div class="header-left">
+      <button class="btn-icon" onclick="closeFormScreen()" style="margin-right:4px">←</button>
+      <div class="hlogo" id="form-header-icon">📝</div>
+      <div class="header-title">
+        <h2 id="form-header-title">Labor</h2>
+        <span id="form-header-sub">Caña Brava</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="badge-role" id="form-badge-role">Controlador</span>
+    </div>
+  </header>
+
+  <main class="app-content" id="form-screen-content">
+    <!-- El formulario se inyecta aquí -->
   </main>
 </div>
 
@@ -1116,6 +1364,7 @@ CREATE TABLE IF NOT EXISTS labores_campo (
   fundo VARCHAR(50),
   fecha DATE,
   equipo VARCHAR(20),
+  parcelas VARCHAR(200),
   insumo VARCHAR(50),
   dosis_cantidad NUMERIC,
   dosis_unidad VARCHAR(20),
@@ -1250,7 +1499,7 @@ function showNav(tab) {
   document.getElementById('nav-' + tab).classList.add('active');
 
   if (tab === 'historial') loadHistorial();
-  if (tab === 'kpis') loadKPIs();
+  if (tab === 'kpis' && typeof loadKPIs === 'function') loadKPIs();
 }
 
 // ══════════════════════════════════════════════════
@@ -1320,6 +1569,9 @@ const unidOpts = `<option value="">—</option>
 // Bloque base común: EQ → TR → Fundo → Fecha
 // (igual para las 7 labores)
 // ══════════════════════════════════════════════════
+// ── MAPA EQ-TR → PARCELAS (datos del Excel Parcelas.xlsx) ──
+const PARCELAS_MAP = {"EQ09-TR01":["001","002","003","004","005","006","007","008","009","010"],"EQ09-TR02":["011","012","013","014","015","016","017","018","019","020"],"EQ09-TR03":["021","022","023","024","025","026","027","028","029","030"],"EQ09-TR04":["031","032","033","034","035","036","037","038","039","040","041"],"EQ09-TR05":["042","043","044","045","046","047","048","049","050","051","052","053","054"],"EQ10-TR01":["001","002","003","004","005","006","007","008","009","010","011","012"],"EQ10-TR02":["013","014","015","016","017","018","019","020","021","022","023"],"EQ10-TR03":["024","025","026","027","028","029","030","031","032","033"],"EQ10-TR04":["034","035","036","037","038","039","040","041","042","043"],"EQ10-TR05":["044","045","046","047","048","049","050","051","052","053"],"EQ11-TR01":["001","002","003","004","005","006","007","008","009","010","011"],"EQ11-TR02":["012","013","014","015","016","017","018","019","020","021"],"EQ11-TR03":["022","023","024","025","026","027","028","029","030","031"],"EQ11-TR04":["032","033","034","035","036","037","038","039","040","041"],"EQ11-TR05":["042","043","044","045","046","047","048","049","050","051","052","053","054"],"EQ12-TR01":["001","002","003","004","005","006","007","008","009","010"],"EQ12-TR02":["011","012","013","014","015","016","017","018","019","020"],"EQ12-TR03":["021","023","024","025","026","027","028","029","030"],"EQ12-TR04":["032","034","035","036","037","038","039","040"],"EQ12-TR05":["041","042","043","044","045","046","047","048","049","050"],"EQ13-TR01":["001","002","003","004","005","006","007","008","009","010","011"],"EQ13-TR02":["012","013","014","015","016","017","018","019","020","021","022"],"EQ13-TR03":["023","024","025","026","027","028","029","030","031","032","033"],"EQ13-TR04":["034","035","036","037","038","039","040","041","042","043","044"],"EQ13-TR05":["045","046","047","048","049","050","051","052","053","054","055"],"EQ14-TR01":["001","002","003","004","005","006","007","008","009","010"],"EQ14-TR02":["011","012","013","014","015","016","017","018","019","020"],"EQ14-TR03":["021","022","023","024","025","026","027","028","029","030","031"],"EQ14-TR04":["032","033","034","035","036","037","038","039","040","041","042"],"EQ14-TR05":["043","044","045","046","047","048","049","050","051","052","053"],"EQ15-TR01":["001","002","003","004","005","006","007","008","009","010","011","012"],"EQ15-TR02":["013","014","015","016","017","018","019","020","021","022","023"],"EQ15-TR03":["024","025","026","027","028","029","030","031","032","033","034"],"EQ15-TR04":["035","036","037","038","039","040","041","042","043","044","045"],"EQ15-TR05":["046","047","048","049","050","051","052","053","054","055"],"EQ16-TR01":["001","002","003","004","005","006","007","008","009","010"],"EQ16-TR02":["011","012","013","014","015","016","017","018","019","020"],"EQ16-TR03":["021","022","023","024","025","026","027","028","029","030"],"EQ16-TR04":["031","032","033","034","035","036","037","038","039","040"],"EQ16-TR05":["041","042","043","044","045","046","047","048"],"EQ17-TR01":["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016"],"EQ17-TR02":["017","018","019","020","021","022","023","024","025","026"],"EQ17-TR03":["027","028","029","030","031","032","033","034","035","036"],"EQ17-TR04":["037","038","039","040","041","042","043","044","045","046","047"],"EQ17-TR05":["048","049","050","051","052","053","054","055","056"],"EQ18-TR01":["001","002","003","004","005","006","007","008","009","010"],"EQ18-TR02":["011","012","013","014","015","016","017","018","019","020"],"EQ18-TR03":["021","022","023","024","025","026","027","028","029","030"],"EQ18-TR04":["031","032","033","034","035","036","037","038","039","040"],"EQ18-TR05":["041","042","043","044","045","046","047","048","049","050","051","052","053","054","055"],"EQ19-TR01":["001","002","003","004","005","006","007","008","009","010"],"EQ19-TR02":["011","012","013","014","015","016","017","018","019","020"],"EQ19-TR03":["021","022","023","024","025","026","027","028","029","030"],"EQ19-TR04":["031","032","034","035","036","037","038","039","040"],"EQ19-TR05":["041","042","043","044","045","046","047","048","049","050"],"EQ20-TR01":["001","002","003","004"],"EQ20-TR02":["005","006","007","008"],"EQ20-TR03":["009","010","011","012"],"EQ20-TR04":["013","014","015","016","018","019"],"EQ20-TR05":["020","021","022","023","024","025","026"]};
+
 function baseBlock(titulo) {
   return `
     <div class="form-card">
@@ -1327,11 +1579,31 @@ function baseBlock(titulo) {
       <div class="form-grid">
         <div class="form-field">
           <label>EQ</label>
-          <div class="select-wrapper"><select id="f-eq" class="code-value">${optsEQ()}</select></div>
+          <div class="select-wrapper"><select id="f-eq" class="code-value" onchange="onEqTrChange()">${optsEQ()}</select></div>
         </div>
         <div class="form-field">
           <label>TR</label>
-          <div class="select-wrapper"><select id="f-tr" class="code-value">${optsTR()}</select></div>
+          <div class="select-wrapper"><select id="f-tr" class="code-value" onchange="onEqTrChange()">${optsTR()}</select></div>
+        </div>
+        <div class="form-field full">
+          <label>Parcelas</label>
+          <div id="parcelas-dropdown-wrap" style="position:relative;">
+            <div id="parcelas-trigger" onclick="toggleParcelasDropdown()"
+              style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border:1.5px solid var(--borde);border-radius:var(--radio-sm);background:var(--fondo);cursor:pointer;font-size:13px;color:var(--texto-suave);min-height:42px;">
+              <span id="parcelas-trigger-text">Selecciona EQ y TR primero</span>
+              <span id="parcelas-trigger-arrow" style="font-size:12px;transition:transform 0.2s;">▾</span>
+            </div>
+            <div id="parcelas-panel" style="display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);background:white;border:1.5px solid var(--verde-claro);border-radius:var(--radio-sm);box-shadow:0 8px 24px rgba(27,67,50,0.15);z-index:50;max-height:220px;overflow-y:auto;">
+              <div style="padding:10px 12px;border-bottom:1px solid var(--borde);">
+                <label id="todos-label" style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--verde-oscuro);cursor:pointer;">
+                  <input type="checkbox" id="chk-todos" onchange="onTodosChange()" style="width:16px;height:16px;accent-color:var(--verde-campo);flex-shrink:0;"/>
+                  Todos
+                </label>
+              </div>
+              <div id="parcelas-grid" style="padding:10px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;"></div>
+            </div>
+          </div>
+          <div id="f-parcelas-hint" style="font-size:11px;color:var(--texto-suave);margin-top:4px;display:none;"></div>
         </div>
         <div class="form-field">
           <label>Fundo</label>
@@ -1344,6 +1616,127 @@ function baseBlock(titulo) {
       </div>
     </div>`;
 }
+
+let _parcelasOpen = false;
+
+function toggleParcelasDropdown() {
+  const eq = document.getElementById('f-eq')?.value;
+  const tr = document.getElementById('f-tr')?.value;
+  if (!eq || !tr) { showToast('Selecciona EQ y TR primero', 'error'); return; }
+  const panel = document.getElementById('parcelas-panel');
+  const arrow = document.getElementById('parcelas-trigger-arrow');
+  if (!panel) return;
+  _parcelasOpen = !_parcelasOpen;
+  panel.style.display = _parcelasOpen ? 'block' : 'none';
+  if (arrow) arrow.style.transform = _parcelasOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+function closeParcelas() {
+  const panel = document.getElementById('parcelas-panel');
+  const arrow = document.getElementById('parcelas-trigger-arrow');
+  if (panel) panel.style.display = 'none';
+  if (arrow) arrow.style.transform = 'rotate(0deg)';
+  _parcelasOpen = false;
+}
+
+// Cerrar dropdown al tocar fuera
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('parcelas-dropdown-wrap');
+  if (wrap && !wrap.contains(e.target)) closeParcelas();
+});
+
+function onEqTrChange() {
+  const eq = document.getElementById('f-eq')?.value;
+  const tr = document.getElementById('f-tr')?.value;
+  const trigger = document.getElementById('parcelas-trigger');
+  const grid = document.getElementById('parcelas-grid');
+  const todosChk = document.getElementById('chk-todos');
+  const hint = document.getElementById('f-parcelas-hint');
+  closeParcelas();
+
+  if (!eq || !tr) {
+    if (trigger) { const s = trigger.querySelector('span'); if(s) s.textContent = 'Selecciona EQ y TR primero'; }
+    if (grid) grid.innerHTML = '';
+    return;
+  }
+
+  const key = `${eq}-${tr}`;
+  const parcelas = PARCELAS_MAP[key];
+
+  if (!parcelas || !parcelas.length) {
+    const trigText = document.getElementById('parcelas-trigger-text');
+    if (trigText) trigText.textContent = `Sin parcelas para ${key}`;
+    if (hint) { hint.textContent = `No hay parcelas registradas para ${key}`; hint.style.display = 'block'; }
+    if (grid) grid.innerHTML = '';
+    return;
+  }
+
+  if (hint) hint.style.display = 'none';
+  const trigText = document.getElementById('parcelas-trigger-text');
+  if (trigText) trigText.textContent = `${parcelas.length} parcelas disponibles — toca para seleccionar`;
+  if (todosChk) { todosChk.checked = false; todosChk.disabled = false; }
+
+  if (grid) {
+    grid.innerHTML = parcelas.map(p => `
+      <label class="par-label" style="display:flex;align-items:center;gap:5px;font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;background:var(--fondo);border:1px solid var(--borde);border-radius:6px;padding:5px 6px;">
+        <input type="checkbox" class="chk-parcela" value="${p}" onchange="onParcelaChange()" style="width:14px;height:14px;accent-color:var(--verde-campo);flex-shrink:0;"/>
+        ${p}
+      </label>`).join('');
+  }
+
+  const labor = document.getElementById('form-header-title')?.dataset?.labor;
+  setTimeout(() => refreshVerifyTable(labor), 50);
+}
+
+function onTodosChange() {
+  const checked = document.getElementById('chk-todos')?.checked;
+  const parcelas = document.querySelectorAll('.chk-parcela');
+
+  if (checked) {
+    // Todos marcado: desmarcar y deshabilitar parcelas individuales
+    parcelas.forEach(c => { c.checked = false; c.disabled = true; });
+    updateParcelasTrigger('Todos');
+  } else {
+    // Todos desmarcado: habilitar parcelas individuales
+    parcelas.forEach(c => { c.disabled = false; });
+    updateParcelasTrigger(null);
+  }
+
+  const labor = document.getElementById('form-header-title')?.dataset?.labor;
+  if (labor) refreshVerifyTable(labor);
+}
+
+function onParcelaChange() {
+  const selected = [...document.querySelectorAll('.chk-parcela:checked')].map(c => c.value);
+  updateParcelasTrigger(selected.length ? selected.join(', ') : null);
+  const labor = document.getElementById('form-header-title')?.dataset?.labor;
+  if (labor) refreshVerifyTable(labor);
+}
+
+function updateParcelasTrigger(text) {
+  const trigText = document.getElementById('parcelas-trigger-text');
+  if (!trigText) return;
+  if (!text) {
+    const eq = document.getElementById('f-eq')?.value;
+    const tr = document.getElementById('f-tr')?.value;
+    const key = eq && tr ? `${eq}-${tr}` : null;
+    const n = key && PARCELAS_MAP[key] ? PARCELAS_MAP[key].length : 0;
+    trigText.textContent = n ? `${n} parcelas disponibles — toca para seleccionar` : 'Sin parcelas';
+    trigText.style.color = 'var(--texto-suave)';
+  } else {
+    trigText.textContent = text === 'Todos' ? '✓ Todos' : `✓ ${text}`;
+    trigText.style.color = 'var(--verde-oscuro)';
+  }
+}
+
+function getParcelasValue() {
+  const todosChk = document.getElementById('chk-todos');
+  if (todosChk?.checked) return 'Todos';
+  const selected = [...document.querySelectorAll('.chk-parcela:checked')].map(c => c.value);
+  return selected.length ? selected.join(', ') : null;
+}
+
+function onParcelasChange() {} // kept for compatibility
 
 const laborForms = {
 
@@ -1373,9 +1766,29 @@ const laborForms = {
     <div class="form-card">
       <div class="section-title">📏 Detalle de limpieza</div>
       <div class="form-grid">
-        <div class="form-field full">
-          <label>Metros lineales limpiados (m)</label>
-          <input type="number" id="f-metros" placeholder="0.00" step="0.1" min="0"/>
+        <div class="form-field">
+          <label>IMOF promedio (ml)</label>
+          <input type="number" id="f-imof" placeholder="0.00" step="0.01" min="0"/>
+        </div>
+        <div class="form-field">
+          <label>Frecuencia (días)</label>
+          <input type="number" id="f-frecuencia" placeholder="0" step="1" min="0"/>
+        </div>
+        <div class="form-field">
+          <label>Edad (días)</label>
+          <input type="number" id="f-edad" placeholder="0" step="1" min="0"/>
+        </div>
+        <div class="form-field">
+          <label>Mangueras que no riegan (N°)</label>
+          <input type="number" id="f-mang-no-riegan" placeholder="0" step="1" min="0"/>
+        </div>
+        <div class="form-field">
+          <label>Mangueras reparadas (N°)</label>
+          <input type="number" id="f-mang-rep" placeholder="0" step="1" min="0"/>
+        </div>
+        <div class="form-field">
+          <label>Mangueras pendientes (N°)</label>
+          <input type="number" id="f-mang-pend" placeholder="0" step="1" min="0"/>
         </div>
         <div class="form-field full">
           <label>Observaciones</label>
@@ -1388,17 +1801,29 @@ const laborForms = {
     <div class="form-card">
       <div class="section-title">🔍 Detalle de inspección</div>
       <div class="form-grid">
-        <div class="form-field full">
+        <div class="form-field">
           <label>Fugas encontradas (N°)</label>
           <input type="number" id="f-fugas" placeholder="0" min="0" step="1"/>
         </div>
+        <div class="form-field">
+          <label>Mangueras reparadas (N°)</label>
+          <input type="number" id="f-mang-rep" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
+          <label>Mangueras pendientes (N°)</label>
+          <input type="number" id="f-mang-pend" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
+          <label>Avance (ha)</label>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0"/>
+        </div>
         <div class="form-field full">
-          <label>Fugas reparadas (N°)</label>
-          <input type="number" id="f-fugas-rep" placeholder="0" min="0" step="1"/>
+          <label>Hectáreas pendientes (ha)</label>
+          <input type="number" id="f-ha-pend" placeholder="0.00" step="0.01" min="0"/>
         </div>
         <div class="form-field full">
           <label>Observaciones</label>
-          <textarea id="f-obs" placeholder="Describe las fugas y estado..."></textarea>
+          <textarea id="f-obs" placeholder="Describe el estado..."></textarea>
         </div>
       </div>
     </div>`,
@@ -1407,13 +1832,25 @@ const laborForms = {
     <div class="form-card">
       <div class="section-title">🔧 Detalle de revisión</div>
       <div class="form-grid">
-        <div class="form-field full">
+        <div class="form-field">
           <label>Mangueras revisadas (N°)</label>
           <input type="number" id="f-mang-rev" placeholder="0" min="0" step="1"/>
         </div>
+        <div class="form-field">
+          <label>Mangueras reparadas (N°)</label>
+          <input type="number" id="f-mang-rep" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
+          <label>Mangueras pendientes (N°)</label>
+          <input type="number" id="f-mang-pend" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
+          <label>Avance (ha)</label>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0"/>
+        </div>
         <div class="form-field full">
-          <label>Mangueras reemplazadas (N°)</label>
-          <input type="number" id="f-mang-reem" placeholder="0" min="0" step="1"/>
+          <label>Hectáreas pendientes (ha)</label>
+          <input type="number" id="f-ha-pend" placeholder="0.00" step="0.01" min="0"/>
         </div>
         <div class="form-field full">
           <label>Estado general</label>
@@ -1435,13 +1872,25 @@ const laborForms = {
     <div class="form-card">
       <div class="section-title">💨 Detalle de purga</div>
       <div class="form-grid">
-        <div class="form-field full">
+        <div class="form-field">
           <label>Tramos purgados (N°)</label>
           <input type="number" id="f-tramos" placeholder="0" min="0" step="1"/>
         </div>
-        <div class="form-field full">
+        <div class="form-field">
           <label>Presión entrada (psi)</label>
           <input type="number" id="f-presion" placeholder="0.0" step="0.1" min="0"/>
+        </div>
+        <div class="form-field">
+          <label>Mangueras estranguladas (N°)</label>
+          <input type="number" id="f-mang-estrang" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
+          <label>Mangueras reparadas (N°)</label>
+          <input type="number" id="f-mang-rep" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field full">
+          <label>Mangueras pendientes (N°)</label>
+          <input type="number" id="f-mang-pend" placeholder="0" min="0" step="1"/>
         </div>
         <div class="form-field full">
           <label>Observaciones</label>
@@ -1454,11 +1903,19 @@ const laborForms = {
     <div class="form-card">
       <div class="section-title">🔩 Detalle de instalación</div>
       <div class="form-grid">
-        <div class="form-field full">
+        <div class="form-field">
+          <label>N° de flushing utilizados</label>
+          <input type="number" id="f-flushing-util" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
+          <label>Flushing pendientes por colocar</label>
+          <input type="number" id="f-flushing-pend" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
           <label>Emisores instalados (N°)</label>
           <input type="number" id="f-emisores" placeholder="0" min="0" step="1"/>
         </div>
-        <div class="form-field full">
+        <div class="form-field">
           <label>Longitud instalada (m)</label>
           <input type="number" id="f-longitud" placeholder="0.0" step="0.1" min="0"/>
         </div>
@@ -1474,10 +1931,14 @@ const laborForms = {
       <div class="section-title">💧 Datos de medición</div>
       <div class="form-grid">
         <div class="form-field full">
+          <label>N° de mangueras evaluadas</label>
+          <input type="number" id="f-mang-eval" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field">
           <label>Caudal medido (L/min)</label>
           <input type="number" id="f-caudal" placeholder="0.00" step="0.01" min="0"/>
         </div>
-        <div class="form-field full">
+        <div class="form-field">
           <label>Caudal nominal (L/min)</label>
           <input type="number" id="f-caudal-nom" placeholder="7.10" step="0.01" min="0"/>
         </div>
@@ -1503,23 +1964,273 @@ const laborLabels = {
   caudal: 'Medición de caudal'
 };
 
-function onLaborChange() {
-  const labor = document.getElementById('labor-select').value;
-  const container = document.getElementById('form-container');
+const laborIcons = {
+  aplicacion:'🧪', limpieza:'🧹', plancero:'🔍',
+  manguera:'🔧', purga:'💨', flushing:'🔩', caudal:'💧'
+};
 
-  if (!labor) {
-    container.innerHTML = '';
-    return;
-  }
-
+function selectLabor(labor) {
   const formFn = laborForms[labor];
   if (!formFn) return;
 
-  container.innerHTML = formFn() + `
-    <button class="btn-submit" onclick="submitRecord()">
+  // Poblar header de la pantalla de formulario
+  document.getElementById('form-header-icon').textContent = laborIcons[labor] || '📝';
+  const titleEl = document.getElementById('form-header-title');
+  titleEl.textContent = laborLabels[labor] || labor;
+  titleEl.dataset.labor = labor;
+  document.getElementById('form-header-sub').textContent = currentUser?.name || 'Caña Brava';
+  document.getElementById('form-badge-role').textContent = currentUser?.role === 'admin' ? 'Admin' : 'Controlador';
+  document.getElementById('form-badge-role').className = 'badge-role' + (currentUser?.role === 'admin' ? ' admin' : '');
+
+  // Inyectar formulario + verificación + acumulado
+  document.getElementById('form-screen-content').innerHTML =
+    formFn() +
+    buildVerifyTable(labor) +
+    `<button class="btn-submit" onclick="submitRecord('${labor}')">
       <span>💾</span> Guardar registro
-    </button>`;
+    </button>` +
+    buildAcumuladoTable(labor);
+
+  // Listeners para tabla de verificación
+  attachVerifyListeners(labor);
+
+  // Abrir pantalla de formulario
+  show('screen-form');
 }
+
+function closeFormScreen() {
+  show('screen-app');
+  // Volver al tab registro
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-registro').classList.add('active');
+  document.getElementById('nav-registro').classList.add('active');
+}
+
+// ── TABLA ACUMULADO DE REGISTROS ─────────────────
+// Columnas visibles por labor
+const acumCols = {
+  aplicacion: [
+    {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'EQ / TR', fn: r => r.equipo || '—'},
+    {label:'Parcelas', fn: r => r.parcelas || '—'},
+    {label:'Fundo', fn: r => r.fundo || '—'},
+    {label:'Insumo', fn: r => r.insumo || '—'},
+    {label:'Dosis', fn: r => r.dosis_cantidad ? `${r.dosis_cantidad} ${r.dosis_unidad||''}` : '—'},
+    {label:'Controlador', fn: r => r.controlador || '—'},
+  ],
+  limpieza: [
+    {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'EQ / TR', fn: r => r.equipo || '—'},
+    {label:'Parcelas', fn: r => r.parcelas || '—'},
+    {label:'Fundo', fn: r => r.fundo || '—'},
+    {label:'IMOF (ml)', fn: r => r.datos_extra?.imof_promedio_ml ?? '—'},
+    {label:'Frec. (días)', fn: r => r.datos_extra?.frecuencia_dias ?? '—'},
+    {label:'Edad (días)', fn: r => r.datos_extra?.edad_dias ?? '—'},
+    {label:'No riegan', fn: r => r.datos_extra?.mangueras_no_riegan ?? '—'},
+    {label:'Reparadas', fn: r => r.datos_extra?.mangueras_reparadas ?? '—'},
+    {label:'Pendientes', fn: r => r.datos_extra?.mangueras_pendientes ?? '—'},
+    {label:'Controlador', fn: r => r.controlador || '—'},
+  ],
+  plancero: [
+    {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'EQ / TR', fn: r => r.equipo || '—'},
+    {label:'Parcelas', fn: r => r.parcelas || '—'},
+    {label:'Fundo', fn: r => r.fundo || '—'},
+    {label:'Fugas', fn: r => r.datos_extra?.fugas ?? '—'},
+    {label:'Reparadas', fn: r => r.datos_extra?.mangueras_reparadas ?? '—'},
+    {label:'Pendientes', fn: r => r.datos_extra?.mangueras_pendientes ?? '—'},
+    {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
+    {label:'Ha pend.', fn: r => r.datos_extra?.ha_pendientes ?? '—'},
+    {label:'Controlador', fn: r => r.controlador || '—'},
+  ],
+  manguera: [
+    {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'EQ / TR', fn: r => r.equipo || '—'},
+    {label:'Parcelas', fn: r => r.parcelas || '—'},
+    {label:'Fundo', fn: r => r.fundo || '—'},
+    {label:'Revisadas', fn: r => r.datos_extra?.revisadas ?? '—'},
+    {label:'Reparadas', fn: r => r.datos_extra?.mangueras_reparadas ?? '—'},
+    {label:'Pendientes', fn: r => r.datos_extra?.mangueras_pendientes ?? '—'},
+    {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
+    {label:'Ha pend.', fn: r => r.datos_extra?.ha_pendientes ?? '—'},
+    {label:'Estado', fn: r => r.datos_extra?.estado || '—'},
+    {label:'Controlador', fn: r => r.controlador || '—'},
+  ],
+  purga: [
+    {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'EQ / TR', fn: r => r.equipo || '—'},
+    {label:'Parcelas', fn: r => r.parcelas || '—'},
+    {label:'Fundo', fn: r => r.fundo || '—'},
+    {label:'Tramos', fn: r => r.datos_extra?.tramos ?? '—'},
+    {label:'Presión (psi)', fn: r => r.datos_extra?.presion ?? '—'},
+    {label:'Estranguladas', fn: r => r.datos_extra?.mangueras_estranguladas ?? '—'},
+    {label:'Reparadas', fn: r => r.datos_extra?.mangueras_reparadas ?? '—'},
+    {label:'Pendientes', fn: r => r.datos_extra?.mangueras_pendientes ?? '—'},
+    {label:'Controlador', fn: r => r.controlador || '—'},
+  ],
+  flushing: [
+    {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'EQ / TR', fn: r => r.equipo || '—'},
+    {label:'Parcelas', fn: r => r.parcelas || '—'},
+    {label:'Fundo', fn: r => r.fundo || '—'},
+    {label:'Utilizados', fn: r => r.datos_extra?.flushing_utilizados ?? '—'},
+    {label:'Pendientes', fn: r => r.datos_extra?.flushing_pendientes ?? '—'},
+    {label:'Emisores', fn: r => r.datos_extra?.emisores ?? '—'},
+    {label:'Longitud (m)', fn: r => r.datos_extra?.longitud ?? '—'},
+    {label:'Controlador', fn: r => r.controlador || '—'},
+  ],
+  caudal: [
+    {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'EQ / TR', fn: r => r.equipo || '—'},
+    {label:'Parcelas', fn: r => r.parcelas || '—'},
+    {label:'Fundo', fn: r => r.fundo || '—'},
+    {label:'Evaluadas', fn: r => r.datos_extra?.mangueras_evaluadas ?? '—'},
+    {label:'Caudal med.', fn: r => r.datos_extra?.caudal ? `${r.datos_extra.caudal} L/min` : '—'},
+    {label:'Caudal nom.', fn: r => r.datos_extra?.caudal_nominal ? `${r.datos_extra.caudal_nominal} L/min` : '—'},
+    {label:'Presión (psi)', fn: r => r.datos_extra?.presion ?? '—'},
+    {label:'Controlador', fn: r => r.controlador || '—'},
+  ],
+};
+
+function buildAcumuladoTable(labor) {
+  const registros = (allRecords || [])
+    .filter(r => r.labor === labor)
+    .slice(0, 50); // máximo 50 registros recientes
+
+  const cols = acumCols[labor] || [];
+
+  const headerCells = cols.map(c => `<th>${c.label}</th>`).join('');
+
+  let bodyRows = '';
+  if (!registros.length) {
+    bodyRows = `<tr><td colspan="${cols.length}" class="acum-empty">Sin registros anteriores para esta labor</td></tr>`;
+  } else {
+    bodyRows = registros.map(r =>
+      `<tr>${cols.map(c => `<td class="td-mono">${c.fn(r)}</td>`).join('')}</tr>`
+    ).join('');
+  }
+
+  return `
+    <div class="acum-card">
+      <div class="section-title">📋 Registros anteriores · ${laborLabels[labor] || labor}</div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+        <table class="acum-table">
+          <thead><tr>${headerCells}</tr></thead>
+          <tbody>${bodyRows}</tbody>
+        </table>
+      </div>
+      ${registros.length ? `<div style="font-size:10px;color:var(--texto-suave);margin-top:8px;text-align:right;">Mostrando ${registros.length} registro${registros.length>1?'s':''} más recientes</div>` : ''}
+    </div>`;
+}
+
+// ── TABLA DE VERIFICACIÓN ────────────────────────
+const verifyFields = {
+  aplicacion: [
+    {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
+    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
+    {id:'f-insumo', label:'Insumo'}, {id:'f-dosis-cant', label:'Dosis'}, {id:'f-dosis-unid', label:'Unidad'},
+    {id:'f-obs', label:'Observaciones'}
+  ],
+  limpieza: [
+    {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
+    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
+    {id:'f-imof', label:'IMOF promedio (ml)'}, {id:'f-frecuencia', label:'Frecuencia (días)'},
+    {id:'f-edad', label:'Edad (días)'}, {id:'f-mang-no-riegan', label:'Mang. no riegan'},
+    {id:'f-mang-rep', label:'Mang. reparadas'}, {id:'f-mang-pend', label:'Mang. pendientes'},
+    {id:'f-obs', label:'Observaciones'}
+  ],
+  plancero: [
+    {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
+    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
+    {id:'f-fugas', label:'Fugas encontradas'}, {id:'f-mang-rep', label:'Mang. reparadas'},
+    {id:'f-mang-pend', label:'Mang. pendientes'}, {id:'f-avance-ha', label:'Avance (ha)'},
+    {id:'f-ha-pend', label:'Ha pendientes'}, {id:'f-obs', label:'Observaciones'}
+  ],
+  manguera: [
+    {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
+    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
+    {id:'f-mang-rev', label:'Mang. revisadas'}, {id:'f-mang-rep', label:'Mang. reparadas'},
+    {id:'f-mang-pend', label:'Mang. pendientes'}, {id:'f-avance-ha', label:'Avance (ha)'},
+    {id:'f-ha-pend', label:'Ha pendientes'}, {id:'f-estado', label:'Estado'},
+    {id:'f-obs', label:'Observaciones'}
+  ],
+  purga: [
+    {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
+    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
+    {id:'f-tramos', label:'Tramos purgados'}, {id:'f-presion', label:'Presión (psi)'},
+    {id:'f-mang-estrang', label:'Mang. estranguladas'}, {id:'f-mang-rep', label:'Mang. reparadas'},
+    {id:'f-mang-pend', label:'Mang. pendientes'}, {id:'f-obs', label:'Observaciones'}
+  ],
+  flushing: [
+    {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
+    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
+    {id:'f-flushing-util', label:'Flushing utilizados'}, {id:'f-flushing-pend', label:'Flushing pendientes'},
+    {id:'f-emisores', label:'Emisores instalados'}, {id:'f-longitud', label:'Longitud (m)'},
+    {id:'f-obs', label:'Observaciones'}
+  ],
+  caudal: [
+    {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
+    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
+    {id:'f-mang-eval', label:'Mangueras evaluadas'}, {id:'f-caudal', label:'Caudal medido (L/min)'},
+    {id:'f-caudal-nom', label:'Caudal nominal (L/min)'}, {id:'f-presion', label:'Presión (psi)'},
+    {id:'f-obs', label:'Observaciones'}
+  ]
+};
+
+function buildVerifyTable(labor) {
+  return `<div class="verify-table-wrap">
+    <div class="section-title">✅ Verificación del registro</div>
+    <table class="verify-table" id="verify-tbl">
+      <thead><tr><th>Campo</th><th>Valor ingresado</th></tr></thead>
+      <tbody id="verify-tbody"><tr><td colspan="2" class="verify-empty">Completa el formulario para ver el resumen</td></tr></tbody>
+    </table>
+  </div>`;
+}
+
+function attachVerifyListeners(labor) {
+  const fields = verifyFields[labor] || [];
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (el) {
+      el.addEventListener('input', () => refreshVerifyTable(labor));
+      el.addEventListener('change', () => refreshVerifyTable(labor));
+    }
+  });
+}
+
+function refreshVerifyTable(labor) {
+  const tbody = document.getElementById('verify-tbody');
+  if (!tbody) return;
+  const fields = verifyFields[labor] || [];
+  const rows = fields
+    .map(f => {
+      if (f.id === 'f-parcelas') {
+        const v = getParcelasValue();
+        if (!v) return null;
+        return `<tr><td class="td-label">Parcelas</td><td class="td-val">${v}</td></tr>`;
+      }
+      if (f.id === 'f-parcelas-detalle') return null; // handled above
+      const el = document.getElementById(f.id);
+      if (!el) return null;
+      const v = el.value.trim();
+      if (!v) return null;
+      return `<tr><td class="td-label">${f.label}</td><td class="td-val">${v}</td></tr>`;
+    })
+    .filter(Boolean);
+
+  tbody.innerHTML = rows.length
+    ? rows.join('')
+    : '<tr><td colspan="2" class="verify-empty">Completa el formulario para ver el resumen</td></tr>';
+}
+
 
 // ══════════════════════════════════════════════════
 // GUARDAR REGISTRO
@@ -1534,8 +2245,7 @@ function numVal(id) {
   return v ? parseFloat(v) : null;
 }
 
-async function submitRecord() {
-  const labor = document.getElementById('labor-select').value;
+async function submitRecord(labor) {
   if (!labor) { showToast('Selecciona una labor primero', 'error'); return; }
 
   const fundo = val('f-fundo');
@@ -1548,6 +2258,9 @@ async function submitRecord() {
   const tr = val('f-tr');
   const equipo = [eq, tr].filter(Boolean).join(' / ') || null;
 
+  // Parcelas
+  const parcelas = getParcelasValue();
+
   // Datos extra por labor
   const extras = {};
   if (labor === 'aplicacion') {
@@ -1558,18 +2271,55 @@ async function submitRecord() {
     if (!cant || !unid) { showToast('Ingresa dosis y unidades', 'error'); return; }
   }
 
-  if (labor === 'limpieza') extras.metros = numVal('f-metros');
-  if (labor === 'plancero') { extras.fugas = numVal('f-fugas'); extras.fugas_reparadas = numVal('f-fugas-rep'); }
-  if (labor === 'manguera') { extras.revisadas = numVal('f-mang-rev'); extras.reemplazadas = numVal('f-mang-reem'); extras.estado = val('f-estado'); }
-  if (labor === 'purga') { extras.tramos = numVal('f-tramos'); extras.presion = numVal('f-presion'); }
-  if (labor === 'flushing') { extras.emisores = numVal('f-emisores'); extras.longitud = numVal('f-longitud'); }
-  if (labor === 'caudal') { extras.caudal = numVal('f-caudal'); extras.caudal_nominal = numVal('f-caudal-nom'); extras.presion = numVal('f-presion'); }
+  if (labor === 'limpieza') {
+    extras.imof_promedio_ml = numVal('f-imof');
+    extras.frecuencia_dias = numVal('f-frecuencia');
+    extras.edad_dias = numVal('f-edad');
+    extras.mangueras_no_riegan = numVal('f-mang-no-riegan');
+    extras.mangueras_reparadas = numVal('f-mang-rep');
+    extras.mangueras_pendientes = numVal('f-mang-pend');
+  }
+  if (labor === 'plancero') {
+    extras.fugas = numVal('f-fugas');
+    extras.mangueras_reparadas = numVal('f-mang-rep');
+    extras.mangueras_pendientes = numVal('f-mang-pend');
+    extras.avance_ha = numVal('f-avance-ha');
+    extras.ha_pendientes = numVal('f-ha-pend');
+  }
+  if (labor === 'manguera') {
+    extras.revisadas = numVal('f-mang-rev');
+    extras.mangueras_reparadas = numVal('f-mang-rep');
+    extras.mangueras_pendientes = numVal('f-mang-pend');
+    extras.avance_ha = numVal('f-avance-ha');
+    extras.ha_pendientes = numVal('f-ha-pend');
+    extras.estado = val('f-estado');
+  }
+  if (labor === 'purga') {
+    extras.tramos = numVal('f-tramos');
+    extras.presion = numVal('f-presion');
+    extras.mangueras_estranguladas = numVal('f-mang-estrang');
+    extras.mangueras_reparadas = numVal('f-mang-rep');
+    extras.mangueras_pendientes = numVal('f-mang-pend');
+  }
+  if (labor === 'flushing') {
+    extras.flushing_utilizados = numVal('f-flushing-util');
+    extras.flushing_pendientes = numVal('f-flushing-pend');
+    extras.emisores = numVal('f-emisores');
+    extras.longitud = numVal('f-longitud');
+  }
+  if (labor === 'caudal') {
+    extras.mangueras_evaluadas = numVal('f-mang-eval');
+    extras.caudal = numVal('f-caudal');
+    extras.caudal_nominal = numVal('f-caudal-nom');
+    extras.presion = numVal('f-presion');
+  }
 
   const payload = {
     labor,
     fundo,
     fecha,
     equipo,
+    parcelas,
     insumo: val('f-insumo') || null,
     dosis_cantidad: numVal('f-dosis-cant'),
     dosis_unidad: val('f-dosis-unid') || null,
@@ -1597,8 +2347,8 @@ async function submitRecord() {
 
     if (res.ok) {
       showToast('✅ Registro guardado exitosamente');
-      document.getElementById('labor-select').value = '';
-      document.getElementById('form-container').innerHTML = '';
+      closeFormScreen();
+      loadHistorial();
     } else {
       const err = await res.json();
       showToast('Error al guardar: ' + (err.message || res.statusText), 'error');
@@ -1624,6 +2374,8 @@ async function loadHistorial() {
     if (!res.ok) throw new Error();
     allRecords = await res.json();
     applyFilters();
+    // Refrescar dashboard cuando Chart.js ya esté disponible
+    setTimeout(() => { if (typeof loadKPIs === 'function') loadKPIs(); }, 300);
   } catch (e) {
     listEl.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Error de conexión</h3><p>Verifica tu conexión a internet</p></div>';
   }
@@ -1672,6 +2424,7 @@ function showDetail(id) {
 
   const rows = [
     ['Fundo', r.fundo || '—', false],
+    ['Parcelas', r.parcelas || '—', false],
     ['Fecha', formatDate(r.fecha), false],
     ['Equipo', r.equipo || '—', true],
     ['Insumo', r.insumo || '—', false],
@@ -1731,63 +2484,6 @@ async function deleteRecord(id) {
     hideLoading();
     showToast('Error de conexión', 'error');
   }
-}
-
-// ══════════════════════════════════════════════════
-// KPIs
-// ══════════════════════════════════════════════════
-async function loadKPIs() {
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/labores_campo?select=labor,fundo,fecha,created_at`,
-      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-    );
-    if (!res.ok) return;
-    const data = await res.json();
-
-    const todayStr = today();
-    const weekAgo = new Date(Date.now() - 7 * 24 * 3600000).toISOString().split('T')[0];
-
-    document.getElementById('kpi-total').textContent = data.length;
-    document.getElementById('kpi-hoy').textContent = data.filter(r => r.fecha === todayStr).length;
-    document.getElementById('kpi-aplicaciones').textContent = data.filter(r => r.labor === 'aplicacion').length;
-    document.getElementById('kpi-semana').textContent = data.filter(r => r.fecha >= weekAgo).length;
-
-    // Por labor
-    const byLabor = {};
-    data.forEach(r => { byLabor[r.labor] = (byLabor[r.labor] || 0) + 1; });
-    const laborColors = { aplicacion:'#2D6A4F', limpieza:'#3498DB', plancero:'#E67E22', manguera:'#9B59B6', purga:'#E74C3C', flushing:'#1ABC9C', caudal:'#D4A017' };
-
-    document.getElementById('kpi-labor-list').innerHTML = Object.entries(byLabor)
-      .sort((a,b) => b[1]-a[1])
-      .map(([labor, count]) => `
-        <div class="record-card" style="border-left-color:${laborColors[labor]||'#ccc'}">
-          <div class="record-top">
-            <div class="record-labor">${laborLabels[labor]||labor}</div>
-            <div style="font-size:20px;font-weight:700;color:var(--verde-oscuro)">${count}</div>
-          </div>
-          <div style="height:6px;border-radius:3px;background:var(--fondo);margin-top:6px;">
-            <div style="height:100%;border-radius:3px;background:${laborColors[labor]||'#ccc'};width:${Math.round(count/data.length*100)}%"></div>
-          </div>
-        </div>`
-      ).join('');
-
-    // Por fundo
-    const byFundo = {};
-    data.forEach(r => { if(r.fundo) byFundo[r.fundo] = (byFundo[r.fundo]||0)+1; });
-
-    document.getElementById('kpi-fundo-list').innerHTML = Object.entries(byFundo)
-      .sort((a,b) => b[1]-a[1])
-      .map(([fundo, count]) => `
-        <div class="record-card">
-          <div class="record-top">
-            <div class="record-labor">📍 ${fundo}</div>
-            <div style="font-size:20px;font-weight:700;color:var(--verde-oscuro)">${count}</div>
-          </div>
-        </div>`
-      ).join('');
-
-  } catch(e) {}
 }
 
 // ══════════════════════════════════════════════════
@@ -1885,11 +2581,164 @@ function updateConfig() {
     show('screen-app');
     renderAdminTab();
     loadHistorial();
-    loadKPIs();
   } else {
     show('screen-login');
   }
 })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ══════════════════════════════════════════════════
+// DASHBOARD CON GRÁFICAS
+// ══════════════════════════════════════════════════
+let chartInstances = {};
+
+function destroyChart(id) {
+  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+}
+
+const LABOR_COLORS = {
+  aplicacion:'#2D6A4F', limpieza:'#3498DB', plancero:'#E67E22',
+  manguera:'#9B59B6', purga:'#E74C3C', flushing:'#1ABC9C', caudal:'#D4A017'
+};
+const FUNDO_COLORS = ['#2D6A4F','#3498DB','#E67E22'];
+
+async function loadKPIs() {
+  try {
+    // Usar solo los datos ya cargados por loadHistorial
+    const data = (allRecords && allRecords.length > 0) ? allRecords : [];
+    if (!data.length) return;
+
+    const todayStr = today();
+    const weekAgo = new Date(Date.now() - 7 * 24 * 3600000).toISOString().split('T')[0];
+
+    // ── KPI Cards
+    document.getElementById('kpi-total').textContent = data.length;
+    document.getElementById('kpi-hoy').textContent = data.filter(r => r.fecha === todayStr).length;
+    document.getElementById('kpi-semana').textContent = data.filter(r => r.fecha >= weekAgo).length;
+    document.getElementById('kpi-aplicaciones').textContent = data.filter(r => r.labor === 'aplicacion').length;
+
+    // ── Por labor
+    const byLabor = {};
+    data.forEach(r => { byLabor[r.labor] = (byLabor[r.labor] || 0) + 1; });
+    const laborKeys = Object.keys(byLabor).sort((a,b) => byLabor[b]-byLabor[a]);
+    destroyChart('labor');
+    const ctxL = document.getElementById('chart-labor');
+    if (ctxL) {
+      chartInstances['labor'] = new Chart(ctxL, {
+        type: 'bar',
+        data: {
+          labels: laborKeys.map(k => laborLabels[k] || k),
+          datasets: [{ data: laborKeys.map(k => byLabor[k]),
+            backgroundColor: laborKeys.map(k => LABOR_COLORS[k] || '#888'),
+            borderRadius: 6, borderSkipped: false }]
+        },
+        options: { plugins:{legend:{display:false}}, scales:{
+          y:{beginAtZero:true, ticks:{stepSize:1, font:{size:10}}, grid:{color:'#e8ede9'}},
+          x:{ticks:{font:{size:9}}, grid:{display:false}}
+        }, responsive:true, maintainAspectRatio:false }
+      });
+    }
+
+    // ── Por fundo
+    const byFundo = {};
+    data.forEach(r => { if(r.fundo) byFundo[r.fundo] = (byFundo[r.fundo] || 0) + 1; });
+    const fundoKeys = Object.keys(byFundo);
+    destroyChart('fundo');
+    const ctxF = document.getElementById('chart-fundo');
+    if (ctxF) {
+      chartInstances['fundo'] = new Chart(ctxF, {
+        type: 'doughnut',
+        data: {
+          labels: fundoKeys,
+          datasets: [{ data: fundoKeys.map(k => byFundo[k]),
+            backgroundColor: FUNDO_COLORS.slice(0, fundoKeys.length),
+            borderWidth: 2, borderColor: '#fff' }]
+        },
+        options: { plugins:{ legend:{ position:'bottom', labels:{font:{size:11}, padding:12} } },
+          responsive:true, maintainAspectRatio:false }
+      });
+    }
+
+    // ── Actividad últimos 14 días
+    const days14 = [];
+    const counts14 = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(Date.now() - i * 86400000);
+      const ds = d.toISOString().split('T')[0];
+      const label = `${d.getDate()}/${d.getMonth()+1}`;
+      days14.push(label);
+      counts14.push(data.filter(r => r.fecha === ds).length);
+    }
+    destroyChart('actividad');
+    const ctxA = document.getElementById('chart-actividad');
+    if (ctxA) {
+      chartInstances['actividad'] = new Chart(ctxA, {
+        type: 'line',
+        data: {
+          labels: days14,
+          datasets: [{ data: counts14, borderColor:'#2D6A4F', backgroundColor:'rgba(45,106,79,0.10)',
+            tension:0.3, fill:true, pointBackgroundColor:'#2D6A4F', pointRadius:3 }]
+        },
+        options: { plugins:{legend:{display:false}}, scales:{
+          y:{beginAtZero:true, ticks:{stepSize:1, font:{size:10}}, grid:{color:'#e8ede9'}},
+          x:{ticks:{font:{size:9}}, grid:{display:false}}
+        }, responsive:true, maintainAspectRatio:false }
+      });
+    }
+
+    // ── Por controlador
+    const byCtrl = {};
+    data.forEach(r => { if(r.controlador) byCtrl[r.controlador] = (byCtrl[r.controlador]||0)+1; });
+    const ctrlKeys = Object.keys(byCtrl).sort((a,b) => byCtrl[b]-byCtrl[a]);
+    destroyChart('controlador');
+    const ctxC = document.getElementById('chart-controlador');
+    if (ctxC) {
+      chartInstances['controlador'] = new Chart(ctxC, {
+        type: 'bar',
+        data: {
+          labels: ctrlKeys,
+          datasets: [{ data: ctrlKeys.map(k => byCtrl[k]),
+            backgroundColor: '#40916C', borderRadius:6, borderSkipped:false }]
+        },
+        options: { indexAxis:'y', plugins:{legend:{display:false}}, scales:{
+          x:{beginAtZero:true, ticks:{stepSize:1, font:{size:10}}, grid:{color:'#e8ede9'}},
+          y:{ticks:{font:{size:11}}, grid:{display:false}}
+        }, responsive:true, maintainAspectRatio:false }
+      });
+    }
+
+    // ── Resumen mangueras pendientes
+    const mangPend = {};
+    data.forEach(r => {
+      if (!r.datos_extra) return;
+      const p = r.datos_extra.mangueras_pendientes;
+      if (p == null) return;
+      const k = r.fundo || 'Sin fundo';
+      if (!mangPend[k]) mangPend[k] = 0;
+      mangPend[k] = Math.max(mangPend[k], p);
+    });
+    const mangEl = document.getElementById('dash-mangueras');
+    if (mangEl) {
+      if (!Object.keys(mangPend).length) {
+        mangEl.innerHTML = '<div class="verify-empty">Sin datos de mangueras pendientes aún</div>';
+      } else {
+        mangEl.innerHTML = Object.entries(mangPend)
+          .sort((a,b) => b[1]-a[1])
+          .map(([fundo, pend]) => {
+            const nivel = pend > 50 ? 'alto' : pend > 20 ? 'medio' : 'bajo';
+            const txt = pend > 50 ? 'Alto' : pend > 20 ? 'Medio' : 'Bajo';
+            return `<div class="dash-mang-row">
+              <div class="dmr-label">📍 ${fundo}</div>
+              <div class="dmr-val">${pend}</div>
+              <div class="dmr-badge ${nivel}">${txt}</div>
+            </div>`;
+          }).join('');
+      }
+    }
+
+  } catch(e) { console.error('Dashboard error:', e); }
+}
 </script>
 </body>
 </html>
