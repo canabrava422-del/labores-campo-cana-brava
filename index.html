@@ -339,6 +339,8 @@ html, body {
 }
 
 .labor-card .lc-icon { font-size: 26px; line-height: 1; }
+.labor-card .lc-icon.lc-svg { font-size: unset; width:32px; height:32px; display:flex; align-items:center; justify-content:center; }
+.labor-card .lc-icon.lc-svg svg { width:32px; height:32px; }
 .labor-card .lc-name {
   font-size: 11px;
   font-weight: 600;
@@ -800,6 +802,113 @@ select option { padding: 8px; }
 .empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--texto); }
 .empty-state p { font-size: 13px; }
 
+/* ── OFFLINE BADGE ──────────────────────────── */
+.offline-badge {
+  background: #E67E22;
+  color: white;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+.notif-btn { position: relative; }
+.notif-dot {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 9px; height: 9px;
+  background: #E74C3C;
+  border-radius: 50%;
+  border: 2px solid var(--verde-oscuro);
+}
+.notif-panel {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: white;
+  z-index: 150;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  max-height: 72vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 16px 16px;
+  animation: slideDown 0.25s ease;
+}
+@keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
+.notif-panel-header {
+  background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-campo));
+  color: white;
+  padding: 14px 16px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.notif-list { overflow-y: auto; flex: 1; padding: 4px 0; min-height: 60px; }
+.notif-item { padding: 12px 16px; border-bottom: 1px solid var(--borde); font-size: 13px; line-height: 1.5; }
+.notif-item:last-child { border-bottom: none; }
+.notif-item .ni-meta { font-size: 10px; color: var(--texto-suave); margin-bottom: 4px; display:flex; align-items:center; gap:6px; }
+.notif-item .ni-msg { color: var(--texto); font-weight: 500; }
+.ni-new { background: #E74C3C; color: white; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 10px; text-transform: uppercase; }
+.notif-empty { text-align: center; padding: 24px; color: var(--texto-suave); font-size: 13px; }
+
+.welcome-banner {
+  background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-campo));
+  color: white;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: var(--radio);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.welcome-banner .wb-icon { font-size: 28px; }
+.welcome-banner .wb-text h3 { font-size: 15px; font-weight: 700; }
+.welcome-banner .wb-text p { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+
+.sync-bar {
+  background: #E67E22;
+  color: white;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.sync-bar.show { display: flex; }
+.sync-bar button { background: rgba(255,255,255,0.25); border: none; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; }
+
+/* ── JORNALES & RATIO ───────────────────────── */
+.jornal-card { border-color: var(--verde-claro) !important; }
+
+.ratio-display {
+  padding: 11px 13px;
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-sm);
+  background: var(--fondo);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--texto-suave);
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.ratio-display.ratio-ok {
+  background: var(--verde-menta);
+  border-color: var(--verde-claro);
+  color: var(--verde-oscuro);
+  font-size: 14px;
+}
+
 /* ── ACUMULADO TABLE ─────────────────────────── */
 .acum-card {
   background: white;
@@ -947,6 +1056,30 @@ select option { padding: 8px; }
 .nav-icon { font-size: 22px; color: var(--texto-suave); }
 .nav-label { font-size: 10px; color: var(--texto-suave); font-weight: 500; }
 
+/* ── CAMBIO DE CONTRASEÑA ───────────────────── */
+.pwd-request-card {
+  background: white;
+  border-radius: var(--radio);
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--sombra-card);
+  border: 1.5px solid var(--borde);
+}
+.pwd-request-card h3 { font-size: 14px; font-weight: 700; color: var(--verde-oscuro); margin-bottom: 14px; }
+.solicitud-row { background: var(--fondo); border-radius: var(--radio-sm); padding: 12px 14px; margin-bottom: 8px; border-left: 3px solid var(--amarillo-cana); }
+.solicitud-row.aprobada { border-left-color: var(--exito); }
+.solicitud-row.rechazada { border-left-color: var(--error); }
+.solicitud-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.solicitud-user { font-size:13px; font-weight:700; color:var(--texto); }
+.solicitud-date { font-size:10px; color:var(--texto-suave); }
+.solicitud-pass { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--verde-oscuro); background:var(--verde-menta); padding:4px 8px; border-radius:4px; margin-bottom:8px; display:inline-block; }
+.solicitud-btns { display:flex; gap:8px; margin-top:8px; }
+.btn-aprobar { flex:1; padding:8px; background:var(--exito); color:white; border:none; border-radius:var(--radio-sm); font-size:12px; font-weight:600; cursor:pointer; }
+.btn-rechazar { flex:1; padding:8px; background:var(--error); color:white; border:none; border-radius:var(--radio-sm); font-size:12px; font-weight:600; cursor:pointer; }
+.status-pendiente { background:var(--amarillo-claro); color:#7d5a00; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; }
+.status-aprobada { background:#eafaf1; color:#1e8449; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; }
+.status-rechazada { background:#fdecea; color:var(--error); font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; }
+
 /* ── ADMIN PANEL ────────────────────────────── */
 .admin-section {
   background: white;
@@ -1085,22 +1218,10 @@ select option { padding: 8px; }
       <p>Magdalena · Labores de Campo</p>
     </div>
 
-    <div class="role-selector">
-      <button class="role-btn selected" id="role-admin" onclick="selectRole('admin')">
-        <span class="role-icon">👨‍💼</span>
-        <div class="role-name">Administrador</div>
-        <div class="role-desc">Acceso completo</div>
-      </button>
-      <button class="role-btn" id="role-controller" onclick="selectRole('controller')">
-        <span class="role-icon">👷</span>
-        <div class="role-name">Controlador</div>
-        <div class="role-desc">Solo registro</div>
-      </button>
-    </div>
-
     <div class="field">
-      <label>Nombre de usuario</label>
-      <input type="text" id="login-user" placeholder="Tu nombre" autocomplete="username"/>
+      <label>Usuario</label>
+      <input type="text" id="login-user" placeholder="Tu usuario" autocomplete="username"
+             onkeydown="if(event.key==='Enter') document.getElementById('login-pass').focus()"/>
     </div>
 
     <div class="field">
@@ -1125,14 +1246,33 @@ select option { padding: 8px; }
       <div class="hlogo">🌾</div>
       <div class="header-title">
         <h2>Caña Brava</h2>
-        <span id="header-subtitle">Magdalena</span>
+        <span id="header-subtitle">Bienvenido</span>
       </div>
     </div>
     <div class="header-right">
-      <span class="badge-role" id="badge-role">Controller</span>
+      <div id="offline-badge" class="offline-badge" style="display:none" title="Sin conexión">
+        <span>📡</span>
+      </div>
+      <button class="btn-icon notif-btn" onclick="openNotifications()" id="notif-btn" title="Anuncios">
+        🔔
+        <span class="notif-dot" id="notif-dot" style="display:none"></span>
+      </button>
       <button class="btn-icon" onclick="doLogout()" title="Cerrar sesión">⏻</button>
     </div>
   </header>
+
+  <!-- Panel de anuncios -->
+  <div id="notif-panel" class="notif-panel" style="display:none">
+    <div class="notif-panel-header">
+      <span style="font-weight:700;font-size:14px;">📢 Anuncios</span>
+      <button onclick="closeNotifications()" style="background:none;border:none;font-size:18px;cursor:pointer;color:white;">✕</button>
+    </div>
+    <div id="notif-list" class="notif-list"></div>
+    <div id="notif-admin-form" style="display:none;padding:12px;border-top:1px solid var(--borde);">
+      <textarea id="notif-text" placeholder="Escribir anuncio..." style="width:100%;border:1.5px solid var(--borde);border-radius:8px;padding:8px;font-family:'Inter',sans-serif;font-size:13px;resize:none;height:70px;outline:none;"></textarea>
+      <button onclick="publishNotification()" class="btn-submit" style="margin-top:8px;padding:10px;">📢 Publicar anuncio</button>
+    </div>
+  </div>
 
   <!-- Bottom Nav -->
   <nav class="bottom-nav">
@@ -1154,6 +1294,12 @@ select option { padding: 8px; }
     </button>
   </nav>
 
+  <!-- Sync bar (offline queue) -->
+  <div class="sync-bar" id="sync-bar">
+    <span id="sync-msg">📡 Sin conexión · <span id="sync-count">0</span> registro(s) pendientes</span>
+    <button onclick="trySyncQueue()">Sincronizar</button>
+  </div>
+
   <!-- Contenido -->
   <main class="app-content">
 
@@ -1168,19 +1314,19 @@ select option { padding: 8px; }
           <div class="lc-name">Aplicación</div>
         </div>
         <div class="labor-card" id="lc-limpieza" onclick="selectLabor('limpieza')">
-          <div class="lc-icon">🧹</div>
+          <div class="lc-icon lc-svg" id="svg-limpieza"></div>
           <div class="lc-name">Limpieza de laterales</div>
         </div>
         <div class="labor-card" id="lc-plancero" onclick="selectLabor('plancero')">
-          <div class="lc-icon">🔍</div>
+          <div class="lc-icon lc-svg" id="svg-plancero"></div>
           <div class="lc-name">Plan cero fuga</div>
         </div>
         <div class="labor-card" id="lc-manguera" onclick="selectLabor('manguera')">
-          <div class="lc-icon">🔧</div>
+          <div class="lc-icon lc-svg" id="svg-manguera"></div>
           <div class="lc-name">Revisión de manguera</div>
         </div>
         <div class="labor-card" id="lc-purga" onclick="selectLabor('purga')">
-          <div class="lc-icon">💨</div>
+          <div class="lc-icon lc-svg" id="svg-purga"></div>
           <div class="lc-name">Purga con pig</div>
         </div>
         <div class="labor-card" id="lc-flushing" onclick="selectLabor('flushing')">
@@ -1188,7 +1334,7 @@ select option { padding: 8px; }
           <div class="lc-name">Instalación de flushing</div>
         </div>
         <div class="labor-card" id="lc-caudal" onclick="selectLabor('caudal')" style="grid-column:1/-1">
-          <div class="lc-icon">💧</div>
+          <div class="lc-icon lc-svg" id="svg-caudal"></div>
           <div class="lc-name">Medición de caudal</div>
         </div>
       </div>
@@ -1354,8 +1500,21 @@ let SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 let currentUser = null;
 let allRecords = [];
 
-const ADMIN_USER = 'ronald';
-const ADMIN_PASS = 'cana2024';
+// ══════════════════════════════════════════════════
+// REGISTRO DE USUARIOS AUTORIZADOS
+// Para añadir usuarios: agrega una línea con
+// { user: 'nombre', pass: 'clave', role: 'controller', displayName: 'Nombre Completo' }
+// role puede ser 'admin' o 'controller'
+// ══════════════════════════════════════════════════
+const USERS = [
+  { user: 'ronald',    pass: 'canab2024rn',   role: 'admin',      displayName: 'Ronald' },
+  { user: 'gdioses',   pass: 'gdk7xm3w9p',    role: 'controller', displayName: 'Gina Dioses' },
+  { user: 'rpalacios', pass: 'rp9wlv5xk2',    role: 'controller', displayName: 'Raul Palacios' },
+  { user: 'jmedina',   pass: 'jm4zqb8nt6',    role: 'controller', displayName: 'Javier Medina' },
+  { user: 'hchulle',   pass: 'hc6ntp2yw8',    role: 'controller', displayName: 'Henry Chulle' },
+  { user: 'lcarrillo', pass: 'lc3ymk7fv5',    role: 'controller', displayName: 'Lenard Carrillo' },
+  { user: 'ctrl1',     pass: 'c18vrj5qs3',    role: 'controller', displayName: 'Controlador 1' },
+];
 
 const SQL_SCRIPT = `-- Crear tabla principal de labores
 CREATE TABLE IF NOT EXISTS labores_campo (
@@ -1429,50 +1588,44 @@ function saveSetup() {
 // ══════════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════════
-let selectedRole = 'admin';
-
-function selectRole(role) {
-  selectedRole = role;
-  document.getElementById('role-admin').classList.toggle('selected', role === 'admin');
-  document.getElementById('role-controller').classList.toggle('selected', role === 'controller');
-}
-
 function doLogin() {
-  const user = document.getElementById('login-user').value.trim();
-  const pass = document.getElementById('login-pass').value;
+  const userInput = document.getElementById('login-user').value.trim().toLowerCase();
+  const passInput = document.getElementById('login-pass').value;
   const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
 
-  if (!user) {
-    errEl.textContent = 'Ingresa tu nombre de usuario.';
+  if (!userInput || !passInput) {
+    errEl.textContent = 'Ingresa tu usuario y contraseña.';
     errEl.style.display = 'block';
     return;
   }
 
-  if (selectedRole === 'admin') {
-    if (user.toLowerCase() !== ADMIN_USER || pass !== ADMIN_PASS) {
-      errEl.textContent = 'Credenciales de administrador incorrectas.';
-      errEl.style.display = 'block';
-      return;
-    }
-  }
+  const found = USERS.find(u =>
+    u.user.toLowerCase() === userInput && u.pass === passInput
+  );
 
-  if (!pass && selectedRole === 'controller') {
-    errEl.textContent = 'Ingresa una contraseña o identificador.';
+  if (!found) {
+    errEl.textContent = 'Usuario o contraseña incorrectos.';
     errEl.style.display = 'block';
     return;
   }
 
-  currentUser = { name: user, role: selectedRole };
+  currentUser = { name: found.displayName, role: found.role, user: found.user };
   localStorage.setItem('cb_user', JSON.stringify(currentUser));
 
-  document.getElementById('badge-role').textContent = selectedRole === 'admin' ? 'Admin' : 'Controlador';
-  document.getElementById('badge-role').className = 'badge-role' + (selectedRole === 'admin' ? ' admin' : '');
-  document.getElementById('header-subtitle').textContent = user;
+  const badgeEl = document.getElementById('badge-role');
+  if (badgeEl) {
+    badgeEl.textContent = found.role === 'admin' ? 'Admin' : 'Controlador';
+    badgeEl.className = 'badge-role' + (found.role === 'admin' ? ' admin' : '');
+  }
 
   show('screen-app');
+  renderWelcome();
   renderAdminTab();
+  loadNotifications();
+  updateSyncBar();
   loadHistorial();
-  loadKPIs();
+  setTimeout(() => { if (typeof loadKPIs === 'function') loadKPIs(); }, 300);
 }
 
 function doLogout() {
@@ -1500,6 +1653,7 @@ function showNav(tab) {
 
   if (tab === 'historial') loadHistorial();
   if (tab === 'kpis' && typeof loadKPIs === 'function') loadKPIs();
+  if (tab === 'admin') { renderAdminTab(); }
 }
 
 // ══════════════════════════════════════════════════
@@ -1507,6 +1661,29 @@ function showNav(tab) {
 // ══════════════════════════════════════════════════
 function today() {
   return new Date().toISOString().split('T')[0];
+}
+
+// ── HELPER SUPABASE FETCH ─────────────────────────
+// Envía la apikey en headers Y en la URL como parámetro
+// para garantizar compatibilidad con cualquier navegador/proxy
+function sbUrl(url) {
+  const sep = url.includes('?') ? '&' : '?';
+  return `${url}${sep}apikey=${encodeURIComponent(SUPABASE_KEY)}`;
+}
+
+function sbHeaders(extra = {}) {
+  return {
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+    ...extra
+  };
+}
+
+async function sbFetch(url, options = {}) {
+  const finalUrl = sbUrl(url);
+  const headers = sbHeaders(options.headers || {});
+  return fetch(finalUrl, { ...options, headers });
 }
 
 function formatDate(d) {
@@ -1738,6 +1915,47 @@ function getParcelasValue() {
 
 function onParcelasChange() {} // kept for compatibility
 
+// ── BLOQUE JORNALES + RATIO ──────────────────────
+function jornalesBlock() {
+  return `
+    <div class="form-card jornal-card">
+      <div class="section-title">👷 Mano de obra</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Jornales (N°)</label>
+          <input type="number" id="f-jornales" placeholder="0.0" step="0.5" min="0" oninput="calcRatio()"/>
+        </div>
+        <div class="form-field">
+          <label>Ratio (jor/ha)</label>
+          <div id="ratio-display" class="ratio-display">—</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function calcRatio() {
+  const jornales = parseFloat(document.getElementById('f-jornales')?.value) || 0;
+  const avance   = parseFloat(document.getElementById('f-avance-ha')?.value) || 0;
+  const display  = document.getElementById('ratio-display');
+  if (!display) return;
+
+  if (jornales > 0 && avance > 0) {
+    const ratio = (jornales / avance).toFixed(2);
+    display.textContent = `${ratio} jor/ha`;
+    display.className = 'ratio-display ratio-ok';
+  } else {
+    display.textContent = '—';
+    display.className = 'ratio-display';
+  }
+
+  // Actualizar tabla de verificación
+  const labor = document.getElementById('form-header-title')?.dataset?.labor;
+  if (labor) refreshVerifyTable(labor);
+}
+
+
+
+// ── FORMULARIOS POR LABOR ────────────────────────
 const laborForms = {
 
   aplicacion: () => baseBlock('📍 Ubicación y equipo') + `
@@ -1760,7 +1978,7 @@ const laborForms = {
           <textarea id="f-obs" placeholder="Notas adicionales..."></textarea>
         </div>
       </div>
-    </div>`,
+    </div>` + jornalesBlock(),
 
   limpieza: () => baseBlock('📍 Limpieza de laterales') + `
     <div class="form-card">
@@ -1791,11 +2009,15 @@ const laborForms = {
           <input type="number" id="f-mang-pend" placeholder="0" step="1" min="0"/>
         </div>
         <div class="form-field full">
+          <label>Avance (ha)</label>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0" oninput="calcRatio()"/>
+        </div>
+        <div class="form-field full">
           <label>Observaciones</label>
           <textarea id="f-obs" placeholder="Notas..."></textarea>
         </div>
       </div>
-    </div>`,
+    </div>` + jornalesBlock(),
 
   plancero: () => baseBlock('📍 Plan cero fuga') + `
     <div class="form-card">
@@ -1815,7 +2037,7 @@ const laborForms = {
         </div>
         <div class="form-field">
           <label>Avance (ha)</label>
-          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0"/>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0" oninput="calcRatio()"/>
         </div>
         <div class="form-field full">
           <label>Hectáreas pendientes (ha)</label>
@@ -1826,7 +2048,7 @@ const laborForms = {
           <textarea id="f-obs" placeholder="Describe el estado..."></textarea>
         </div>
       </div>
-    </div>`,
+    </div>` + jornalesBlock(),
 
   manguera: () => baseBlock('📍 Revisión de manguera') + `
     <div class="form-card">
@@ -1846,7 +2068,7 @@ const laborForms = {
         </div>
         <div class="form-field">
           <label>Avance (ha)</label>
-          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0"/>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0" oninput="calcRatio()"/>
         </div>
         <div class="form-field full">
           <label>Hectáreas pendientes (ha)</label>
@@ -1866,7 +2088,7 @@ const laborForms = {
           <textarea id="f-obs" placeholder="Notas..."></textarea>
         </div>
       </div>
-    </div>`,
+    </div>` + jornalesBlock(),
 
   purga: () => baseBlock('📍 Purga con pig') + `
     <div class="form-card">
@@ -1888,6 +2110,10 @@ const laborForms = {
           <label>Mangueras reparadas (N°)</label>
           <input type="number" id="f-mang-rep" placeholder="0" min="0" step="1"/>
         </div>
+        <div class="form-field">
+          <label>Avance (ha)</label>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0" oninput="calcRatio()"/>
+        </div>
         <div class="form-field full">
           <label>Mangueras pendientes (N°)</label>
           <input type="number" id="f-mang-pend" placeholder="0" min="0" step="1"/>
@@ -1897,7 +2123,7 @@ const laborForms = {
           <textarea id="f-obs" placeholder="Condiciones de la purga..."></textarea>
         </div>
       </div>
-    </div>`,
+    </div>` + jornalesBlock(),
 
   flushing: () => baseBlock('📍 Instalación de flushing') + `
     <div class="form-card">
@@ -1920,11 +2146,15 @@ const laborForms = {
           <input type="number" id="f-longitud" placeholder="0.0" step="0.1" min="0"/>
         </div>
         <div class="form-field full">
+          <label>Avance (ha)</label>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0" oninput="calcRatio()"/>
+        </div>
+        <div class="form-field full">
           <label>Observaciones</label>
           <textarea id="f-obs" placeholder="Notas de instalación..."></textarea>
         </div>
       </div>
-    </div>`,
+    </div>` + jornalesBlock(),
 
   caudal: () => baseBlock('📍 Medición de caudal') + `
     <div class="form-card">
@@ -1947,11 +2177,15 @@ const laborForms = {
           <input type="number" id="f-presion" placeholder="0.0" step="0.1" min="0"/>
         </div>
         <div class="form-field full">
+          <label>Avance (ha)</label>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0" oninput="calcRatio()"/>
+        </div>
+        <div class="form-field full">
           <label>Observaciones</label>
           <textarea id="f-obs" placeholder="Condiciones de medición..."></textarea>
         </div>
       </div>
-    </div>`
+    </div>` + jornalesBlock(),
 };
 
 const laborLabels = {
@@ -1964,9 +2198,135 @@ const laborLabels = {
   caudal: 'Medición de caudal'
 };
 
+// ── ÍCONOS SVG PERSONALIZADOS ────────────────────
+const LABOR_SVGS = {
+
+  // Cono IMOF — cono de Emhoff para medición de flujo
+  limpieza: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Cono IMOF -->
+    <path d="M9 6 L23 6 L20 22 L12 22 Z" fill="#D4A017" stroke="#9A7210" stroke-width="1.2" stroke-linejoin="round"/>
+    <!-- Boca ancha superior -->
+    <rect x="7" y="4" width="18" height="3" rx="1.5" fill="#B8860B" stroke="#9A7210" stroke-width="0.8"/>
+    <!-- Orificio punta -->
+    <circle cx="16" cy="23.5" r="1.5" fill="#5A3E00" stroke="#3A2800" stroke-width="0.8"/>
+    <!-- Líneas de flujo -->
+    <line x1="16" y1="25" x2="16" y2="29" stroke="#3498DB" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M13 27 Q16 29 19 27" stroke="#3498DB" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+    <!-- Escala lateral -->
+    <line x1="22" y1="10" x2="24" y2="10" stroke="#9A7210" stroke-width="0.8"/>
+    <line x1="21" y1="15" x2="23" y2="15" stroke="#9A7210" stroke-width="0.8"/>
+    <line x1="20.5" y1="19" x2="22.5" y2="19" stroke="#9A7210" stroke-width="0.8"/>
+  </svg>`,
+
+  // Manómetro — dial circular con aguja
+  plancero: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Cuerpo manómetro -->
+    <circle cx="16" cy="14" r="11" fill="#E8E8E8" stroke="#555" stroke-width="1.5"/>
+    <circle cx="16" cy="14" r="9" fill="white" stroke="#888" stroke-width="0.8"/>
+    <!-- Zona roja peligro -->
+    <path d="M22.5 7.5 A9 9 0 0 1 25 14" stroke="#E74C3C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Marcas de escala -->
+    <line x1="16" y1="5.5" x2="16" y2="7.5" stroke="#555" stroke-width="1" stroke-linecap="round"/>
+    <line x1="9.5" y1="7.8" x2="10.8" y2="9.1" stroke="#555" stroke-width="1" stroke-linecap="round"/>
+    <line x1="22.5" y1="7.8" x2="21.2" y2="9.1" stroke="#555" stroke-width="1" stroke-linecap="round"/>
+    <line x1="7" y1="14" x2="9" y2="14" stroke="#555" stroke-width="1" stroke-linecap="round"/>
+    <line x1="25" y1="14" x2="23" y2="14" stroke="#555" stroke-width="1" stroke-linecap="round"/>
+    <!-- Aguja -->
+    <line x1="16" y1="14" x2="21" y2="9" stroke="#E74C3C" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Centro aguja -->
+    <circle cx="16" cy="14" r="1.5" fill="#555"/>
+    <!-- Conector inferior -->
+    <rect x="14" y="24" width="4" height="5" rx="1" fill="#888" stroke="#555" stroke-width="0.8"/>
+    <rect x="12" y="28" width="8" height="2" rx="1" fill="#666" stroke="#444" stroke-width="0.8"/>
+  </svg>`,
+
+  // Tijera de podar — para revisión de manguera
+  manguera: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Hoja superior -->
+    <path d="M8 4 Q10 8 16 16" stroke="#2D6A4F" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Hoja inferior -->
+    <path d="M8 28 Q10 24 16 16" stroke="#2D6A4F" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- Filo superior -->
+    <path d="M7 4 Q12 6 16 16" stroke="#74C69D" stroke-width="1" stroke-linecap="round" fill="none"/>
+    <!-- Filo inferior -->
+    <path d="M7 28 Q12 26 16 16" stroke="#74C69D" stroke-width="1" stroke-linecap="round" fill="none"/>
+    <!-- Manija superior -->
+    <ellipse cx="6.5" cy="6.5" rx="4" ry="3" stroke="#2D6A4F" stroke-width="1.5" fill="#D8F3DC" transform="rotate(-20 6.5 6.5)"/>
+    <!-- Manija inferior -->
+    <ellipse cx="6.5" cy="25.5" rx="4" ry="3" stroke="#2D6A4F" stroke-width="1.5" fill="#D8F3DC" transform="rotate(20 6.5 25.5)"/>
+    <!-- Tornillo centro -->
+    <circle cx="16" cy="16" r="2" fill="#888" stroke="#555" stroke-width="0.8"/>
+    <!-- Extensión brazo superior -->
+    <path d="M16 16 L26 10" stroke="#2D6A4F" stroke-width="2" stroke-linecap="round"/>
+    <!-- Extensión brazo inferior -->
+    <path d="M16 16 L26 22" stroke="#2D6A4F" stroke-width="2" stroke-linecap="round"/>
+  </svg>`,
+
+  // Pig de limpieza — esponjas cilíndricas apiladas (forma chezitos)
+  purga: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Tubo guía -->
+    <rect x="13" y="2" width="6" height="28" rx="3" fill="#B0BEC5" stroke="#78909C" stroke-width="0.8"/>
+    <!-- Esponja 1 (arriba) -->
+    <ellipse cx="16" cy="7" rx="7" ry="3.5" fill="#E67E22" stroke="#C0580A" stroke-width="1"/>
+    <rect x="9" y="7" width="14" height="5" rx="0" fill="#E67E22" stroke="none"/>
+    <ellipse cx="16" cy="12" rx="7" ry="3.5" fill="#D4620A" stroke="#C0580A" stroke-width="1"/>
+    <!-- Esponja 2 (medio) -->
+    <ellipse cx="16" cy="14" rx="7" ry="3.5" fill="#E67E22" stroke="#C0580A" stroke-width="1"/>
+    <rect x="9" y="14" width="14" height="5" rx="0" fill="#E67E22" stroke="none"/>
+    <ellipse cx="16" cy="19" rx="7" ry="3.5" fill="#D4620A" stroke="#C0580A" stroke-width="1"/>
+    <!-- Esponja 3 (abajo) -->
+    <ellipse cx="16" cy="21" rx="7" ry="3.5" fill="#E67E22" stroke="#C0580A" stroke-width="1"/>
+    <rect x="9" y="21" width="14" height="5" rx="0" fill="#E67E22" stroke="none"/>
+    <ellipse cx="16" cy="26" rx="7" ry="3.5" fill="#D4620A" stroke="#C0580A" stroke-width="1"/>
+    <!-- Brillo -->
+    <ellipse cx="13" cy="7" rx="2.5" ry="1" fill="rgba(255,255,255,0.3)"/>
+    <ellipse cx="13" cy="14" rx="2.5" ry="1" fill="rgba(255,255,255,0.3)"/>
+    <ellipse cx="13" cy="21" rx="2.5" ry="1" fill="rgba(255,255,255,0.3)"/>
+  </svg>`,
+
+  // Caudalímetro — medidor de flujo tipo paddle wheel
+  caudal: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Cuerpo tubería horizontal -->
+    <rect x="1" y="13" width="30" height="6" rx="3" fill="#B0BEC5" stroke="#78909C" stroke-width="1.2"/>
+    <!-- Flujo interior -->
+    <rect x="3" y="15" width="26" height="2" rx="1" fill="#3498DB" opacity="0.5"/>
+    <!-- Caja sensor -->
+    <rect x="11" y="7" width="10" height="10" rx="2" fill="#37474F" stroke="#263238" stroke-width="1"/>
+    <!-- Display -->
+    <rect x="12.5" y="8.5" width="7" height="4" rx="1" fill="#B2FF59"/>
+    <!-- Dígitos display -->
+    <line x1="14" y1="9.5" x2="15.5" y2="9.5" stroke="#2E7D32" stroke-width="0.8"/>
+    <line x1="16" y1="9.5" x2="17.5" y2="9.5" stroke="#2E7D32" stroke-width="0.8"/>
+    <line x1="14" y1="11" x2="15.5" y2="11" stroke="#2E7D32" stroke-width="0.8"/>
+    <line x1="16" y1="11" x2="17.5" y2="11" stroke="#2E7D32" stroke-width="0.8"/>
+    <!-- Paddle wheel (rueda paletas) -->
+    <circle cx="16" cy="16" r="3.5" fill="white" stroke="#555" stroke-width="0.8"/>
+    <line x1="16" y1="12.5" x2="16" y2="19.5" stroke="#E74C3C" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="12.5" y1="16" x2="19.5" y2="16" stroke="#E74C3C" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="13.5" y1="13.5" x2="18.5" y2="18.5" stroke="#E74C3C" stroke-width="1" stroke-linecap="round"/>
+    <line x1="18.5" y1="13.5" x2="13.5" y2="18.5" stroke="#E74C3C" stroke-width="1" stroke-linecap="round"/>
+    <circle cx="16" cy="16" r="1.2" fill="#555"/>
+    <!-- Flechas flujo -->
+    <path d="M4 16 L7 14 L7 18 Z" fill="#3498DB"/>
+    <path d="M28 16 L25 14 L25 18 Z" fill="#3498DB"/>
+  </svg>`,
+};
+
+// Inyectar SVGs en las tarjetas de labor
+(function injectLaborSVGs() {
+  Object.entries(LABOR_SVGS).forEach(([labor, svg]) => {
+    const el = document.getElementById('svg-' + labor);
+    if (el) el.innerHTML = svg;
+  });
+})();
+
+const laborIconsEmoji = {
+  aplicacion:'🧪', flushing:'🔩'
+};
+
 const laborIcons = {
-  aplicacion:'🧪', limpieza:'🧹', plancero:'🔍',
-  manguera:'🔧', purga:'💨', flushing:'🔩', caudal:'💧'
+  aplicacion:'🧪', limpieza:'svg', plancero:'svg',
+  manguera:'svg', purga:'svg', flushing:'🔩', caudal:'svg'
 };
 
 function selectLabor(labor) {
@@ -1974,7 +2334,23 @@ function selectLabor(labor) {
   if (!formFn) return;
 
   // Poblar header de la pantalla de formulario
-  document.getElementById('form-header-icon').textContent = laborIcons[labor] || '📝';
+  const headerIconEl = document.getElementById('form-header-icon');
+  if (LABOR_SVGS[labor]) {
+    headerIconEl.innerHTML = LABOR_SVGS[labor];
+    headerIconEl.style.fontSize = 'unset';
+    headerIconEl.style.width = '32px';
+    headerIconEl.style.height = '32px';
+    headerIconEl.style.display = 'flex';
+    headerIconEl.style.alignItems = 'center';
+    headerIconEl.style.justifyContent = 'center';
+    const s = headerIconEl.querySelector('svg');
+    if (s) { s.style.width='28px'; s.style.height='28px'; }
+  } else {
+    headerIconEl.innerHTML = laborIconsEmoji[labor] || '📝';
+    headerIconEl.style.fontSize = '18px';
+    headerIconEl.style.width = '';
+    headerIconEl.style.height = '';
+  }
   const titleEl = document.getElementById('form-header-title');
   titleEl.textContent = laborLabels[labor] || labor;
   titleEl.dataset.labor = labor;
@@ -2017,6 +2393,8 @@ const acumCols = {
     {label:'Fundo', fn: r => r.fundo || '—'},
     {label:'Insumo', fn: r => r.insumo || '—'},
     {label:'Dosis', fn: r => r.dosis_cantidad ? `${r.dosis_cantidad} ${r.dosis_unidad||''}` : '—'},
+    {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
+    {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
   limpieza: [
@@ -2030,6 +2408,9 @@ const acumCols = {
     {label:'No riegan', fn: r => r.datos_extra?.mangueras_no_riegan ?? '—'},
     {label:'Reparadas', fn: r => r.datos_extra?.mangueras_reparadas ?? '—'},
     {label:'Pendientes', fn: r => r.datos_extra?.mangueras_pendientes ?? '—'},
+    {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
+    {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
+    {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
   plancero: [
@@ -2042,6 +2423,8 @@ const acumCols = {
     {label:'Pendientes', fn: r => r.datos_extra?.mangueras_pendientes ?? '—'},
     {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
     {label:'Ha pend.', fn: r => r.datos_extra?.ha_pendientes ?? '—'},
+    {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
+    {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
   manguera: [
@@ -2055,6 +2438,8 @@ const acumCols = {
     {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
     {label:'Ha pend.', fn: r => r.datos_extra?.ha_pendientes ?? '—'},
     {label:'Estado', fn: r => r.datos_extra?.estado || '—'},
+    {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
+    {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
   purga: [
@@ -2067,6 +2452,9 @@ const acumCols = {
     {label:'Estranguladas', fn: r => r.datos_extra?.mangueras_estranguladas ?? '—'},
     {label:'Reparadas', fn: r => r.datos_extra?.mangueras_reparadas ?? '—'},
     {label:'Pendientes', fn: r => r.datos_extra?.mangueras_pendientes ?? '—'},
+    {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
+    {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
+    {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
   flushing: [
@@ -2078,6 +2466,9 @@ const acumCols = {
     {label:'Pendientes', fn: r => r.datos_extra?.flushing_pendientes ?? '—'},
     {label:'Emisores', fn: r => r.datos_extra?.emisores ?? '—'},
     {label:'Longitud (m)', fn: r => r.datos_extra?.longitud ?? '—'},
+    {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
+    {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
+    {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
   caudal: [
@@ -2089,6 +2480,9 @@ const acumCols = {
     {label:'Caudal med.', fn: r => r.datos_extra?.caudal ? `${r.datos_extra.caudal} L/min` : '—'},
     {label:'Caudal nom.', fn: r => r.datos_extra?.caudal_nominal ? `${r.datos_extra.caudal_nominal} L/min` : '—'},
     {label:'Presión (psi)', fn: r => r.datos_extra?.presion ?? '—'},
+    {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
+    {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
+    {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
 };
@@ -2128,59 +2522,71 @@ function buildAcumuladoTable(labor) {
 const verifyFields = {
   aplicacion: [
     {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
-    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-insumo', label:'Insumo'}, {id:'f-dosis-cant', label:'Dosis'}, {id:'f-dosis-unid', label:'Unidad'},
+    {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
     {id:'f-obs', label:'Observaciones'}
   ],
   limpieza: [
     {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
-    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-imof', label:'IMOF promedio (ml)'}, {id:'f-frecuencia', label:'Frecuencia (días)'},
     {id:'f-edad', label:'Edad (días)'}, {id:'f-mang-no-riegan', label:'Mang. no riegan'},
     {id:'f-mang-rep', label:'Mang. reparadas'}, {id:'f-mang-pend', label:'Mang. pendientes'},
+    {id:'f-avance-ha', label:'Avance (ha)'},
+    {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
     {id:'f-obs', label:'Observaciones'}
   ],
   plancero: [
     {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
-    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-fugas', label:'Fugas encontradas'}, {id:'f-mang-rep', label:'Mang. reparadas'},
     {id:'f-mang-pend', label:'Mang. pendientes'}, {id:'f-avance-ha', label:'Avance (ha)'},
-    {id:'f-ha-pend', label:'Ha pendientes'}, {id:'f-obs', label:'Observaciones'}
+    {id:'f-ha-pend', label:'Ha pendientes'},
+    {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
+    {id:'f-obs', label:'Observaciones'}
   ],
   manguera: [
     {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
-    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-mang-rev', label:'Mang. revisadas'}, {id:'f-mang-rep', label:'Mang. reparadas'},
     {id:'f-mang-pend', label:'Mang. pendientes'}, {id:'f-avance-ha', label:'Avance (ha)'},
     {id:'f-ha-pend', label:'Ha pendientes'}, {id:'f-estado', label:'Estado'},
+    {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
     {id:'f-obs', label:'Observaciones'}
   ],
   purga: [
     {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
-    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-tramos', label:'Tramos purgados'}, {id:'f-presion', label:'Presión (psi)'},
     {id:'f-mang-estrang', label:'Mang. estranguladas'}, {id:'f-mang-rep', label:'Mang. reparadas'},
-    {id:'f-mang-pend', label:'Mang. pendientes'}, {id:'f-obs', label:'Observaciones'}
+    {id:'f-mang-pend', label:'Mang. pendientes'}, {id:'f-avance-ha', label:'Avance (ha)'},
+    {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
+    {id:'f-obs', label:'Observaciones'}
   ],
   flushing: [
     {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
-    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-flushing-util', label:'Flushing utilizados'}, {id:'f-flushing-pend', label:'Flushing pendientes'},
     {id:'f-emisores', label:'Emisores instalados'}, {id:'f-longitud', label:'Longitud (m)'},
+    {id:'f-avance-ha', label:'Avance (ha)'},
+    {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
     {id:'f-obs', label:'Observaciones'}
   ],
   caudal: [
     {id:'f-eq', label:'EQ'}, {id:'f-tr', label:'TR'},
-    {id:'f-parcelas', label:'Parcelas'}, {id:'f-parcelas-detalle', label:'Detalle parcelas'},
+    {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-mang-eval', label:'Mangueras evaluadas'}, {id:'f-caudal', label:'Caudal medido (L/min)'},
     {id:'f-caudal-nom', label:'Caudal nominal (L/min)'}, {id:'f-presion', label:'Presión (psi)'},
+    {id:'f-avance-ha', label:'Avance (ha)'},
+    {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
     {id:'f-obs', label:'Observaciones'}
   ]
 };
@@ -2217,7 +2623,13 @@ function refreshVerifyTable(labor) {
         if (!v) return null;
         return `<tr><td class="td-label">Parcelas</td><td class="td-val">${v}</td></tr>`;
       }
-      if (f.id === 'f-parcelas-detalle') return null; // handled above
+      if (f.id === 'f-parcelas-detalle') return null;
+      // Ratio calculado — leer del display
+      if (f.id === 'ratio') {
+        const d = document.getElementById('ratio-display');
+        if (!d || d.textContent === '—') return null;
+        return `<tr><td class="td-label">Ratio (jor/ha)</td><td class="td-val">${d.textContent}</td></tr>`;
+      }
       const el = document.getElementById(f.id);
       if (!el) return null;
       const v = el.value.trim();
@@ -2271,6 +2683,12 @@ async function submitRecord(labor) {
     if (!cant || !unid) { showToast('Ingresa dosis y unidades', 'error'); return; }
   }
 
+  // Jornales y ratio (común a todas las labores)
+  const jornales = numVal('f-jornales');
+  const avanceHa = numVal('f-avance-ha');
+  const ratio = (jornales && avanceHa && avanceHa > 0)
+    ? parseFloat((jornales / avanceHa).toFixed(2)) : null;
+
   if (labor === 'limpieza') {
     extras.imof_promedio_ml = numVal('f-imof');
     extras.frecuencia_dias = numVal('f-frecuencia');
@@ -2278,19 +2696,20 @@ async function submitRecord(labor) {
     extras.mangueras_no_riegan = numVal('f-mang-no-riegan');
     extras.mangueras_reparadas = numVal('f-mang-rep');
     extras.mangueras_pendientes = numVal('f-mang-pend');
+    extras.avance_ha = avanceHa;
   }
   if (labor === 'plancero') {
     extras.fugas = numVal('f-fugas');
     extras.mangueras_reparadas = numVal('f-mang-rep');
     extras.mangueras_pendientes = numVal('f-mang-pend');
-    extras.avance_ha = numVal('f-avance-ha');
+    extras.avance_ha = avanceHa;
     extras.ha_pendientes = numVal('f-ha-pend');
   }
   if (labor === 'manguera') {
     extras.revisadas = numVal('f-mang-rev');
     extras.mangueras_reparadas = numVal('f-mang-rep');
     extras.mangueras_pendientes = numVal('f-mang-pend');
-    extras.avance_ha = numVal('f-avance-ha');
+    extras.avance_ha = avanceHa;
     extras.ha_pendientes = numVal('f-ha-pend');
     extras.estado = val('f-estado');
   }
@@ -2300,19 +2719,25 @@ async function submitRecord(labor) {
     extras.mangueras_estranguladas = numVal('f-mang-estrang');
     extras.mangueras_reparadas = numVal('f-mang-rep');
     extras.mangueras_pendientes = numVal('f-mang-pend');
+    extras.avance_ha = avanceHa;
   }
   if (labor === 'flushing') {
     extras.flushing_utilizados = numVal('f-flushing-util');
     extras.flushing_pendientes = numVal('f-flushing-pend');
     extras.emisores = numVal('f-emisores');
     extras.longitud = numVal('f-longitud');
+    extras.avance_ha = avanceHa;
   }
   if (labor === 'caudal') {
     extras.mangueras_evaluadas = numVal('f-mang-eval');
     extras.caudal = numVal('f-caudal');
     extras.caudal_nominal = numVal('f-caudal-nom');
     extras.presion = numVal('f-presion');
+    extras.avance_ha = avanceHa;
   }
+
+  if (jornales != null) extras.jornales = jornales;
+  if (ratio != null) extras.ratio_jor_ha = ratio;
 
   const payload = {
     labor,
@@ -2329,17 +2754,20 @@ async function submitRecord(labor) {
     datos_extra: Object.keys(extras).length ? extras : null
   };
 
+  // Si no hay internet, guardar en cola
+  if (!navigator.onLine) {
+    addToQueue(payload);
+    showToast('📡 Sin conexión — guardado localmente');
+    closeFormScreen();
+    return;
+  }
+
   showLoading('Guardando registro...');
 
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/labores_campo`, {
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/labores_campo`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Prefer': 'return=minimal'
-      },
+      headers: { 'Prefer': 'return=minimal' },
       body: JSON.stringify(payload)
     });
 
@@ -2350,12 +2778,18 @@ async function submitRecord(labor) {
       closeFormScreen();
       loadHistorial();
     } else {
-      const err = await res.json();
-      showToast('Error al guardar: ' + (err.message || res.statusText), 'error');
+      let errMsg = `Error ${res.status}`;
+      try { const e = await res.json(); errMsg = e.message || e.hint || e.details || errMsg; } catch {}
+      showToast('Error ' + res.status + ': ' + errMsg, 'error');
+      console.error('Supabase error:', res.status, errMsg);
     }
   } catch (e) {
     hideLoading();
-    showToast('Error de conexión. Verifica internet.', 'error');
+    console.error('Fetch error:', e);
+    // Guardar en cola offline como fallback
+    addToQueue(payload);
+    showToast('📡 Sin red — guardado localmente', 'error');
+    closeFormScreen();
   }
 }
 
@@ -2367,10 +2801,7 @@ async function loadHistorial() {
   listEl.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto"></div><p style="margin-top:12px">Cargando...</p></div>';
 
   try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/labores_campo?order=created_at.desc&limit=200`,
-      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-    );
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/labores_campo?order=created_at.desc&limit=200`);
     if (!res.ok) throw new Error();
     allRecords = await res.json();
     applyFilters();
@@ -2469,10 +2900,7 @@ async function deleteRecord(id) {
   showLoading('Eliminando...');
 
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/labores_campo?id=eq.${id}`, {
-      method: 'DELETE',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-    });
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/labores_campo?id=eq.${id}`, { method: 'DELETE' });
     hideLoading();
     if (res.ok) {
       showToast('Registro eliminado');
@@ -2493,41 +2921,77 @@ function renderAdminTab() {
   const el = document.getElementById('admin-content');
 
   if (currentUser?.role !== 'admin') {
-    el.innerHTML = `<div class="no-access-msg">
-      <div class="icon">🔒</div>
-      <h3>Acceso restringido</h3>
-      <p>Este panel es solo para el administrador del sistema.</p>
-    </div>`;
+    // VISTA CONTROLADOR — solo Mi Cuenta
+    el.innerHTML = `
+      <div class="pwd-request-card">
+        <h3>🔑 Cambiar contraseña</h3>
+        <p style="font-size:13px;color:var(--texto-suave);margin-bottom:14px;">
+          Ingresa tu contraseña actual y la nueva. Tu solicitud será enviada al administrador para aprobación.
+        </p>
+        <div class="form-field" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.5px;">Contraseña actual</label>
+          <input type="password" id="pwd-actual" placeholder="••••••••" style="width:100%;padding:11px 13px;border:1.5px solid var(--borde);border-radius:var(--radio-sm);font-size:14px;outline:none;margin-top:5px;"/>
+        </div>
+        <div class="form-field" style="margin-bottom:10px;">
+          <label style="font-size:11px;font-weight:600;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.5px;">Nueva contraseña</label>
+          <input type="password" id="pwd-nueva" placeholder="••••••••" style="width:100%;padding:11px 13px;border:1.5px solid var(--borde);border-radius:var(--radio-sm);font-size:14px;outline:none;margin-top:5px;"/>
+        </div>
+        <div class="form-field" style="margin-bottom:14px;">
+          <label style="font-size:11px;font-weight:600;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.5px;">Confirmar nueva contraseña</label>
+          <input type="password" id="pwd-confirmar" placeholder="••••••••" style="width:100%;padding:11px 13px;border:1.5px solid var(--borde);border-radius:var(--radio-sm);font-size:14px;outline:none;margin-top:5px;"/>
+        </div>
+        <button class="btn-submit" onclick="solicitarCambioClave()">📨 Enviar solicitud</button>
+      </div>
+
+      <div class="pwd-request-card">
+        <h3>📋 Mis solicitudes</h3>
+        <div id="mis-solicitudes"><div class="verify-empty">Cargando...</div></div>
+      </div>`;
+    cargarMisSolicitudes();
     return;
   }
 
+  // VISTA ADMIN
   el.innerHTML = `
+    <div class="admin-section">
+      <h3>🔑 Solicitudes de cambio de contraseña</h3>
+      <div id="solicitudes-list"><div class="verify-empty" style="padding:16px">Cargando...</div></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>🔌 Diagnóstico de conexión</h3>
+      <div id="diag-result" style="font-size:13px;color:var(--texto-suave);margin-bottom:12px;">Presiona el botón para probar la conexión con Supabase.</div>
+      <button class="btn-secondary" onclick="testConnection()" style="width:100%;margin-bottom:8px;">🔍 Probar conexión</button>
+      <details style="margin-top:8px;">
+        <summary style="font-size:12px;color:var(--texto-suave);cursor:pointer;font-weight:600;">SQL para reparar la tabla</summary>
+        <pre style="background:var(--fondo);border-radius:8px;padding:12px;font-size:10px;margin-top:8px;overflow-x:auto;line-height:1.6;font-family:'JetBrains Mono',monospace;white-space:pre-wrap;word-break:break-all;">${getSQLFix()}</pre>
+      </details>
+    </div>
+
     <div class="admin-section">
       <h3>⚙️ Configuración de base de datos</h3>
       <div class="form-field" style="margin-bottom:12px;">
         <label>Supabase URL</label>
-        <input type="url" id="cfg-url" value="${SUPABASE_URL}" style="font-size:12px;"/>
+        <input type="url" id="cfg-url" value="${SUPABASE_URL}" style="font-size:12px;width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--radio-sm);outline:none;margin-top:5px;"/>
       </div>
       <div class="form-field" style="margin-bottom:12px;">
         <label>Anon Key</label>
-        <input type="text" id="cfg-key" value="${SUPABASE_KEY}" style="font-size:12px;"/>
+        <input type="text" id="cfg-key" value="${SUPABASE_KEY}" style="font-size:12px;width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--radio-sm);outline:none;margin-top:5px;"/>
       </div>
       <button class="btn-secondary" onclick="updateConfig()" style="width:100%">Actualizar configuración</button>
     </div>
 
     <div class="admin-section">
-      <h3>👥 Usuarios registrados</h3>
+      <h3>👥 Usuarios autorizados</h3>
       <div id="users-list">
+        ${USERS.map(u => `
         <div class="user-row">
           <div class="user-info">
-            <div class="user-name">⭐ Ronald</div>
-            <div class="user-role">Administrador · Caña Brava</div>
+            <div class="user-name">${u.role === 'admin' ? '⭐ ' : '👷 '}${u.displayName}</div>
+            <div class="user-role">Usuario: <strong>${u.user}</strong> · ${u.role === 'admin' ? 'Administrador' : 'Controlador'}</div>
           </div>
-          <span class="badge-role admin">Admin</span>
-        </div>
-        <p style="font-size:12px;color:var(--texto-suave);margin-top:12px;">
-          Los controladores se identifican con su nombre al iniciar sesión. Puedes ver quién registró cada labor en el historial.
-        </p>
+          <span class="badge-role${u.role === 'admin' ? ' admin' : ''}">${u.role === 'admin' ? 'Admin' : 'Ctrl'}</span>
+        </div>`).join('')}
       </div>
     </div>
 
@@ -2546,11 +3010,12 @@ function renderAdminTab() {
       <div style="font-size:13px;color:var(--texto-suave);line-height:2;">
         <div>🌾 <strong>Proyecto:</strong> Magdalena / Caña Brava</div>
         <div>🏡 <strong>Fundos:</strong> Huaca · Lobo 1 · Lobo 2</div>
-        <div>🔧 <strong>Versión:</strong> 1.0.0</div>
+        <div>🔧 <strong>Versión:</strong> 1.1.0</div>
         <div>☁️ <strong>Backend:</strong> Supabase (PostgreSQL)</div>
       </div>
     </div>
   `;
+  cargarSolicitudesAdmin();
 }
 
 function updateConfig() {
@@ -2564,8 +3029,259 @@ function updateConfig() {
   }
 }
 
+function getSQLFix() {
+  return `-- 1. Crear tabla si no existe
+CREATE TABLE IF NOT EXISTS labores_campo (
+  id BIGSERIAL PRIMARY KEY,
+  labor VARCHAR(50),
+  fundo VARCHAR(50),
+  fecha DATE,
+  equipo VARCHAR(20),
+  parcelas VARCHAR(200),
+  insumo VARCHAR(50),
+  dosis_cantidad NUMERIC,
+  dosis_unidad VARCHAR(20),
+  observaciones TEXT,
+  controlador VARCHAR(100),
+  rol VARCHAR(20),
+  datos_extra JSONB,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 2. Agregar columna parcelas si falta
+ALTER TABLE labores_campo
+  ADD COLUMN IF NOT EXISTS parcelas VARCHAR(200);
+
+-- 3. Habilitar acceso público
+ALTER TABLE labores_campo ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow all with anon key" ON labores_campo;
+CREATE POLICY "Allow all with anon key" ON labores_campo
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- 4. Tabla de anuncios
+CREATE TABLE IF NOT EXISTS anuncios (
+  id BIGSERIAL PRIMARY KEY,
+  mensaje TEXT NOT NULL,
+  autor VARCHAR(100),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+ALTER TABLE anuncios ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow all anon" ON anuncios;
+CREATE POLICY "Allow all anon" ON anuncios FOR ALL USING (true) WITH CHECK (true);
+
+-- 5. Tabla de solicitudes de clave
+CREATE TABLE IF NOT EXISTS solicitudes_clave (
+  id BIGSERIAL PRIMARY KEY,
+  usuario VARCHAR(50),
+  nombre VARCHAR(100),
+  nueva_clave VARCHAR(100),
+  estado VARCHAR(20) DEFAULT 'pendiente',
+  revisado_por VARCHAR(100),
+  revisado_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+ALTER TABLE solicitudes_clave ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow all anon" ON solicitudes_clave;
+CREATE POLICY "Allow all anon" ON solicitudes_clave FOR ALL USING (true) WITH CHECK (true);`;
+}
+
+async function testConnection() {
+  const el = document.getElementById('diag-result');
+  if (!el) return;
+  el.innerHTML = '⏳ Probando conexión...';
+  el.style.color = 'var(--texto-suave)';
+
+  try {
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/labores_campo?limit=1`);
+
+    if (res.ok) {
+      const data = await res.json();
+      el.innerHTML = `✅ Conexión exitosa · ${Array.isArray(data) ? data.length : 0} registro(s) de prueba leídos`;
+      el.style.color = 'var(--exito)';
+    } else {
+      let msg = `Error ${res.status}`;
+      try { const e = await res.json(); msg += ': ' + (e.message || e.hint || e.details || ''); } catch {}
+      el.innerHTML = `❌ ${msg}<br><small>Ejecuta el SQL de reparación de abajo en Supabase</small>`;
+      el.style.color = 'var(--error)';
+    }
+  } catch (e) {
+    el.innerHTML = `❌ No se pudo conectar: ${e.message}<br><small>Verifica la URL y la key en la configuración</small>`;
+    el.style.color = 'var(--error)';
+  }
+}
+
+// ══════════════════════════════════════════════════
+// CAMBIO DE CONTRASEÑA
+// ══════════════════════════════════════════════════
+async function solicitarCambioClave() {
+  const actual   = document.getElementById('pwd-actual')?.value;
+  const nueva    = document.getElementById('pwd-nueva')?.value;
+  const confirmar = document.getElementById('pwd-confirmar')?.value;
+
+  if (!actual || !nueva || !confirmar) {
+    showToast('Completa todos los campos', 'error'); return;
+  }
+
+  // Verificar contraseña actual
+  const me = USERS.find(u => u.user === currentUser.user);
+  if (!me || me.pass !== actual) {
+    showToast('Contraseña actual incorrecta', 'error'); return;
+  }
+
+  if (nueva === actual) {
+    showToast('La nueva contraseña debe ser diferente', 'error'); return;
+  }
+
+  if (nueva !== confirmar) {
+    showToast('Las contraseñas no coinciden', 'error'); return;
+  }
+
+  if (nueva.length < 8) {
+    showToast('Mínimo 8 caracteres', 'error'); return;
+  }
+
+  // Verificar que no tenga solicitud pendiente
+  try {
+    const check = await sbFetch(`${SUPABASE_URL}/rest/v1/solicitudes_clave?usuario=eq.${currentUser.user}&estado=eq.pendiente`);
+    const pendientes = await check.json();
+    if (pendientes.length > 0) {
+      showToast('Ya tienes una solicitud pendiente', 'error'); return;
+    }
+  } catch {}
+
+  showLoading('Enviando solicitud...');
+  try {
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/solicitudes_clave`, {
+      method: 'POST',
+      headers: { 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        usuario: currentUser.user,
+        nombre: currentUser.name,
+        nueva_clave: nueva,
+        estado: 'pendiente'
+      })
+    });
+    hideLoading();
+    if (res.ok) {
+      showToast('✅ Solicitud enviada — espera la aprobación del administrador');
+      document.getElementById('pwd-actual').value = '';
+      document.getElementById('pwd-nueva').value = '';
+      document.getElementById('pwd-confirmar').value = '';
+      cargarMisSolicitudes();
+    } else {
+      showToast('Error al enviar solicitud', 'error');
+    }
+  } catch {
+    hideLoading();
+    showToast('Sin conexión', 'error');
+  }
+}
+
+async function cargarMisSolicitudes() {
+  const el = document.getElementById('mis-solicitudes');
+  if (!el) return;
+  try {
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/solicitudes_clave?usuario=eq.${currentUser.user}&order=created_at.desc&limit=5`);
+    const data = await res.json();
+    if (!data.length) { el.innerHTML = '<div class="verify-empty">Sin solicitudes anteriores</div>'; return; }
+    el.innerHTML = data.map(s => {
+      const fecha = new Date(s.created_at);
+      const f = `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}`;
+      const statusClass = s.estado === 'aprobada' ? 'status-aprobada' : s.estado === 'rechazada' ? 'status-rechazada' : 'status-pendiente';
+      const statusTxt = s.estado === 'aprobada' ? '✅ Aprobada' : s.estado === 'rechazada' ? '❌ Rechazada' : '⏳ Pendiente';
+      return `<div class="solicitud-row ${s.estado}">
+        <div class="solicitud-top">
+          <span class="solicitud-user">Solicitud del ${f}</span>
+          <span class="${statusClass}">${statusTxt}</span>
+        </div>
+        ${s.estado === 'aprobada' ? '<div style="font-size:12px;color:var(--exito);margin-top:4px;">Tu contraseña fue actualizada. Úsala en tu próximo ingreso.</div>' : ''}
+        ${s.estado === 'rechazada' ? '<div style="font-size:12px;color:var(--error);margin-top:4px;">Solicitud rechazada. Contacta al administrador.</div>' : ''}
+      </div>`;
+    }).join('');
+  } catch { el.innerHTML = '<div class="verify-empty">Error al cargar</div>'; }
+}
+
+async function cargarSolicitudesAdmin() {
+  const el = document.getElementById('solicitudes-list');
+  if (!el) return;
+  try {
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/solicitudes_clave?order=created_at.desc&limit=30`);
+    const data = await res.json();
+    if (!data.length) { el.innerHTML = '<div class="verify-empty" style="padding:12px">Sin solicitudes</div>'; return; }
+
+    const pendientes = data.filter(s => s.estado === 'pendiente');
+    const resto = data.filter(s => s.estado !== 'pendiente');
+
+    // Badge en tab admin si hay pendientes
+    const navAdmin = document.getElementById('nav-admin');
+    if (navAdmin && pendientes.length > 0) {
+      navAdmin.querySelector('.nav-icon').textContent = '🔧';
+      navAdmin.querySelector('.nav-label').textContent = `Admin (${pendientes.length})`;
+    }
+
+    el.innerHTML = [...pendientes, ...resto].map(s => {
+      const fecha = new Date(s.created_at);
+      const f = `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()} ${fecha.getHours()}:${String(fecha.getMinutes()).padStart(2,'0')}`;
+      const statusClass = s.estado === 'aprobada' ? 'status-aprobada' : s.estado === 'rechazada' ? 'status-rechazada' : 'status-pendiente';
+      const statusTxt = s.estado === 'aprobada' ? '✅ Aprobada' : s.estado === 'rechazada' ? '❌ Rechazada' : '⏳ Pendiente';
+      return `<div class="solicitud-row ${s.estado}">
+        <div class="solicitud-top">
+          <span class="solicitud-user">👷 ${s.nombre || s.usuario}</span>
+          <span class="${statusClass}">${statusTxt}</span>
+        </div>
+        <div class="solicitud-date" style="margin-bottom:6px;">${f} · @${s.usuario}</div>
+        <div class="solicitud-pass">Nueva clave: ${s.nueva_clave}</div>
+        ${s.estado === 'pendiente' ? `
+        <div class="solicitud-btns">
+          <button class="btn-aprobar" onclick="resolverSolicitud(${s.id}, 'aprobada', '${s.usuario}', '${s.nueva_clave}')">✅ Aprobar</button>
+          <button class="btn-rechazar" onclick="resolverSolicitud(${s.id}, 'rechazada', '${s.usuario}', '')">❌ Rechazar</button>
+        </div>` : ''}
+      </div>`;
+    }).join('');
+  } catch { el.innerHTML = '<div class="verify-empty" style="padding:12px">Error al cargar solicitudes</div>'; }
+}
+
+async function resolverSolicitud(id, estado, usuarioKey, nuevaClave) {
+  const accion = estado === 'aprobada' ? 'aprobar' : 'rechazar';
+  if (!confirm(`¿Deseas ${accion} esta solicitud?`)) return;
+
+  showLoading(estado === 'aprobada' ? 'Aprobando...' : 'Rechazando...');
+  try {
+    // Actualizar estado en Supabase
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/solicitudes_clave?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ estado, revisado_por: currentUser.name, revisado_at: new Date().toISOString() })
+    });
+
+    if (res.ok && estado === 'aprobada') {
+      // Actualizar contraseña en el arreglo USERS en memoria
+      const u = USERS.find(u => u.user === usuarioKey);
+      if (u) u.pass = nuevaClave;
+    }
+
+    hideLoading();
+    if (res.ok) {
+      showToast(estado === 'aprobada' ? '✅ Solicitud aprobada' : '❌ Solicitud rechazada');
+      cargarSolicitudesAdmin();
+    } else {
+      showToast('Error al procesar', 'error');
+    }
+  } catch {
+    hideLoading();
+    showToast('Sin conexión', 'error');
+  }
+}
+
 // ══════════════════════════════════════════════════
 // INIT
+function renderWelcome() {
+  if (!currentUser) return;
+  const nombre = currentUser.name.replace(/\b\w/g, c => c.toUpperCase());
+  const sub = document.getElementById('header-subtitle');
+  if (sub) sub.textContent = `Bienvenido, ${nombre}`;
+}
+
 // ══════════════════════════════════════════════════
 (function init() {
   // Credenciales ya están en el código — saltar setup directamente
@@ -2575,10 +3291,13 @@ function updateConfig() {
   const saved = localStorage.getItem('cb_user');
   if (saved) {
     currentUser = JSON.parse(saved);
-    document.getElementById('badge-role').textContent = currentUser.role === 'admin' ? 'Admin' : 'Controlador';
-    document.getElementById('badge-role').className = 'badge-role' + (currentUser.role === 'admin' ? ' admin' : '');
-    document.getElementById('header-subtitle').textContent = currentUser.name;
+    const badgeEl = document.getElementById('badge-role');
+    if (badgeEl) {
+      badgeEl.textContent = currentUser.role === 'admin' ? 'Admin' : 'Controlador';
+      badgeEl.className = 'badge-role' + (currentUser.role === 'admin' ? ' admin' : '');
+    }
     show('screen-app');
+    renderWelcome();
     renderAdminTab();
     loadHistorial();
   } else {
@@ -2739,6 +3458,258 @@ async function loadKPIs() {
 
   } catch(e) { console.error('Dashboard error:', e); }
 }
+</script>
+<script>
+// ══════════════════════════════════════════════════
+// OFFLINE QUEUE — guarda registros sin conexión
+// ══════════════════════════════════════════════════
+function getQueue() {
+  try { return JSON.parse(localStorage.getItem('cb_queue') || '[]'); } catch { return []; }
+}
+function saveQueue(q) { localStorage.setItem('cb_queue', JSON.stringify(q)); }
+
+function addToQueue(payload) {
+  const q = getQueue();
+  q.push({ payload, timestamp: Date.now() });
+  saveQueue(q);
+  updateSyncBar();
+}
+
+function updateSyncBar() {
+  const q = getQueue();
+  const bar = document.getElementById('sync-bar');
+  const cnt = document.getElementById('sync-count');
+  const offBadge = document.getElementById('offline-badge');
+  if (!bar) return;
+  if (q.length > 0 || !navigator.onLine) {
+    bar.classList.add('show');
+    if (cnt) cnt.textContent = q.length;
+  } else {
+    bar.classList.remove('show');
+  }
+  if (offBadge) offBadge.style.display = !navigator.onLine ? 'flex' : 'none';
+}
+
+async function trySyncQueue() {
+  const q = getQueue();
+  if (!q.length) { showToast('No hay registros pendientes'); return; }
+  if (!navigator.onLine) { showToast('Aún sin conexión', 'error'); return; }
+
+  showLoading(`Sincronizando ${q.length} registro(s)...`);
+  let synced = 0;
+  const failed = [];
+
+  for (const item of q) {
+    try {
+      const res = await sbFetch(`${SUPABASE_URL}/rest/v1/labores_campo`, {
+        method: 'POST',
+        headers: { 'Prefer': 'return=minimal' },
+        body: JSON.stringify(item.payload)
+      });
+      if (res.ok) synced++;
+      else failed.push(item);
+    } catch { failed.push(item); }
+  }
+
+  saveQueue(failed);
+  hideLoading();
+  updateSyncBar();
+  if (synced > 0) {
+    showToast(`✅ ${synced} registro(s) sincronizados`);
+    loadHistorial();
+  }
+  if (failed.length > 0) showToast(`⚠️ ${failed.length} sin sincronizar`, 'error');
+}
+
+// Escuchar cambios de conectividad
+window.addEventListener('online', () => {
+  updateSyncBar();
+  trySyncQueue();
+});
+window.addEventListener('offline', () => updateSyncBar());
+
+// ══════════════════════════════════════════════════
+// NOTIFICACIONES / ANUNCIOS
+// ══════════════════════════════════════════════════
+const NOTIF_TABLE = 'anuncios';
+
+async function loadNotifications() {
+  if (!navigator.onLine) return;
+  try {
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/${NOTIF_TABLE}?order=created_at.desc&limit=20`);
+    if (!res.ok) return;
+    const items = await res.json();
+    renderNotifications(items);
+  } catch {}
+}
+
+function renderNotifications(items) {
+  const list = document.getElementById('notif-list');
+  const dot = document.getElementById('notif-dot');
+  const adminForm = document.getElementById('notif-admin-form');
+  if (!list) return;
+
+  // Show admin compose area
+  if (adminForm) adminForm.style.display = currentUser?.role === 'admin' ? 'block' : 'none';
+
+  if (!items || !items.length) {
+    list.innerHTML = '<div class="notif-empty">📭 Sin anuncios por ahora</div>';
+    if (dot) dot.style.display = 'none';
+    return;
+  }
+
+  const lastSeen = localStorage.getItem('cb_notif_seen') || '0';
+  const hasNew = items.some(i => i.created_at > lastSeen);
+  if (dot) dot.style.display = hasNew ? 'block' : 'none';
+
+  list.innerHTML = items.map(i => {
+    const isNew = i.created_at > lastSeen;
+    const d = new Date(i.created_at);
+    const fecha = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+    return `<div class="notif-item">
+      <div class="ni-meta">
+        <span>📢 ${i.autor || 'Admin'}</span>
+        <span>${fecha}</span>
+        ${isNew ? '<span class="ni-new">Nuevo</span>' : ''}
+        ${currentUser?.role === 'admin' ? `<span style="cursor:pointer;color:var(--error);margin-left:auto;" onclick="deleteNotif(${i.id})">🗑</span>` : ''}
+      </div>
+      <div class="ni-msg">${i.mensaje}</div>
+    </div>`;
+  }).join('');
+}
+
+function openNotifications() {
+  const panel = document.getElementById('notif-panel');
+  if (!panel) return;
+  panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+  if (panel.style.display === 'flex') {
+    loadNotifications();
+    // Mark as seen
+    localStorage.setItem('cb_notif_seen', new Date().toISOString());
+    const dot = document.getElementById('notif-dot');
+    if (dot) dot.style.display = 'none';
+  }
+}
+
+function closeNotifications() {
+  const panel = document.getElementById('notif-panel');
+  if (panel) panel.style.display = 'none';
+}
+
+async function publishNotification() {
+  const text = document.getElementById('notif-text')?.value.trim();
+  if (!text) { showToast('Escribe un anuncio primero', 'error'); return; }
+
+  try {
+    const res = await sbFetch(`${SUPABASE_URL}/rest/v1/${NOTIF_TABLE}`, {
+      method: 'POST',
+      headers: { 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ mensaje: text, autor: currentUser?.name || 'Admin' })
+    });
+    if (res.ok) {
+      document.getElementById('notif-text').value = '';
+      showToast('✅ Anuncio publicado');
+      loadNotifications();
+    } else {
+      showToast('Error al publicar', 'error');
+    }
+  } catch { showToast('Sin conexión', 'error'); }
+}
+
+async function deleteNotif(id) {
+  if (!confirm('¿Eliminar este anuncio?')) return;
+  try {
+    await sbFetch(`${SUPABASE_URL}/rest/v1/${NOTIF_TABLE}?id=eq.${id}`, { method: 'DELETE' });
+    loadNotifications();
+  } catch {}
+}
+
+// ══════════════════════════════════════════════════
+// SERVICE WORKER — modo offline
+// ══════════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  const swCode = `
+const CACHE = 'cana-brava-v1';
+const ASSETS = ['/'];
+
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ));
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    fetch(e.request)
+      .then(res => {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
+  );
+});`;
+
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+
+// Hook submitRecord to queue when offline
+const _origSubmit = window.submitRecord;
+window.submitRecord = async function(labor) {
+  if (!navigator.onLine) {
+    // Sin conexión — guardar en cola local
+    const fundo = val('f-fundo');
+    const fecha = val('f-fecha');
+    if (!fundo || !fecha) { showToast('Selecciona fundo y fecha', 'error'); return; }
+
+    const eq = val('f-eq'); const tr = val('f-tr');
+    const equipo = [eq, tr].filter(Boolean).join(' / ') || null;
+    const parcelas = getParcelasValue();
+    const jornales = numVal('f-jornales');
+    const avanceHa = numVal('f-avance-ha');
+    const ratio = (jornales && avanceHa && avanceHa > 0) ? parseFloat((jornales/avanceHa).toFixed(2)) : null;
+    const extras = {};
+    if (labor === 'limpieza') { extras.imof_promedio_ml=numVal('f-imof'); extras.frecuencia_dias=numVal('f-frecuencia'); extras.edad_dias=numVal('f-edad'); extras.mangueras_no_riegan=numVal('f-mang-no-riegan'); extras.mangueras_reparadas=numVal('f-mang-rep'); extras.mangueras_pendientes=numVal('f-mang-pend'); extras.avance_ha=avanceHa; }
+    if (labor === 'plancero') { extras.fugas=numVal('f-fugas'); extras.mangueras_reparadas=numVal('f-mang-rep'); extras.mangueras_pendientes=numVal('f-mang-pend'); extras.avance_ha=avanceHa; extras.ha_pendientes=numVal('f-ha-pend'); }
+    if (labor === 'manguera') { extras.revisadas=numVal('f-mang-rev'); extras.mangueras_reparadas=numVal('f-mang-rep'); extras.mangueras_pendientes=numVal('f-mang-pend'); extras.avance_ha=avanceHa; extras.ha_pendientes=numVal('f-ha-pend'); extras.estado=val('f-estado'); }
+    if (labor === 'purga') { extras.tramos=numVal('f-tramos'); extras.presion=numVal('f-presion'); extras.mangueras_estranguladas=numVal('f-mang-estrang'); extras.mangueras_reparadas=numVal('f-mang-rep'); extras.mangueras_pendientes=numVal('f-mang-pend'); extras.avance_ha=avanceHa; }
+    if (labor === 'flushing') { extras.flushing_utilizados=numVal('f-flushing-util'); extras.flushing_pendientes=numVal('f-flushing-pend'); extras.emisores=numVal('f-emisores'); extras.longitud=numVal('f-longitud'); extras.avance_ha=avanceHa; }
+    if (labor === 'caudal') { extras.mangueras_evaluadas=numVal('f-mang-eval'); extras.caudal=numVal('f-caudal'); extras.caudal_nominal=numVal('f-caudal-nom'); extras.presion=numVal('f-presion'); extras.avance_ha=avanceHa; }
+    if (jornales != null) extras.jornales = jornales;
+    if (ratio != null) extras.ratio_jor_ha = ratio;
+
+    const payload = {
+      labor, fundo, fecha, equipo, parcelas,
+      insumo: val('f-insumo') || null,
+      dosis_cantidad: numVal('f-dosis-cant'),
+      dosis_unidad: val('f-dosis-unid') || null,
+      observaciones: val('f-obs') || null,
+      controlador: currentUser.name,
+      rol: currentUser.role,
+      datos_extra: Object.keys(extras).length ? extras : null
+    };
+
+    addToQueue(payload);
+    showToast('📡 Sin conexión — guardado localmente');
+    closeFormScreen();
+    return;
+  }
+  return _origSubmit.apply(this, arguments);
+};
+
+setTimeout(() => {
+  updateSyncBar();
+  loadNotifications();
+}, 500);
 </script>
 </body>
 </html>
