@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="Caña Brava"/>
 <title>Caña Brava · Labores de Campo</title>
-<meta name="app-version" content="2.2.0"/>
+<meta name="app-version" content="2.3.0"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -1169,6 +1169,12 @@ select option { padding: 8px; }
   margin-bottom: 14px;
   box-shadow: var(--sombra-card);
   border: 1.5px solid var(--borde);
+  overflow: hidden;
+}
+
+.dash-card canvas {
+  max-height: 180px;
+  width: 100% !important;
 }
 
 .dash-card-title {
@@ -1640,25 +1646,25 @@ select option { padding: 8px; }
       <!-- Gráfica: Registros por labor -->
       <div class="dash-card">
         <div class="dash-card-title">Registros por labor</div>
-        <canvas id="chart-labor" height="220"></canvas>
+        <canvas id="chart-labor" height="160"></canvas>
       </div>
 
       <!-- Gráfica: Registros por fundo -->
       <div class="dash-card">
         <div class="dash-card-title">Registros por fundo</div>
-        <canvas id="chart-fundo" height="160"></canvas>
+        <canvas id="chart-fundo" height="140"></canvas>
       </div>
 
       <!-- Gráfica: Actividad últimos 14 días -->
       <div class="dash-card">
         <div class="dash-card-title">Actividad últimos 14 días</div>
-        <canvas id="chart-actividad" height="180"></canvas>
+        <canvas id="chart-actividad" height="150"></canvas>
       </div>
 
       <!-- Gráfica: Registros por controlador -->
       <div class="dash-card">
         <div class="dash-card-title">Registros por controlador</div>
-        <canvas id="chart-controlador" height="180"></canvas>
+        <canvas id="chart-controlador" height="150"></canvas>
       </div>
 
       <!-- Tabla resumen mangueras pendientes -->
