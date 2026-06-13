@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="Caña Brava"/>
 <title>Caña Brava · Labores de Campo</title>
-<meta name="app-version" content="1.6.0"/>
+<meta name="app-version" content="1.8.0"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -659,6 +659,32 @@ select option { padding: 8px; }
 
 .toast.error { background: var(--error); }
 .toast.success { background: var(--exito); }
+
+/* ── HISTORIAL STATUS BAR ───────────────────── */
+.historial-status-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  background: white;
+  border-radius: var(--radio);
+  padding: 14px 8px;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra);
+  border: 1.5px solid var(--borde);
+  text-align: center;
+}
+
+.hsb-item { padding: 0 8px; }
+.hsb-num {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--verde-oscuro);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.hsb-subido .hsb-num { color: var(--exito); }
+.hsb-pendiente .hsb-num { color: #E67E22; }
+.hsb-label { font-size: 10px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.4px; }
+.hsb-divider { width: 1px; background: var(--borde); margin: 4px 0; }
 
 /* ── TABLA HISTORIAL ────────────────────────── */
 .historial-header {
@@ -1408,8 +1434,8 @@ select option { padding: 8px; }
 
   <!-- Sync bar (offline queue) -->
   <div class="sync-bar" id="sync-bar">
-    <span id="sync-msg">📡 Sin conexión · <span id="sync-count">0</span> registro(s) pendientes</span>
-    <button onclick="trySyncQueue()">Sincronizar</button>
+    <span id="sync-msg">📡 <span id="sync-count">0</span> registro(s) sin sincronizar</span>
+    <button onclick="trySyncQueue()">↑ Subir ahora</button>
   </div>
 
   <!-- Contenido -->
@@ -1457,8 +1483,33 @@ select option { padding: 8px; }
 
     <!-- ── TAB: HISTORIAL ─────────────────── -->
     <div id="tab-historial" class="tab-panel">
+
+      <!-- Resumen de estado -->
+      <div class="historial-status-bar" id="historial-status">
+        <div class="hsb-item hsb-subido">
+          <div class="hsb-num" id="hsb-count-subido">—</div>
+          <div class="hsb-label">✅ En Supabase</div>
+        </div>
+        <div class="hsb-divider"></div>
+        <div class="hsb-item hsb-pendiente">
+          <div class="hsb-num" id="hsb-count-pendiente">—</div>
+          <div class="hsb-label">📡 Pendientes</div>
+        </div>
+        <div class="hsb-divider"></div>
+        <div class="hsb-item">
+          <div class="hsb-num" id="hsb-count-total">—</div>
+          <div class="hsb-label">Total</div>
+        </div>
+      </div>
+
+      <!-- Registros pendientes en cola -->
+      <div id="pending-section" style="display:none">
+        <div class="section-title" style="margin-bottom:10px;color:#E67E22;">📡 Pendientes de sincronizar</div>
+        <div id="pending-list" class="records-list" style="margin-bottom:16px;"></div>
+      </div>
+
       <div class="historial-header">
-        <div class="section-title" style="margin:0">Registros guardados</div>
+        <div class="section-title" style="margin:0">✅ Registros en Supabase</div>
         <button class="btn-secondary" onclick="loadHistorial()">↻ Actualizar</button>
       </div>
 
@@ -1764,7 +1815,7 @@ function showNav(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
   document.getElementById('nav-' + tab).classList.add('active');
 
-  if (tab === 'historial') loadHistorial();
+  if (tab === 'historial') { loadHistorial(); }
   if (tab === 'kpis' && typeof loadKPIs === 'function') loadKPIs();
   if (tab === 'admin') { renderAdminTab(); }
 }
@@ -2913,16 +2964,65 @@ async function loadHistorial() {
   const listEl = document.getElementById('records-list');
   listEl.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto"></div><p style="margin-top:12px">Cargando...</p></div>';
 
+  // Mostrar pendientes de la cola local
+  renderPendingQueue();
+
   try {
     const res = await sbFetch(`${SUPABASE_URL}/rest/v1/labores_campo?order=created_at.desc&limit=200`);
     if (!res.ok) throw new Error();
     allRecords = await res.json();
     applyFilters();
-    // Refrescar dashboard cuando Chart.js ya esté disponible
+    updateHistorialCounters();
     setTimeout(() => { if (typeof loadKPIs === 'function') loadKPIs(); }, 300);
   } catch (e) {
     listEl.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Error de conexión</h3><p>Verifica tu conexión a internet</p></div>';
+    updateHistorialCounters();
   }
+}
+
+function updateHistorialCounters() {
+  const q = getQueue();
+  const subido = allRecords.length;
+  const pendiente = q.length;
+  const total = subido + pendiente;
+
+  const elSub = document.getElementById('hsb-count-subido');
+  const elPend = document.getElementById('hsb-count-pendiente');
+  const elTot = document.getElementById('hsb-count-total');
+  if (elSub) elSub.textContent = subido;
+  if (elPend) elPend.textContent = pendiente;
+  if (elTot) elTot.textContent = total;
+}
+
+function renderPendingQueue() {
+  const q = getQueue();
+  const section = document.getElementById('pending-section');
+  const list = document.getElementById('pending-list');
+  if (!section || !list) return;
+
+  if (!q.length) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  list.innerHTML = q.map((item, idx) => {
+    const p = item.payload;
+    const fecha = p.fecha ? formatDate(p.fecha) : '—';
+    const hora = item.timestamp ? new Date(item.timestamp).toLocaleTimeString('es', {hour:'2-digit', minute:'2-digit'}) : '';
+    return `<div class="record-card" style="border-left-color:#E67E22;opacity:0.9;">
+      <div class="record-top">
+        <div class="record-labor">📡 ${laborLabels[p.labor] || p.labor}</div>
+        <div class="record-date">${fecha} ${hora}</div>
+      </div>
+      <div class="record-tags">
+        ${p.fundo ? `<span class="tag tag-fundo">${p.fundo}</span>` : ''}
+        ${p.equipo ? `<span class="tag tag-equipo">${p.equipo}</span>` : ''}
+        <span class="tag" style="background:#FFF3CD;color:#7d5a00;">Pendiente</span>
+      </div>
+      <div class="record-user">👤 ${p.controlador || '—'} · <span style="color:#E67E22;font-weight:600;">Sin sincronizar</span></div>
+    </div>`;
+  }).join('');
 }
 
 function applyFilters() {
@@ -3634,16 +3734,19 @@ function addToQueue(payload) {
   updateSyncBar();
 }
 
-// ── CONECTIVIDAD REAL — no depende de navigator.onLine ──
-let _isOnline = true; // asume conectado hasta probar lo contrario
+// ── CONECTIVIDAD REAL ────────────────────────────
+let _isOnline = true;
 
 async function checkRealConnectivity() {
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/labores_campo?limit=0&apikey=${encodeURIComponent(SUPABASE_KEY)}`,
-      { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(5000) }
+      { method: 'HEAD', cache: 'no-store', signal: controller.signal }
     );
-    _isOnline = res.ok || res.status === 400 || res.status === 406;
+    clearTimeout(timer);
+    _isOnline = true;
   } catch {
     _isOnline = false;
   }
@@ -3659,13 +3762,17 @@ function updateSyncBar() {
   const cnt = document.getElementById('sync-count');
   const offBadge = document.getElementById('offline-badge');
   if (!bar) return;
+
+  // La barra naranja SOLO aparece si hay registros pendientes
   if (q.length > 0) {
     bar.classList.add('show');
     if (cnt) cnt.textContent = q.length;
   } else {
     bar.classList.remove('show');
   }
-  if (offBadge) offBadge.style.display = (!_isOnline) ? 'flex' : 'none';
+
+  // El badge 📡 SOLO aparece si hay pendientes Y no hay conexión real
+  if (offBadge) offBadge.style.display = (q.length > 0 && !_isOnline) ? 'flex' : 'none';
 }
 
 async function trySyncQueue() {
