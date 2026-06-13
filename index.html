@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#1B4332"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Caña Brava · Labores de Campo</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --verde-oscuro: #1B4332;
+  --verde-campo: #2D6A4F;
+  --verde-medio: #40916C;
+  --verde-claro: #74C69D;
+  --verde-menta: #D8F3DC;
+  --amarillo-cana: #D4A017;
+  --amarillo-claro: #FFF3CD;
+  --fondo: #F0F4F1;
+  --fondo-card: #FFFFFF;
+  --texto: #1A2E22;
+  --texto-suave: #5A7A68;
+  --borde: #C8DDD1;
+  --error: #C0392B;
+  --exito: #27AE60;
+  --sombra: 0 2px 12px rgba(27,67,50,0.10);
+  --sombra-card: 0 4px 20px rgba(27,67,50,0.08);
+  --radio: 12px;
+  --radio-sm: 8px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  overflow-x: hidden;
+}
+
+/* ── PANTALLAS ─────────────────────────────── */
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+/* ── PANTALLA LOGIN ─────────────────────────── */
+#screen-login {
+  background: linear-gradient(160deg, var(--verde-oscuro) 0%, var(--verde-campo) 60%, var(--verde-medio) 100%);
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+#screen-login::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg, transparent, transparent 18px,
+    rgba(255,255,255,0.03) 18px, rgba(255,255,255,0.03) 19px
+  ),
+  repeating-linear-gradient(
+    0deg, transparent, transparent 60px,
+    rgba(255,255,255,0.03) 60px, rgba(255,255,255,0.03) 61px
+  );
+}
+
+.login-card {
+  background: rgba(255,255,255,0.97);
+  border-radius: 20px;
+  padding: 40px 28px 32px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  position: relative;
+  z-index: 1;
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.login-logo .icon {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, var(--verde-campo), var(--verde-oscuro));
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 24px rgba(45,106,79,0.35);
+}
+
+.login-logo h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--verde-oscuro);
+  letter-spacing: -0.3px;
+}
+
+.login-logo p {
+  font-size: 12px;
+  color: var(--texto-suave);
+  margin-top: 2px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.role-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.role-btn {
+  padding: 14px 10px;
+  border: 2px solid var(--borde);
+  border-radius: var(--radio-sm);
+  background: var(--fondo);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.role-btn.selected {
+  border-color: var(--verde-campo);
+  background: var(--verde-menta);
+}
+
+.role-btn .role-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+.role-btn .role-name { font-size: 12px; font-weight: 600; color: var(--texto); }
+.role-btn .role-desc { font-size: 10px; color: var(--texto-suave); margin-top: 1px; }
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--texto);
+  background: var(--fondo);
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.field input:focus { border-color: var(--verde-medio); background: #fff; }
+
+.btn-primary {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--verde-campo), var(--verde-oscuro));
+  color: white;
+  border: none;
+  border-radius: var(--radio-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.btn-primary:active { opacity: 0.85; transform: scale(0.99); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.login-error {
+  background: #fdecea;
+  color: var(--error);
+  border-radius: var(--radio-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-top: 12px;
+  display: none;
+  text-align: center;
+}
+
+/* ── HEADER APP ─────────────────────────────── */
+.app-header {
+  background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-campo));
+  padding: 16px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
+.header-left { display: flex; align-items: center; gap: 10px; }
+
+.header-left .hlogo {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 9px;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 18px;
+}
+
+.header-title { color: white; }
+.header-title h2 { font-size: 16px; font-weight: 700; line-height: 1.1; }
+.header-title span { font-size: 11px; opacity: 0.75; font-weight: 400; }
+
+.header-right { display: flex; align-items: center; gap: 8px; }
+
+.badge-role {
+  background: rgba(255,255,255,0.18);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.badge-role.admin { background: var(--amarillo-cana); color: var(--verde-oscuro); }
+
+.btn-icon {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items:center; justify-content:center;
+  transition: background 0.2s;
+}
+
+.btn-icon:active { background: rgba(255,255,255,0.28); }
+
+/* ── TABS ───────────────────────────────────── */
+.tabs-nav {
+  background: white;
+  border-bottom: 1.5px solid var(--borde);
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+
+.tabs-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  flex-shrink: 0;
+  padding: 13px 18px;
+  border: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--texto-suave);
+  cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  color: var(--verde-campo);
+  border-bottom-color: var(--verde-campo);
+  font-weight: 600;
+}
+
+/* ── CONTENIDO PRINCIPAL ────────────────────── */
+.app-content { flex: 1; overflow-y: auto; padding: 20px 16px 100px; }
+
+/* ── TAB PANEL ──────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── SECCIÓN REGISTRO ───────────────────────── */
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--texto-suave);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--borde);
+}
+
+/* ── LABOR SELECTOR ─────────────────────────── */
+.labor-selector {
+  background: white;
+  border-radius: var(--radio);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra-card);
+  border: 1.5px solid var(--borde);
+}
+
+.labor-selector .section-title { margin-bottom: 14px; }
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper::after {
+  content: '▾';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--texto-suave);
+  pointer-events: none;
+  font-size: 14px;
+}
+
+select {
+  width: 100%;
+  padding: 13px 40px 13px 14px;
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--texto);
+  background: var(--fondo);
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+select:focus { border-color: var(--verde-medio); background: white; }
+select option { padding: 8px; }
+
+/* ── FORM CARD ──────────────────────────────── */
+.form-card {
+  background: white;
+  border-radius: var(--radio);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra-card);
+  border: 1.5px solid var(--borde);
+}
+
+.form-card .section-title { color: var(--verde-campo); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-grid .full { grid-column: 1 / -1; }
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-field label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--texto-suave);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 11px 13px;
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--texto);
+  background: var(--fondo);
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--verde-medio);
+  background: white;
+}
+
+.form-field textarea { resize: vertical; min-height: 80px; }
+
+.dosis-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 8px;
+}
+
+/* ── CÓDIGO FIELD ───────────────────────────── */
+.code-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--verde-menta) !important;
+  color: var(--verde-oscuro) !important;
+  border-color: var(--verde-claro) !important;
+  font-weight: 500;
+}
+
+/* ── BTN SUBMIT ─────────────────────────────── */
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--verde-campo), var(--verde-oscuro));
+  color: white;
+  border: none;
+  border-radius: var(--radio);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(45,106,79,0.35);
+}
+
+.btn-submit:active { opacity: 0.85; }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── TOAST ──────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--verde-oscuro);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+  white-space: nowrap;
+  max-width: calc(100vw - 40px);
+  text-align: center;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.error { background: var(--error); }
+.toast.success { background: var(--exito); }
+
+/* ── TABLA HISTORIAL ────────────────────────── */
+.historial-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-row select {
+  flex: 1;
+  min-width: 110px;
+  font-size: 13px;
+  padding: 9px 36px 9px 12px;
+}
+
+.btn-secondary {
+  padding: 10px 16px;
+  background: var(--verde-menta);
+  color: var(--verde-oscuro);
+  border: 1.5px solid var(--verde-claro);
+  border-radius: var(--radio-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.records-list { display: flex; flex-direction: column; gap: 10px; }
+
+.record-card {
+  background: white;
+  border-radius: var(--radio);
+  padding: 14px 16px;
+  box-shadow: var(--sombra);
+  border-left: 4px solid var(--verde-medio);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.record-card:active { box-shadow: var(--sombra-card); }
+
+.record-card.labor-aplicacion { border-left-color: var(--verde-campo); }
+.record-card.labor-limpieza { border-left-color: #3498DB; }
+.record-card.labor-plancero { border-left-color: #E67E22; }
+.record-card.labor-manguera { border-left-color: #9B59B6; }
+.record-card.labor-purga { border-left-color: #E74C3C; }
+.record-card.labor-flushing { border-left-color: #1ABC9C; }
+.record-card.labor-caudal { border-left-color: var(--amarillo-cana); }
+
+.record-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.record-labor {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--verde-oscuro);
+}
+
+.record-date {
+  font-size: 11px;
+  color: var(--texto-suave);
+  font-weight: 500;
+}
+
+.record-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tag-fundo { background: var(--verde-menta); color: var(--verde-oscuro); }
+.tag-equipo { background: #E8F4FD; color: #1a5276; }
+.tag-insumo { background: var(--amarillo-claro); color: #7d5a00; }
+
+.record-user { font-size: 11px; color: var(--texto-suave); }
+
+/* ── DETAIL MODAL ───────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: flex-end;
+  padding: 0;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-sheet {
+  background: white;
+  border-radius: 20px 20px 0 0;
+  padding: 0;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-handle {
+  display: flex;
+  justify-content: center;
+  padding: 14px 0 4px;
+}
+
+.modal-handle::after {
+  content: '';
+  width: 36px; height: 4px;
+  background: var(--borde);
+  border-radius: 2px;
+}
+
+.modal-header {
+  padding: 8px 20px 16px;
+  border-bottom: 1px solid var(--borde);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 { font-size: 17px; font-weight: 700; color: var(--verde-oscuro); }
+.modal-close { background: var(--fondo); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items:center; justify-content:center; color: var(--texto-suave); }
+
+.modal-body { padding: 20px; }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.detail-item .di-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--texto-suave);
+  margin-bottom: 2px;
+}
+
+.detail-item .di-val {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--texto);
+}
+
+.detail-item .di-val.mono { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+/* ── BTN ELIMINAR (solo admin) ──────────────── */
+.btn-danger {
+  width: 100%;
+  padding: 13px;
+  background: #fdecea;
+  color: var(--error);
+  border: 1.5px solid #f5c6cb;
+  border-radius: var(--radio-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* ── LOADING ────────────────────────────────── */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(27,67,50,0.7);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  color: white;
+}
+
+.loading-overlay.show { display: flex; }
+
+.spinner {
+  width: 44px; height: 44px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-overlay p { font-size: 14px; font-weight: 500; opacity: 0.9; }
+
+/* ── EMPTY STATE ────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--texto-suave);
+}
+
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--texto); }
+.empty-state p { font-size: 13px; }
+
+/* ── STATS CARD ─────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: var(--radio);
+  padding: 16px;
+  box-shadow: var(--sombra);
+  border-top: 3px solid var(--verde-medio);
+}
+
+.stat-card.gold { border-top-color: var(--amarillo-cana); }
+.stat-card.blue { border-top-color: #3498DB; }
+.stat-card.purple { border-top-color: #9B59B6; }
+
+.stat-val { font-size: 28px; font-weight: 700; color: var(--verde-oscuro); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--texto-suave); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+
+/* ── BOTTOM NAV ─────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  border-top: 1.5px solid var(--borde);
+  display: flex;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  z-index: 100;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 10px 4px 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: background 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.nav-btn.active .nav-icon { color: var(--verde-campo); }
+.nav-btn.active .nav-label { color: var(--verde-campo); font-weight: 600; }
+
+.nav-icon { font-size: 22px; color: var(--texto-suave); }
+.nav-label { font-size: 10px; color: var(--texto-suave); font-weight: 500; }
+
+/* ── ADMIN PANEL ────────────────────────────── */
+.admin-section {
+  background: white;
+  border-radius: var(--radio);
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--sombra-card);
+  border: 1.5px solid var(--borde);
+}
+
+.admin-section h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--verde-oscuro);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--borde);
+}
+
+.user-row:last-child { border-bottom: none; }
+
+.user-info .user-name { font-size: 14px; font-weight: 600; }
+.user-info .user-role { font-size: 11px; color: var(--texto-suave); }
+
+.no-access-msg {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--texto-suave);
+}
+
+.no-access-msg .icon { font-size: 48px; margin-bottom: 12px; }
+.no-access-msg h3 { font-size: 16px; font-weight: 600; color: var(--texto); margin-bottom: 6px; }
+.no-access-msg p { font-size: 13px; }
+
+/* ── SETUP SUPABASE ─────────────────────────── */
+#screen-setup {
+  background: linear-gradient(160deg, var(--verde-oscuro), var(--verde-campo));
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.setup-card {
+  background: white;
+  border-radius: 20px;
+  padding: 36px 28px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+.setup-card h2 { font-size: 20px; font-weight: 700; color: var(--verde-oscuro); margin-bottom: 6px; }
+.setup-card p { font-size: 13px; color: var(--texto-suave); margin-bottom: 24px; line-height: 1.5; }
+
+.info-box {
+  background: var(--verde-menta);
+  border-radius: var(--radio-sm);
+  padding: 14px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--verde-oscuro);
+  line-height: 1.6;
+}
+
+.info-box strong { font-weight: 700; }
+
+.info-box code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px;
+  border-radius: 3px;
+  display: block;
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     PANTALLA: CONFIGURACIÓN INICIAL SUPABASE
+══════════════════════════════════════════════════ -->
+<div id="screen-setup" class="screen active">
+  <div class="setup-card">
+    <h2>⚙️ Configuración inicial</h2>
+    <p>Para guardar tus registros en la nube, necesitas conectar una base de datos Supabase gratuita.</p>
+
+    <div class="info-box">
+      <strong>Pasos rápidos:</strong><br/>
+      1. Ve a <strong>supabase.com</strong> → crear cuenta gratis<br/>
+      2. Crear nuevo proyecto<br/>
+      3. Ir a <strong>SQL Editor</strong> y ejecutar el script de abajo<br/>
+      4. Copiar tu <strong>Project URL</strong> y <strong>anon key</strong> desde Settings → API
+    </div>
+
+    <div class="field">
+      <label>Supabase Project URL</label>
+      <input type="url" id="setup-url" placeholder="https://xxxx.supabase.co" autocomplete="off"/>
+    </div>
+
+    <div class="field">
+      <label>Supabase Anon Key</label>
+      <input type="text" id="setup-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." autocomplete="off"/>
+    </div>
+
+    <button class="btn-primary" onclick="saveSetup()">Conectar y continuar →</button>
+
+    <div id="setup-error" class="login-error"></div>
+
+    <details style="margin-top:20px;">
+      <summary style="font-size:12px;color:var(--texto-suave);cursor:pointer;font-weight:600;">Ver SQL para crear tablas</summary>
+      <pre id="sql-script" style="background:var(--fondo);border-radius:8px;padding:14px;font-size:10px;margin-top:10px;overflow-x:auto;line-height:1.5;font-family:'JetBrains Mono',monospace;color:var(--texto);white-space:pre-wrap;word-break:break-all;"></pre>
+    </details>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PANTALLA: LOGIN
+══════════════════════════════════════════════════ -->
+<div id="screen-login" class="screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="icon">🌾</div>
+      <h1>Caña Brava</h1>
+      <p>Magdalena · Labores de Campo</p>
+    </div>
+
+    <div class="role-selector">
+      <button class="role-btn selected" id="role-admin" onclick="selectRole('admin')">
+        <span class="role-icon">👨‍💼</span>
+        <div class="role-name">Administrador</div>
+        <div class="role-desc">Acceso completo</div>
+      </button>
+      <button class="role-btn" id="role-controller" onclick="selectRole('controller')">
+        <span class="role-icon">👷</span>
+        <div class="role-name">Controlador</div>
+        <div class="role-desc">Solo registro</div>
+      </button>
+    </div>
+
+    <div class="field">
+      <label>Nombre de usuario</label>
+      <input type="text" id="login-user" placeholder="Tu nombre" autocomplete="username"/>
+    </div>
+
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter') doLogin()"/>
+    </div>
+
+    <button class="btn-primary" onclick="doLogin()">Ingresar</button>
+    <div id="login-error" class="login-error"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PANTALLA: APLICACIÓN PRINCIPAL
+══════════════════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="hlogo">🌾</div>
+      <div class="header-title">
+        <h2>Caña Brava</h2>
+        <span id="header-subtitle">Magdalena</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="badge-role" id="badge-role">Controller</span>
+      <button class="btn-icon" onclick="doLogout()" title="Cerrar sesión">⏻</button>
+    </div>
+  </header>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="showNav('registro')" id="nav-registro">
+      <span class="nav-icon">📝</span>
+      <span class="nav-label">Registrar</span>
+    </button>
+    <button class="nav-btn" onclick="showNav('historial')" id="nav-historial">
+      <span class="nav-icon">📋</span>
+      <span class="nav-label">Historial</span>
+    </button>
+    <button class="nav-btn" onclick="showNav('kpis')" id="nav-kpis">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">KPIs</span>
+    </button>
+    <button class="nav-btn" onclick="showNav('admin')" id="nav-admin">
+      <span class="nav-icon">🔧</span>
+      <span class="nav-label">Admin</span>
+    </button>
+  </nav>
+
+  <!-- Contenido -->
+  <main class="app-content">
+
+    <!-- ── TAB: REGISTRO ──────────────────── -->
+    <div id="tab-registro" class="tab-panel active">
+
+      <!-- Selector de labor -->
+      <div class="labor-selector">
+        <div class="section-title">Labor a registrar</div>
+        <div class="select-wrapper">
+          <select id="labor-select" onchange="onLaborChange()">
+            <option value="">— Seleccionar labor —</option>
+            <option value="aplicacion">Aplicación</option>
+            <option value="limpieza">Limpieza de laterales</option>
+            <option value="plancero">Plan cero fuga</option>
+            <option value="manguera">Revisión de manguera</option>
+            <option value="purga">Purga con pig</option>
+            <option value="flushing">Instalación de flushing</option>
+            <option value="caudal">Medición de caudal</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Formularios dinámicos por labor -->
+      <div id="form-container"></div>
+    </div>
+
+    <!-- ── TAB: HISTORIAL ─────────────────── -->
+    <div id="tab-historial" class="tab-panel">
+      <div class="historial-header">
+        <div class="section-title" style="margin:0">Registros guardados</div>
+        <button class="btn-secondary" onclick="loadHistorial()">↻ Actualizar</button>
+      </div>
+
+      <div class="filter-row" style="margin-bottom:14px;">
+        <div class="select-wrapper" style="flex:1">
+          <select id="filter-labor" onchange="applyFilters()">
+            <option value="">Todas las labores</option>
+            <option value="aplicacion">Aplicación</option>
+            <option value="limpieza">Limpieza laterales</option>
+            <option value="plancero">Plan cero fuga</option>
+            <option value="manguera">Rev. manguera</option>
+            <option value="purga">Purga pig</option>
+            <option value="flushing">Flushing</option>
+            <option value="caudal">Med. caudal</option>
+          </select>
+        </div>
+        <div class="select-wrapper" style="flex:1">
+          <select id="filter-fundo" onchange="applyFilters()">
+            <option value="">Todos los fundos</option>
+            <option value="Huaca">Huaca</option>
+            <option value="Lobo 1">Lobo 1</option>
+            <option value="Lobo 2">Lobo 2</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="records-list" class="records-list">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <h3>Sin registros</h3>
+          <p>Los registros aparecerán aquí</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: KPIs ──────────────────────── -->
+    <div id="tab-kpis" class="tab-panel">
+      <div class="section-title">Indicadores de campo</div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="kpi-total">—</div>
+          <div class="stat-label">Total registros</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-val" id="kpi-hoy">—</div>
+          <div class="stat-label">Registros hoy</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-val" id="kpi-aplicaciones">—</div>
+          <div class="stat-label">Aplicaciones</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-val" id="kpi-semana">—</div>
+          <div class="stat-label">Esta semana</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:8px;">Registros por labor</div>
+      <div id="kpi-labor-list" class="records-list" style="margin-top:10px;"></div>
+
+      <div class="section-title" style="margin-top:16px;">Por fundo</div>
+      <div id="kpi-fundo-list" class="records-list" style="margin-top:10px;"></div>
+    </div>
+
+    <!-- ── TAB: ADMIN ─────────────────────── -->
+    <div id="tab-admin" class="tab-panel">
+      <div id="admin-content"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL DETALLE -->
+<div class="modal-overlay" id="detail-modal" onclick="closeModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3 id="modal-title">Detalle</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <p id="loading-msg">Guardando registro...</p>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// CONFIGURACIÓN & ESTADO
+// ══════════════════════════════════════════════════
+let SUPABASE_URL = 'https://vokrdrfhhvrofmyfbuqo.supabase.co';
+let SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZva3JkcmZoaHZyb2ZteWZidXFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTA2NzQsImV4cCI6MjA5Njg4NjY3NH0.8qaG-HIbR46cB3GVFsTU9jvay8jsHcwjLsLRTKH5hDM';
+let currentUser = null;
+let allRecords = [];
+
+const ADMIN_USER = 'ronald';
+const ADMIN_PASS = 'cana2024';
+
+const SQL_SCRIPT = `-- Crear tabla principal de labores
+CREATE TABLE IF NOT EXISTS labores_campo (
+  id BIGSERIAL PRIMARY KEY,
+  labor VARCHAR(50) NOT NULL,
+  fundo VARCHAR(50),
+  fecha DATE,
+  equipo VARCHAR(20),
+  insumo VARCHAR(50),
+  dosis_cantidad NUMERIC,
+  dosis_unidad VARCHAR(20),
+  observaciones TEXT,
+  controlador VARCHAR(100),
+  rol VARCHAR(20),
+  datos_extra JSONB,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Índices para búsquedas rápidas
+CREATE INDEX IF NOT EXISTS idx_labor ON labores_campo(labor);
+CREATE INDEX IF NOT EXISTS idx_fundo ON labores_campo(fundo);
+CREATE INDEX IF NOT EXISTS idx_fecha ON labores_campo(fecha);
+CREATE INDEX IF NOT EXISTS idx_created ON labores_campo(created_at);
+
+-- Política RLS: habilitar acceso con anon key
+ALTER TABLE labores_campo ENABLE ROW LEVEL SECURITY;
+CREATE POLICY IF NOT EXISTS "Allow all with anon key" ON labores_campo
+  FOR ALL USING (true) WITH CHECK (true);`;
+
+// ══════════════════════════════════════════════════
+// SETUP SUPABASE
+// ══════════════════════════════════════════════════
+document.getElementById('sql-script').textContent = SQL_SCRIPT;
+
+function loadConfig() {
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_key');
+  if (url && key) {
+    SUPABASE_URL = url;
+    SUPABASE_KEY = key;
+    return true;
+  }
+  return false;
+}
+
+function saveSetup() {
+  const url = document.getElementById('setup-url').value.trim();
+  const key = document.getElementById('setup-key').value.trim();
+  const errEl = document.getElementById('setup-error');
+
+  if (!url || !url.startsWith('https://')) {
+    errEl.textContent = 'Ingresa una URL válida de Supabase.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!key || key.length < 20) {
+    errEl.textContent = 'Ingresa la anon key correctamente.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  localStorage.setItem('sb_url', url);
+  localStorage.setItem('sb_key', key);
+  SUPABASE_URL = url;
+  SUPABASE_KEY = key;
+
+  show('screen-login');
+}
+
+// ══════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════
+let selectedRole = 'admin';
+
+function selectRole(role) {
+  selectedRole = role;
+  document.getElementById('role-admin').classList.toggle('selected', role === 'admin');
+  document.getElementById('role-controller').classList.toggle('selected', role === 'controller');
+}
+
+function doLogin() {
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+
+  if (!user) {
+    errEl.textContent = 'Ingresa tu nombre de usuario.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  if (selectedRole === 'admin') {
+    if (user.toLowerCase() !== ADMIN_USER || pass !== ADMIN_PASS) {
+      errEl.textContent = 'Credenciales de administrador incorrectas.';
+      errEl.style.display = 'block';
+      return;
+    }
+  }
+
+  if (!pass && selectedRole === 'controller') {
+    errEl.textContent = 'Ingresa una contraseña o identificador.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  currentUser = { name: user, role: selectedRole };
+  localStorage.setItem('cb_user', JSON.stringify(currentUser));
+
+  document.getElementById('badge-role').textContent = selectedRole === 'admin' ? 'Admin' : 'Controlador';
+  document.getElementById('badge-role').className = 'badge-role' + (selectedRole === 'admin' ? ' admin' : '');
+  document.getElementById('header-subtitle').textContent = user;
+
+  show('screen-app');
+  renderAdminTab();
+  loadHistorial();
+  loadKPIs();
+}
+
+function doLogout() {
+  currentUser = null;
+  localStorage.removeItem('cb_user');
+  show('screen-login');
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════
+// NAVEGACIÓN
+// ══════════════════════════════════════════════════
+function show(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function showNav(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('nav-' + tab).classList.add('active');
+
+  if (tab === 'historial') loadHistorial();
+  if (tab === 'kpis') loadKPIs();
+}
+
+// ══════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function showLoading(msg = 'Guardando...') {
+  document.getElementById('loading-msg').textContent = msg;
+  document.getElementById('loading').classList.add('show');
+}
+
+function hideLoading() {
+  document.getElementById('loading').classList.remove('show');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('detail-modal')) {
+    document.getElementById('detail-modal').classList.remove('open');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// GENERADORES DE OPCIONES
+// ══════════════════════════════════════════════════
+function optsEQ() {
+  let html = '<option value="">— EQ —</option>';
+  for (let i = 9; i <= 20; i++) html += `<option>EQ${i.toString().padStart(2,'0')}</option>`;
+  return html;
+}
+
+function optsTR() {
+  let html = '<option value="">— TR —</option>';
+  for (let i = 1; i <= 5; i++) html += `<option>TR${i.toString().padStart(2,'0')}</option>`;
+  return html;
+}
+
+const fundoOpts = `<option value="">— Fundo —</option>
+  <option>Huaca</option><option>Lobo 1</option><option>Lobo 2</option>`;
+
+const insumoOpts = `<option value="">— Insumo —</option>
+  <option>Aquazix</option><option>Aquaclean</option>
+  <option>Ac. Sulfúrico</option><option>Úrea</option>
+  <option>Potasio</option><option>Fósforo</option>
+  <option>Ac. Fúlvico + Úrea</option><option>Ferroso</option>`;
+
+const unidOpts = `<option value="">—</option>
+  <option>Kg/ha</option><option>L/ha</option><option>ppm</option>`;
+
+// ══════════════════════════════════════════════════
+// FORMULARIOS POR LABOR
+// Bloque base común: EQ → TR → Fundo → Fecha
+// (igual para las 7 labores)
+// ══════════════════════════════════════════════════
+function baseBlock(titulo) {
+  return `
+    <div class="form-card">
+      <div class="section-title">${titulo}</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>EQ</label>
+          <div class="select-wrapper"><select id="f-eq" class="code-value">${optsEQ()}</select></div>
+        </div>
+        <div class="form-field">
+          <label>TR</label>
+          <div class="select-wrapper"><select id="f-tr" class="code-value">${optsTR()}</select></div>
+        </div>
+        <div class="form-field">
+          <label>Fundo</label>
+          <div class="select-wrapper"><select id="f-fundo">${fundoOpts}</select></div>
+        </div>
+        <div class="form-field">
+          <label>Fecha</label>
+          <input type="date" id="f-fecha" value="${today()}"/>
+        </div>
+      </div>
+    </div>`;
+}
+
+const laborForms = {
+
+  aplicacion: () => baseBlock('📍 Ubicación y equipo') + `
+    <div class="form-card">
+      <div class="section-title">🧪 Insumo y dosis</div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Insumo</label>
+          <div class="select-wrapper"><select id="f-insumo">${insumoOpts}</select></div>
+        </div>
+        <div class="form-field full">
+          <label>Dosis</label>
+          <div class="dosis-row">
+            <input type="number" id="f-dosis-cant" placeholder="Cantidad" step="0.01" min="0"/>
+            <div class="select-wrapper"><select id="f-dosis-unid">${unidOpts}</select></div>
+          </div>
+        </div>
+        <div class="form-field full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Notas adicionales..."></textarea>
+        </div>
+      </div>
+    </div>`,
+
+  limpieza: () => baseBlock('📍 Limpieza de laterales') + `
+    <div class="form-card">
+      <div class="section-title">📏 Detalle de limpieza</div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Metros lineales limpiados (m)</label>
+          <input type="number" id="f-metros" placeholder="0.00" step="0.1" min="0"/>
+        </div>
+        <div class="form-field full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Notas..."></textarea>
+        </div>
+      </div>
+    </div>`,
+
+  plancero: () => baseBlock('📍 Plan cero fuga') + `
+    <div class="form-card">
+      <div class="section-title">🔍 Detalle de inspección</div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Fugas encontradas (N°)</label>
+          <input type="number" id="f-fugas" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field full">
+          <label>Fugas reparadas (N°)</label>
+          <input type="number" id="f-fugas-rep" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Describe las fugas y estado..."></textarea>
+        </div>
+      </div>
+    </div>`,
+
+  manguera: () => baseBlock('📍 Revisión de manguera') + `
+    <div class="form-card">
+      <div class="section-title">🔧 Detalle de revisión</div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Mangueras revisadas (N°)</label>
+          <input type="number" id="f-mang-rev" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field full">
+          <label>Mangueras reemplazadas (N°)</label>
+          <input type="number" id="f-mang-reem" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field full">
+          <label>Estado general</label>
+          <div class="select-wrapper">
+            <select id="f-estado">
+              <option value="">— Estado —</option>
+              <option>Bueno</option><option>Regular</option><option>Malo</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Notas..."></textarea>
+        </div>
+      </div>
+    </div>`,
+
+  purga: () => baseBlock('📍 Purga con pig') + `
+    <div class="form-card">
+      <div class="section-title">💨 Detalle de purga</div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Tramos purgados (N°)</label>
+          <input type="number" id="f-tramos" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field full">
+          <label>Presión entrada (psi)</label>
+          <input type="number" id="f-presion" placeholder="0.0" step="0.1" min="0"/>
+        </div>
+        <div class="form-field full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Condiciones de la purga..."></textarea>
+        </div>
+      </div>
+    </div>`,
+
+  flushing: () => baseBlock('📍 Instalación de flushing') + `
+    <div class="form-card">
+      <div class="section-title">🔩 Detalle de instalación</div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Emisores instalados (N°)</label>
+          <input type="number" id="f-emisores" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="form-field full">
+          <label>Longitud instalada (m)</label>
+          <input type="number" id="f-longitud" placeholder="0.0" step="0.1" min="0"/>
+        </div>
+        <div class="form-field full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Notas de instalación..."></textarea>
+        </div>
+      </div>
+    </div>`,
+
+  caudal: () => baseBlock('📍 Medición de caudal') + `
+    <div class="form-card">
+      <div class="section-title">💧 Datos de medición</div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Caudal medido (L/min)</label>
+          <input type="number" id="f-caudal" placeholder="0.00" step="0.01" min="0"/>
+        </div>
+        <div class="form-field full">
+          <label>Caudal nominal (L/min)</label>
+          <input type="number" id="f-caudal-nom" placeholder="7.10" step="0.01" min="0"/>
+        </div>
+        <div class="form-field full">
+          <label>Presión de operación (psi)</label>
+          <input type="number" id="f-presion" placeholder="0.0" step="0.1" min="0"/>
+        </div>
+        <div class="form-field full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Condiciones de medición..."></textarea>
+        </div>
+      </div>
+    </div>`
+};
+
+const laborLabels = {
+  aplicacion: 'Aplicación',
+  limpieza: 'Limpieza de laterales',
+  plancero: 'Plan cero fuga',
+  manguera: 'Revisión de manguera',
+  purga: 'Purga con pig',
+  flushing: 'Instalación de flushing',
+  caudal: 'Medición de caudal'
+};
+
+function onLaborChange() {
+  const labor = document.getElementById('labor-select').value;
+  const container = document.getElementById('form-container');
+
+  if (!labor) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const formFn = laborForms[labor];
+  if (!formFn) return;
+
+  container.innerHTML = formFn() + `
+    <button class="btn-submit" onclick="submitRecord()">
+      <span>💾</span> Guardar registro
+    </button>`;
+}
+
+// ══════════════════════════════════════════════════
+// GUARDAR REGISTRO
+// ══════════════════════════════════════════════════
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function numVal(id) {
+  const v = val(id);
+  return v ? parseFloat(v) : null;
+}
+
+async function submitRecord() {
+  const labor = document.getElementById('labor-select').value;
+  if (!labor) { showToast('Selecciona una labor primero', 'error'); return; }
+
+  const fundo = val('f-fundo');
+  const fecha = val('f-fecha');
+
+  if (!fundo) { showToast('Selecciona el fundo', 'error'); return; }
+  if (!fecha) { showToast('Selecciona la fecha', 'error'); return; }
+
+  const eq = val('f-eq');
+  const tr = val('f-tr');
+  const equipo = [eq, tr].filter(Boolean).join(' / ') || null;
+
+  // Datos extra por labor
+  const extras = {};
+  if (labor === 'aplicacion') {
+    const insumo = val('f-insumo');
+    const cant = numVal('f-dosis-cant');
+    const unid = val('f-dosis-unid');
+    if (!insumo) { showToast('Selecciona el insumo', 'error'); return; }
+    if (!cant || !unid) { showToast('Ingresa dosis y unidades', 'error'); return; }
+  }
+
+  if (labor === 'limpieza') extras.metros = numVal('f-metros');
+  if (labor === 'plancero') { extras.fugas = numVal('f-fugas'); extras.fugas_reparadas = numVal('f-fugas-rep'); }
+  if (labor === 'manguera') { extras.revisadas = numVal('f-mang-rev'); extras.reemplazadas = numVal('f-mang-reem'); extras.estado = val('f-estado'); }
+  if (labor === 'purga') { extras.tramos = numVal('f-tramos'); extras.presion = numVal('f-presion'); }
+  if (labor === 'flushing') { extras.emisores = numVal('f-emisores'); extras.longitud = numVal('f-longitud'); }
+  if (labor === 'caudal') { extras.caudal = numVal('f-caudal'); extras.caudal_nominal = numVal('f-caudal-nom'); extras.presion = numVal('f-presion'); }
+
+  const payload = {
+    labor,
+    fundo,
+    fecha,
+    equipo,
+    insumo: val('f-insumo') || null,
+    dosis_cantidad: numVal('f-dosis-cant'),
+    dosis_unidad: val('f-dosis-unid') || null,
+    observaciones: val('f-obs') || null,
+    controlador: currentUser.name,
+    rol: currentUser.role,
+    datos_extra: Object.keys(extras).length ? extras : null
+  };
+
+  showLoading('Guardando registro...');
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/labores_campo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    hideLoading();
+
+    if (res.ok) {
+      showToast('✅ Registro guardado exitosamente');
+      document.getElementById('labor-select').value = '';
+      document.getElementById('form-container').innerHTML = '';
+    } else {
+      const err = await res.json();
+      showToast('Error al guardar: ' + (err.message || res.statusText), 'error');
+    }
+  } catch (e) {
+    hideLoading();
+    showToast('Error de conexión. Verifica internet.', 'error');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// CARGAR HISTORIAL
+// ══════════════════════════════════════════════════
+async function loadHistorial() {
+  const listEl = document.getElementById('records-list');
+  listEl.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto"></div><p style="margin-top:12px">Cargando...</p></div>';
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/labores_campo?order=created_at.desc&limit=200`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    if (!res.ok) throw new Error();
+    allRecords = await res.json();
+    applyFilters();
+  } catch (e) {
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Error de conexión</h3><p>Verifica tu conexión a internet</p></div>';
+  }
+}
+
+function applyFilters() {
+  const filterLabor = document.getElementById('filter-labor').value;
+  const filterFundo = document.getElementById('filter-fundo').value;
+
+  let filtered = allRecords;
+  if (filterLabor) filtered = filtered.filter(r => r.labor === filterLabor);
+  if (filterFundo) filtered = filtered.filter(r => r.fundo === filterFundo);
+
+  renderRecords(filtered);
+}
+
+function renderRecords(records) {
+  const listEl = document.getElementById('records-list');
+  if (!records.length) {
+    listEl.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><h3>Sin registros</h3><p>No hay datos para los filtros seleccionados</p></div>';
+    return;
+  }
+
+  listEl.innerHTML = records.map(r => {
+    const tags = [];
+    if (r.fundo) tags.push(`<span class="tag tag-fundo">${r.fundo}</span>`);
+    if (r.equipo) tags.push(`<span class="tag tag-equipo">${r.equipo}</span>`);
+    if (r.insumo) tags.push(`<span class="tag tag-insumo">${r.insumo}</span>`);
+
+    return `<div class="record-card labor-${r.labor}" onclick="showDetail(${r.id})">
+      <div class="record-top">
+        <div class="record-labor">${laborLabels[r.labor] || r.labor}</div>
+        <div class="record-date">${formatDate(r.fecha)}</div>
+      </div>
+      <div class="record-tags">${tags.join('')}</div>
+      <div class="record-user">👤 ${r.controlador} · ${r.rol === 'admin' ? '⭐ Admin' : 'Controlador'}</div>
+    </div>`;
+  }).join('');
+}
+
+function showDetail(id) {
+  const r = allRecords.find(x => x.id === id);
+  if (!r) return;
+
+  document.getElementById('modal-title').textContent = laborLabels[r.labor] || r.labor;
+
+  const rows = [
+    ['Fundo', r.fundo || '—', false],
+    ['Fecha', formatDate(r.fecha), false],
+    ['Equipo', r.equipo || '—', true],
+    ['Insumo', r.insumo || '—', false],
+    ['Dosis', r.dosis_cantidad ? `${r.dosis_cantidad} ${r.dosis_unidad}` : '—', false],
+    ['Registrado por', r.controlador, false],
+    ['Rol', r.rol === 'admin' ? '⭐ Administrador' : 'Controlador', false],
+  ];
+
+  if (r.datos_extra) {
+    Object.entries(r.datos_extra).forEach(([k, v]) => {
+      if (v !== null) rows.push([k.replace(/_/g, ' '), String(v), false]);
+    });
+  }
+
+  let html = '<div class="detail-grid">' +
+    rows.map(([label, val, mono]) =>
+      `<div class="detail-item">
+        <div class="di-label">${label}</div>
+        <div class="di-val${mono ? ' mono' : ''}">${val}</div>
+      </div>`
+    ).join('') +
+    '</div>';
+
+  if (r.observaciones) {
+    html += `<div style="background:var(--fondo);border-radius:8px;padding:12px;font-size:13px;line-height:1.6;color:var(--texto);">
+      <strong style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--texto-suave);">Observaciones</strong><br/>
+      ${r.observaciones}
+    </div>`;
+  }
+
+  if (currentUser?.role === 'admin') {
+    html += `<button class="btn-danger" onclick="deleteRecord(${r.id})">🗑 Eliminar registro</button>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('detail-modal').classList.add('open');
+}
+
+async function deleteRecord(id) {
+  if (!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.')) return;
+  closeModal();
+  showLoading('Eliminando...');
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/labores_campo?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    hideLoading();
+    if (res.ok) {
+      showToast('Registro eliminado');
+      await loadHistorial();
+    } else {
+      showToast('Error al eliminar', 'error');
+    }
+  } catch (e) {
+    hideLoading();
+    showToast('Error de conexión', 'error');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// KPIs
+// ══════════════════════════════════════════════════
+async function loadKPIs() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/labores_campo?select=labor,fundo,fecha,created_at`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const todayStr = today();
+    const weekAgo = new Date(Date.now() - 7 * 24 * 3600000).toISOString().split('T')[0];
+
+    document.getElementById('kpi-total').textContent = data.length;
+    document.getElementById('kpi-hoy').textContent = data.filter(r => r.fecha === todayStr).length;
+    document.getElementById('kpi-aplicaciones').textContent = data.filter(r => r.labor === 'aplicacion').length;
+    document.getElementById('kpi-semana').textContent = data.filter(r => r.fecha >= weekAgo).length;
+
+    // Por labor
+    const byLabor = {};
+    data.forEach(r => { byLabor[r.labor] = (byLabor[r.labor] || 0) + 1; });
+    const laborColors = { aplicacion:'#2D6A4F', limpieza:'#3498DB', plancero:'#E67E22', manguera:'#9B59B6', purga:'#E74C3C', flushing:'#1ABC9C', caudal:'#D4A017' };
+
+    document.getElementById('kpi-labor-list').innerHTML = Object.entries(byLabor)
+      .sort((a,b) => b[1]-a[1])
+      .map(([labor, count]) => `
+        <div class="record-card" style="border-left-color:${laborColors[labor]||'#ccc'}">
+          <div class="record-top">
+            <div class="record-labor">${laborLabels[labor]||labor}</div>
+            <div style="font-size:20px;font-weight:700;color:var(--verde-oscuro)">${count}</div>
+          </div>
+          <div style="height:6px;border-radius:3px;background:var(--fondo);margin-top:6px;">
+            <div style="height:100%;border-radius:3px;background:${laborColors[labor]||'#ccc'};width:${Math.round(count/data.length*100)}%"></div>
+          </div>
+        </div>`
+      ).join('');
+
+    // Por fundo
+    const byFundo = {};
+    data.forEach(r => { if(r.fundo) byFundo[r.fundo] = (byFundo[r.fundo]||0)+1; });
+
+    document.getElementById('kpi-fundo-list').innerHTML = Object.entries(byFundo)
+      .sort((a,b) => b[1]-a[1])
+      .map(([fundo, count]) => `
+        <div class="record-card">
+          <div class="record-top">
+            <div class="record-labor">📍 ${fundo}</div>
+            <div style="font-size:20px;font-weight:700;color:var(--verde-oscuro)">${count}</div>
+          </div>
+        </div>`
+      ).join('');
+
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════════════
+// PANEL ADMIN
+// ══════════════════════════════════════════════════
+function renderAdminTab() {
+  const el = document.getElementById('admin-content');
+
+  if (currentUser?.role !== 'admin') {
+    el.innerHTML = `<div class="no-access-msg">
+      <div class="icon">🔒</div>
+      <h3>Acceso restringido</h3>
+      <p>Este panel es solo para el administrador del sistema.</p>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="admin-section">
+      <h3>⚙️ Configuración de base de datos</h3>
+      <div class="form-field" style="margin-bottom:12px;">
+        <label>Supabase URL</label>
+        <input type="url" id="cfg-url" value="${SUPABASE_URL}" style="font-size:12px;"/>
+      </div>
+      <div class="form-field" style="margin-bottom:12px;">
+        <label>Anon Key</label>
+        <input type="text" id="cfg-key" value="${SUPABASE_KEY}" style="font-size:12px;"/>
+      </div>
+      <button class="btn-secondary" onclick="updateConfig()" style="width:100%">Actualizar configuración</button>
+    </div>
+
+    <div class="admin-section">
+      <h3>👥 Usuarios registrados</h3>
+      <div id="users-list">
+        <div class="user-row">
+          <div class="user-info">
+            <div class="user-name">⭐ Ronald</div>
+            <div class="user-role">Administrador · Caña Brava</div>
+          </div>
+          <span class="badge-role admin">Admin</span>
+        </div>
+        <p style="font-size:12px;color:var(--texto-suave);margin-top:12px;">
+          Los controladores se identifican con su nombre al iniciar sesión. Puedes ver quién registró cada labor en el historial.
+        </p>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h3>🗑️ Administración de datos</h3>
+      <p style="font-size:13px;color:var(--texto-suave);margin-bottom:14px;">
+        Para eliminar registros individuales, ábrelos desde el Historial y usa el botón eliminar.
+      </p>
+      <button class="btn-secondary" onclick="loadHistorial(); showNav('historial')">
+        Ver todos los registros
+      </button>
+    </div>
+
+    <div class="admin-section">
+      <h3>ℹ️ Información del sistema</h3>
+      <div style="font-size:13px;color:var(--texto-suave);line-height:2;">
+        <div>🌾 <strong>Proyecto:</strong> Magdalena / Caña Brava</div>
+        <div>🏡 <strong>Fundos:</strong> Huaca · Lobo 1 · Lobo 2</div>
+        <div>🔧 <strong>Versión:</strong> 1.0.0</div>
+        <div>☁️ <strong>Backend:</strong> Supabase (PostgreSQL)</div>
+      </div>
+    </div>
+  `;
+}
+
+function updateConfig() {
+  const url = document.getElementById('cfg-url').value.trim();
+  const key = document.getElementById('cfg-key').value.trim();
+  if (url && key) {
+    SUPABASE_URL = url; SUPABASE_KEY = key;
+    localStorage.setItem('sb_url', url);
+    localStorage.setItem('sb_key', key);
+    showToast('Configuración actualizada');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+(function init() {
+  // Credenciales ya están en el código — saltar setup directamente
+  localStorage.setItem('sb_url', SUPABASE_URL);
+  localStorage.setItem('sb_key', SUPABASE_KEY);
+
+  const saved = localStorage.getItem('cb_user');
+  if (saved) {
+    currentUser = JSON.parse(saved);
+    document.getElementById('badge-role').textContent = currentUser.role === 'admin' ? 'Admin' : 'Controlador';
+    document.getElementById('badge-role').className = 'badge-role' + (currentUser.role === 'admin' ? ' admin' : '');
+    document.getElementById('header-subtitle').textContent = currentUser.name;
+    show('screen-app');
+    renderAdminTab();
+    loadHistorial();
+    loadKPIs();
+  } else {
+    show('screen-login');
+  }
+})();
+</script>
+</body>
+</html>
