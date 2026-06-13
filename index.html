@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Caña Brava · Labores de Campo</title>
+<meta name="app-version" content="1.3.0"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -870,7 +871,24 @@ select option { padding: 8px; }
 .welcome-banner .wb-text h3 { font-size: 15px; font-weight: 700; }
 .welcome-banner .wb-text p { font-size: 11px; opacity: 0.8; margin-top: 2px; }
 
-.sync-bar {
+/* ── ACTUALIZACIÓN DISPONIBLE ───────────────── */
+.update-bar {
+  background: linear-gradient(135deg, #185FA5, #0C447C);
+  color: white;
+  padding: 10px 16px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  z-index: 99;
+}
+.update-bar.show { display: flex; }
+.update-bar p { font-size: 12px; font-weight: 500; line-height: 1.4; }
+.update-bar p span { font-size: 11px; opacity: 0.8; display: block; }
+.btn-update { background: white; color: #185FA5; border: none; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+
+/* ── SYNC BAR ───────────────────────────────── */
   background: #E67E22;
   color: white;
   padding: 8px 16px;
@@ -1294,6 +1312,12 @@ select option { padding: 8px; }
     </button>
   </nav>
 
+  <!-- Barra de actualización disponible -->
+  <div class="update-bar" id="update-bar">
+    <p>🆕 Nueva versión disponible<span>Toca para actualizar la app</span></p>
+    <button class="btn-update" onclick="doUpdate()">Actualizar</button>
+  </div>
+
   <!-- Sync bar (offline queue) -->
   <div class="sync-bar" id="sync-bar">
     <span id="sync-msg">📡 Sin conexión · <span id="sync-count">0</span> registro(s) pendientes</span>
@@ -1621,6 +1645,7 @@ function doLogin() {
 
   show('screen-app');
   renderWelcome();
+  checkForUpdate();
   renderAdminTab();
   loadNotifications();
   updateSyncBar();
@@ -3010,7 +3035,7 @@ function renderAdminTab() {
       <div style="font-size:13px;color:var(--texto-suave);line-height:2;">
         <div>🌾 <strong>Proyecto:</strong> Magdalena / Caña Brava</div>
         <div>🏡 <strong>Fundos:</strong> Huaca · Lobo 1 · Lobo 2</div>
-        <div>🔧 <strong>Versión:</strong> 1.1.0</div>
+        <div>🔧 <strong>Versión:</strong> ${APP_VERSION}</div>
         <div>☁️ <strong>Backend:</strong> Supabase (PostgreSQL)</div>
       </div>
     </div>
@@ -3274,7 +3299,39 @@ async function resolverSolicitud(id, estado, usuarioKey, nuevaClave) {
 }
 
 // ══════════════════════════════════════════════════
-// INIT
+// CONTROL DE VERSIÓN — detecta actualizaciones
+// ══════════════════════════════════════════════════
+const APP_VERSION = document.querySelector('meta[name="app-version"]')?.content || '1.0.0';
+
+function checkForUpdate() {
+  const savedVersion = localStorage.getItem('cb_app_version');
+  if (!savedVersion) {
+    // Primera vez — guardar versión actual
+    localStorage.setItem('cb_app_version', APP_VERSION);
+    return;
+  }
+  if (savedVersion !== APP_VERSION) {
+    // Hay una versión nueva
+    showUpdateBar(savedVersion, APP_VERSION);
+  }
+}
+
+function showUpdateBar(oldV, newV) {
+  const bar = document.getElementById('update-bar');
+  if (!bar) return;
+  bar.querySelector('p').innerHTML = `🆕 Nueva versión disponible<span>Versión ${newV} lista · antes tenías ${oldV}</span>`;
+  bar.classList.add('show');
+}
+
+function doUpdate() {
+  localStorage.setItem('cb_app_version', APP_VERSION);
+  const bar = document.getElementById('update-bar');
+  if (bar) bar.classList.remove('show');
+  showToast('✅ App actualizada a v' + APP_VERSION);
+  // Forzar recarga limpia desde el servidor
+  setTimeout(() => window.location.reload(true), 800);
+}
+
 function renderWelcome() {
   if (!currentUser) return;
   const nombre = currentUser.name.replace(/\b\w/g, c => c.toUpperCase());
@@ -3298,6 +3355,7 @@ function renderWelcome() {
     }
     show('screen-app');
     renderWelcome();
+    checkForUpdate();
     renderAdminTab();
     loadHistorial();
   } else {
