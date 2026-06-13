@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="Caña Brava"/>
 <title>Caña Brava · Labores de Campo</title>
-<meta name="app-version" content="1.8.0"/>
+<meta name="app-version" content="1.9.0"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -39,6 +39,9 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+/* Prevent SVGs from overflowing their containers */
+svg { max-width: 100%; overflow: hidden; }
 
 html {
   height: 100%;
@@ -237,21 +240,64 @@ body {
   flex-shrink: 0;
 }
 
-.header-left { display: flex; align-items: center; gap: 10px; }
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
 
 .header-left .hlogo {
   width: 36px; height: 36px;
+  min-width: 36px;
   background: rgba(255,255,255,0.15);
   border-radius: 9px;
   display: flex; align-items:center; justify-content:center;
   font-size: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.header-title { color: white; }
-.header-title h2 { font-size: 16px; font-weight: 700; line-height: 1.1; }
-.header-title span { font-size: 11px; opacity: 0.75; font-weight: 400; }
+.header-left .hlogo svg {
+  width: 26px !important;
+  height: 26px !important;
+  max-width: 26px;
+  max-height: 26px;
+  flex-shrink: 0;
+}
 
-.header-right { display: flex; align-items: center; gap: 8px; }
+.header-title {
+  color: white;
+  min-width: 0;
+  overflow: hidden;
+}
+.header-title h2 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.header-title span {
+  font-size: 11px;
+  opacity: 0.75;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
 
 .badge-role {
   background: rgba(255,255,255,0.18);
@@ -427,8 +473,8 @@ button, .labor-card, .nav-btn {
 }
 
 .labor-card .lc-icon { font-size: 26px; line-height: 1; }
-.labor-card .lc-icon.lc-svg { font-size: unset; width:32px; height:32px; display:flex; align-items:center; justify-content:center; }
-.labor-card .lc-icon.lc-svg svg { width:32px; height:32px; }
+.labor-card .lc-icon.lc-svg { font-size: unset; width:32px; height:32px; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
+.labor-card .lc-icon.lc-svg svg { width:32px !important; height:32px !important; max-width:32px; max-height:32px; }
 .labor-card .lc-name {
   font-size: 11px;
   font-weight: 600;
@@ -2501,19 +2547,12 @@ function selectLabor(labor) {
   const headerIconEl = document.getElementById('form-header-icon');
   if (LABOR_SVGS[labor]) {
     headerIconEl.innerHTML = LABOR_SVGS[labor];
-    headerIconEl.style.fontSize = 'unset';
-    headerIconEl.style.width = '32px';
-    headerIconEl.style.height = '32px';
-    headerIconEl.style.display = 'flex';
-    headerIconEl.style.alignItems = 'center';
-    headerIconEl.style.justifyContent = 'center';
+    headerIconEl.style.cssText = 'font-size:unset;width:36px;height:36px;min-width:36px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;';
     const s = headerIconEl.querySelector('svg');
-    if (s) { s.style.width='28px'; s.style.height='28px'; }
+    if (s) { s.style.cssText = 'width:26px;height:26px;max-width:26px;max-height:26px;flex-shrink:0;'; }
   } else {
     headerIconEl.innerHTML = laborIconsEmoji[labor] || '📝';
-    headerIconEl.style.fontSize = '18px';
-    headerIconEl.style.width = '';
-    headerIconEl.style.height = '';
+    headerIconEl.style.cssText = 'font-size:18px;';
   }
   const titleEl = document.getElementById('form-header-title');
   titleEl.textContent = laborLabels[labor] || labor;
