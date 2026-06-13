@@ -9,7 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="Caña Brava"/>
 <title>Caña Brava · Labores de Campo</title>
-<meta name="app-version" content="1.4.0"/>
+<meta name="app-version" content="1.5.0"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -2865,7 +2865,7 @@ async function submitRecord(labor) {
   };
 
   // Si no hay internet, guardar en cola
-  if (!navigator.onLine) {
+  if (!isOnline()) {
     addToQueue(payload);
     showToast('📡 Sin conexión — guardado localmente');
     closeFormScreen();
@@ -3618,25 +3618,46 @@ function addToQueue(payload) {
   updateSyncBar();
 }
 
+// ── CONECTIVIDAD REAL — no depende de navigator.onLine ──
+let _isOnline = true; // asume conectado hasta probar lo contrario
+
+async function checkRealConnectivity() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/labores_campo?limit=0&apikey=${encodeURIComponent(SUPABASE_KEY)}`,
+      { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(5000) }
+    );
+    _isOnline = res.ok || res.status === 400 || res.status === 406;
+  } catch {
+    _isOnline = false;
+  }
+  updateSyncBar();
+  return _isOnline;
+}
+
+function isOnline() { return _isOnline; }
+
 function updateSyncBar() {
   const q = getQueue();
   const bar = document.getElementById('sync-bar');
   const cnt = document.getElementById('sync-count');
   const offBadge = document.getElementById('offline-badge');
   if (!bar) return;
-  if (q.length > 0 || !navigator.onLine) {
+  if (q.length > 0) {
     bar.classList.add('show');
     if (cnt) cnt.textContent = q.length;
   } else {
     bar.classList.remove('show');
   }
-  if (offBadge) offBadge.style.display = !navigator.onLine ? 'flex' : 'none';
+  if (offBadge) offBadge.style.display = (!_isOnline) ? 'flex' : 'none';
 }
 
 async function trySyncQueue() {
   const q = getQueue();
   if (!q.length) { showToast('No hay registros pendientes'); return; }
-  if (!navigator.onLine) { showToast('Aún sin conexión', 'error'); return; }
+
+  const online = await checkRealConnectivity();
+  if (!online) { showToast('Sin conexión a Supabase', 'error'); return; }
 
   showLoading(`Sincronizando ${q.length} registro(s)...`);
   let synced = 0;
@@ -3664,12 +3685,12 @@ async function trySyncQueue() {
   if (failed.length > 0) showToast(`⚠️ ${failed.length} sin sincronizar`, 'error');
 }
 
-// Escuchar cambios de conectividad
-window.addEventListener('online', () => {
-  updateSyncBar();
-  trySyncQueue();
-});
-window.addEventListener('offline', () => updateSyncBar());
+// Verificar conectividad real cada 30 segundos
+setInterval(checkRealConnectivity, 30000);
+
+// Escuchar cambios de conectividad del navegador como señal para re-verificar
+window.addEventListener('online', () => { setTimeout(checkRealConnectivity, 1000); });
+window.addEventListener('offline', () => { _isOnline = false; updateSyncBar(); });
 
 // ══════════════════════════════════════════════════
 // NOTIFICACIONES / ANUNCIOS
@@ -3677,7 +3698,7 @@ window.addEventListener('offline', () => updateSyncBar());
 const NOTIF_TABLE = 'anuncios';
 
 async function loadNotifications() {
-  if (!navigator.onLine) return;
+  if (!isOnline()) return;
   try {
     const res = await sbFetch(`${SUPABASE_URL}/rest/v1/${NOTIF_TABLE}?order=created_at.desc&limit=20`);
     if (!res.ok) return;
@@ -3808,7 +3829,7 @@ self.addEventListener('fetch', e => {
 // Hook submitRecord to queue when offline
 const _origSubmit = window.submitRecord;
 window.submitRecord = async function(labor) {
-  if (!navigator.onLine) {
+  if (!isOnline()) {
     // Sin conexión — guardar en cola local
     const fundo = val('f-fundo');
     const fecha = val('f-fecha');
@@ -3850,7 +3871,7 @@ window.submitRecord = async function(labor) {
 };
 
 setTimeout(() => {
-  updateSyncBar();
+  checkRealConnectivity();
   loadNotifications();
 }, 500);
 </script>
