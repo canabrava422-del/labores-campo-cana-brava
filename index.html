@@ -12,7 +12,7 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="Caña Brava"/>
 <title>Caña Brava · Labores de Campo</title>
-<meta name="app-version" content="1.9.0"/>
+<meta name="app-version" content="2.2.0"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -361,7 +361,15 @@ body {
 }
 
 /* ── CONTENIDO PRINCIPAL ────────────────────── */
-.app-content { flex: 1; overflow-y: auto; padding: 20px 16px calc(80px + env(safe-area-inset-bottom)); -webkit-overflow-scrolling: touch; }
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 14px calc(80px + env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  box-sizing: border-box;
+}
 
 /* ── TAB PANEL ──────────────────────────────── */
 .tab-panel { display: none; }
@@ -380,18 +388,6 @@ body {
 }
 
 /* ── MOBILE INPUT IMPROVEMENTS ──────────────── */
-/* Prevent iOS zoom on input focus (font-size >= 16px) */
-input[type="text"],
-input[type="number"],
-input[type="password"],
-input[type="date"],
-input[type="email"],
-input[type="url"],
-select,
-textarea {
-  font-size: 16px !important;
-}
-
 /* Larger touch targets for checkboxes */
 input[type="checkbox"] {
   width: 20px !important;
@@ -547,26 +543,29 @@ button, .labor-card, .nav-btn {
 
 .select-wrapper {
   position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .select-wrapper::after {
   content: '▾';
   position: absolute;
-  right: 14px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--texto-suave);
   pointer-events: none;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 select {
   width: 100%;
-  padding: 13px 40px 13px 14px;
+  padding: 10px 32px 10px 12px;
   border: 1.5px solid var(--borde);
   border-radius: var(--radio-sm);
   font-family: 'Inter', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--texto);
   background: var(--fondo);
   appearance: none;
@@ -583,10 +582,13 @@ select option { padding: 8px; }
 .form-card {
   background: white;
   border-radius: var(--radio);
-  padding: 20px;
+  padding: 16px;
   margin-bottom: 16px;
   box-shadow: var(--sombra-card);
   border: 1.5px solid var(--borde);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .form-card .section-title { color: var(--verde-campo); }
@@ -594,7 +596,14 @@ select option { padding: 8px; }
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
+  width: 100%;
+}
+
+/* En pantallas muy pequeñas (<360px) usar 1 columna */
+@media (max-width: 360px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .full { grid-column: 1; }
 }
 
 .form-grid .full { grid-column: 1 / -1; }
@@ -603,30 +612,40 @@ select option { padding: 8px; }
   display: flex;
   flex-direction: column;
   gap: 5px;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 .form-field label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   color: var(--texto-suave);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-  padding: 11px 13px;
+  width: 100%;
+  padding: 10px 11px;
   border: 1.5px solid var(--borde);
   border-radius: var(--radio-sm);
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 16px; /* 16px evita zoom en iOS */
   color: var(--texto);
   background: var(--fondo);
   outline: none;
   transition: border-color 0.2s;
   appearance: none;
   -webkit-appearance: none;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .form-field input:focus,
@@ -636,12 +655,14 @@ select option { padding: 8px; }
   background: white;
 }
 
-.form-field textarea { resize: vertical; min-height: 80px; }
+.form-field textarea { resize: vertical; min-height: 72px; }
 
 .dosis-row {
   display: grid;
-  grid-template-columns: 2fr 1.2fr;
+  grid-template-columns: 1.5fr 1fr;
   gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 /* ── CÓDIGO FIELD ───────────────────────────── */
@@ -1060,7 +1081,7 @@ select option { padding: 8px; }
   flex-shrink: 0;
 }
 .sync-bar.show { display: flex; }
-.sync-bar button { background: rgba(255,255,255,0.25); border: none; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; }
+.sync-bar button { background: white; border: none; color: #E67E22; padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
 
 /* ── JORNALES & RATIO ───────────────────────── */
 .jornal-card { border-color: var(--verde-claro) !important; }
@@ -2184,6 +2205,35 @@ const laborForms = {
           </div>
         </div>
         <div class="form-field full">
+          <label>Avance (ha)</label>
+          <input type="number" id="f-avance-ha" placeholder="0.00" step="0.01" min="0" oninput="calcRatio()"/>
+        </div>
+        <div class="form-field full">
+          <label>Operador</label>
+          <div class="select-wrapper">
+            <select id="f-operador">
+              <option value="">— Seleccionar operador —</option>
+              <option>Jesus Saldarriaga</option>
+              <option>Christian Soto</option>
+              <option>Henry Chulle</option>
+              <option>Dani Coronado</option>
+              <option>Julio Acaro</option>
+              <option>Luis Carrasco</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field full">
+          <label>Método de aplicación</label>
+          <div class="select-wrapper">
+            <select id="f-metodo">
+              <option value="">— Seleccionar método —</option>
+              <option>Válvula</option>
+              <option>Fertirriego</option>
+              <option>Foliar</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field full">
           <label>Observaciones</label>
           <textarea id="f-obs" placeholder="Notas adicionales..."></textarea>
         </div>
@@ -2591,17 +2641,22 @@ function closeFormScreen() {
 const acumCols = {
   aplicacion: [
     {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'Hora', fn: r => r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '—'},
     {label:'EQ / TR', fn: r => r.equipo || '—'},
     {label:'Parcelas', fn: r => r.parcelas || '—'},
     {label:'Fundo', fn: r => r.fundo || '—'},
     {label:'Insumo', fn: r => r.insumo || '—'},
     {label:'Dosis', fn: r => r.dosis_cantidad ? `${r.dosis_cantidad} ${r.dosis_unidad||''}` : '—'},
+    {label:'Avance (ha)', fn: r => r.datos_extra?.avance_ha ?? '—'},
+    {label:'Operador', fn: r => r.datos_extra?.operador || '—'},
+    {label:'Método', fn: r => r.datos_extra?.metodo_aplicacion || '—'},
     {label:'Jornales', fn: r => r.datos_extra?.jornales ?? '—'},
     {label:'Ratio (jor/ha)', fn: r => r.datos_extra?.ratio_jor_ha ? `${r.datos_extra.ratio_jor_ha} jor/ha` : '—'},
     {label:'Controlador', fn: r => r.controlador || '—'},
   ],
   limpieza: [
     {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'Hora', fn: r => r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '—'},
     {label:'EQ / TR', fn: r => r.equipo || '—'},
     {label:'Parcelas', fn: r => r.parcelas || '—'},
     {label:'Fundo', fn: r => r.fundo || '—'},
@@ -2618,6 +2673,7 @@ const acumCols = {
   ],
   plancero: [
     {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'Hora', fn: r => r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '—'},
     {label:'EQ / TR', fn: r => r.equipo || '—'},
     {label:'Parcelas', fn: r => r.parcelas || '—'},
     {label:'Fundo', fn: r => r.fundo || '—'},
@@ -2632,6 +2688,7 @@ const acumCols = {
   ],
   manguera: [
     {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'Hora', fn: r => r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '—'},
     {label:'EQ / TR', fn: r => r.equipo || '—'},
     {label:'Parcelas', fn: r => r.parcelas || '—'},
     {label:'Fundo', fn: r => r.fundo || '—'},
@@ -2647,6 +2704,7 @@ const acumCols = {
   ],
   purga: [
     {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'Hora', fn: r => r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '—'},
     {label:'EQ / TR', fn: r => r.equipo || '—'},
     {label:'Parcelas', fn: r => r.parcelas || '—'},
     {label:'Fundo', fn: r => r.fundo || '—'},
@@ -2662,6 +2720,7 @@ const acumCols = {
   ],
   flushing: [
     {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'Hora', fn: r => r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '—'},
     {label:'EQ / TR', fn: r => r.equipo || '—'},
     {label:'Parcelas', fn: r => r.parcelas || '—'},
     {label:'Fundo', fn: r => r.fundo || '—'},
@@ -2676,6 +2735,7 @@ const acumCols = {
   ],
   caudal: [
     {label:'Fecha', fn: r => formatDate(r.fecha)},
+    {label:'Hora', fn: r => r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '—'},
     {label:'EQ / TR', fn: r => r.equipo || '—'},
     {label:'Parcelas', fn: r => r.parcelas || '—'},
     {label:'Fundo', fn: r => r.fundo || '—'},
@@ -2728,6 +2788,8 @@ const verifyFields = {
     {id:'f-parcelas', label:'Parcelas'},
     {id:'f-fundo', label:'Fundo'}, {id:'f-fecha', label:'Fecha'},
     {id:'f-insumo', label:'Insumo'}, {id:'f-dosis-cant', label:'Dosis'}, {id:'f-dosis-unid', label:'Unidad'},
+    {id:'f-avance-ha', label:'Avance (ha)'},
+    {id:'f-operador', label:'Operador'}, {id:'f-metodo', label:'Método aplicación'},
     {id:'f-jornales', label:'Jornales'}, {id:'ratio', label:'Ratio (jor/ha)'},
     {id:'f-obs', label:'Observaciones'}
   ],
@@ -2884,6 +2946,9 @@ async function submitRecord(labor) {
     const unid = val('f-dosis-unid');
     if (!insumo) { showToast('Selecciona el insumo', 'error'); return; }
     if (!cant || !unid) { showToast('Ingresa dosis y unidades', 'error'); return; }
+    extras.avance_ha = numVal('f-avance-ha');
+    extras.operador = val('f-operador') || null;
+    extras.metodo_aplicacion = val('f-metodo') || null;
   }
 
   // Jornales y ratio (común a todas las labores)
@@ -3087,11 +3152,12 @@ function renderRecords(records) {
     if (r.fundo) tags.push(`<span class="tag tag-fundo">${r.fundo}</span>`);
     if (r.equipo) tags.push(`<span class="tag tag-equipo">${r.equipo}</span>`);
     if (r.insumo) tags.push(`<span class="tag tag-insumo">${r.insumo}</span>`);
+    const hora = r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : '';
 
     return `<div class="record-card labor-${r.labor}" onclick="showDetail(${r.id})">
       <div class="record-top">
         <div class="record-labor">${laborLabels[r.labor] || r.labor}</div>
-        <div class="record-date">${formatDate(r.fecha)}</div>
+        <div class="record-date">${formatDate(r.fecha)}${hora ? ' · '+hora : ''}</div>
       </div>
       <div class="record-tags">${tags.join('')}</div>
       <div class="record-user">👤 ${r.controlador} · ${r.rol === 'admin' ? '⭐ Admin' : 'Controlador'}</div>
@@ -3105,10 +3171,13 @@ function showDetail(id) {
 
   document.getElementById('modal-title').textContent = laborLabels[r.labor] || r.labor;
 
+  const hora = r.created_at ? new Date(r.created_at).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : null;
+
   const rows = [
     ['Fundo', r.fundo || '—', false],
     ['Parcelas', r.parcelas || '—', false],
     ['Fecha', formatDate(r.fecha), false],
+    ['Hora subida', hora || '—', false],
     ['Equipo', r.equipo || '—', true],
     ['Insumo', r.insumo || '—', false],
     ['Dosis', r.dosis_cantidad ? `${r.dosis_cantidad} ${r.dosis_unidad}` : '—', false],
@@ -3117,8 +3186,26 @@ function showDetail(id) {
   ];
 
   if (r.datos_extra) {
+    const labelMap = {
+      avance_ha: 'Avance (ha)', operador: 'Operador', metodo_aplicacion: 'Método aplicación',
+      imof_promedio_ml: 'IMOF promedio (ml)', frecuencia_dias: 'Frecuencia (días)',
+      edad_dias: 'Edad (días)', mangueras_no_riegan: 'Mang. no riegan',
+      mangueras_reparadas: 'Mang. reparadas', mangueras_pendientes: 'Mang. pendientes',
+      mangueras_estranguladas: 'Mang. estranguladas', revisadas: 'Mang. revisadas',
+      fugas: 'Fugas encontradas', ha_pendientes: 'Ha pendientes',
+      tramos: 'Tramos purgados', presion: 'Presión (psi)',
+      flushing_utilizados: 'Flushing utilizados', flushing_pendientes: 'Flushing pendientes',
+      emisores: 'Emisores instalados', longitud: 'Longitud (m)',
+      mangueras_evaluadas: 'Mangueras evaluadas', caudal: 'Caudal medido (L/min)',
+      caudal_nominal: 'Caudal nominal (L/min)', estado: 'Estado',
+      jornales: 'Jornales', ratio_jor_ha: 'Ratio (jor/ha)'
+    };
     Object.entries(r.datos_extra).forEach(([k, v]) => {
-      if (v !== null) rows.push([k.replace(/_/g, ' '), String(v), false]);
+      if (v !== null && v !== undefined && v !== '') {
+        const label = labelMap[k] || k.replace(/_/g, ' ');
+        const display = k === 'ratio_jor_ha' ? `${v} jor/ha` : String(v);
+        rows.push([label, display, false]);
+      }
     });
   }
 
