@@ -1,11 +1,14 @@
 // ══════════════════════════════════════════════════
-// LCampoR — Service Worker
+// LCampoR — Service Worker v4.5.7
 // Estrategia:
-//   • Cache-First para el shell de la app (HTML, manifest, iconos)
-//   • Network-Only para Supabase y fuentes externas
+//   • NetworkFirst para index.html (siempre intenta red primero,
+//     cae a caché si no hay conexión) — esto garantiza que iOS
+//     siempre cargue la versión más nueva cuando hay red.
+//   • CacheFirst para manifest e iconos (cambian raramente)
+//   • NetworkOnly para Supabase y fuentes externas
 // ══════════════════════════════════════════════════
 
-const CACHE_VERSION = 'lcampor-4.5.6';
+const CACHE_VERSION = 'lcampor-4.5.8';
 const SHELL_URLS = [
   './index.html',
   './manifest.json',
@@ -15,7 +18,7 @@ const SHELL_URLS = [
   './icons/icon-maskable-512.png',
 ];
 
-// ── INSTALL: cachear el shell completo ───────────
+// ── INSTALL: pre-cachear shell ───────────────────
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_VERSION)
@@ -39,52 +42,55 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = e.request.url;
 
-  // 1. Supabase, Google Fonts y otras APIs externas → siempre red
+  // Supabase, fuentes y recursos externos → siempre red directa
   if (
     url.includes('supabase.co') ||
     url.includes('googleapis.com') ||
     url.includes('gstatic.com') ||
-    url.includes('api.')
+    url.includes('cdnjs.cloudflare.com')
   ) {
-    return; // dejar pasar sin interceptar (red directa)
+    return; // sin interceptar
   }
 
-  // 2. Peticiones con cache-busting (actualización de versión) → siempre red
-  if (url.includes('nocache=') || url.includes('_v=')) {
+  // index.html → Network First: intenta red, cae a caché si offline
+  // Esto garantiza que siempre se cargue la versión más nueva cuando hay red
+  if (
+    url.includes('index.html') ||
+    url.endsWith('/') ||
+    url.split('?')[0].endsWith('/')
+  ) {
     e.respondWith(
-      fetch(e.request)
+      fetch(e.request, { cache: 'no-store' })
         .then(res => {
-          // Si la respuesta es válida, actualizar el caché del shell
           if (res.ok) {
-            const url2 = new URL(e.request.url);
-            url2.search = '';
-            const cleanReq = new Request(url2.toString());
-            caches.open(CACHE_VERSION).then(c => c.put(cleanReq, res.clone()));
+            // Guardar el HTML fresco en caché para uso offline
+            const toCache = new Request(url.split('?')[0].replace(/\/$/, '/index.html') ||
+              url.split('?')[0]);
+            caches.open(CACHE_VERSION).then(c => c.put(toCache, res.clone()));
           }
           return res;
         })
-        .catch(() => caches.match('./index.html'))
+        .catch(() =>
+          // Sin red: servir desde caché
+          caches.match('./index.html')
+        )
     );
     return;
   }
 
-  // 3. Shell de la app → Cache-First con revalidación en background
+  // Manifest e iconos → Cache First (cambian solo con nueva versión del SW)
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      const networkFetch = fetch(e.request).then(res => {
-        if (res.ok) {
-          caches.open(CACHE_VERSION).then(c => c.put(e.request, res.clone()));
-        }
-        return res;
-      }).catch(() => null);
-
-      // Devolver caché inmediatamente si existe; si no, esperar la red
-      return cached || networkFetch || caches.match('./index.html');
-    })
+    caches.match(e.request)
+      .then(cached => cached || fetch(e.request)
+        .then(res => {
+          if (res.ok) caches.open(CACHE_VERSION).then(c => c.put(e.request, res.clone()));
+          return res;
+        })
+      )
   );
 });
 
-// ── MESSAGE: forzar activación inmediata ─────────
+// ── MESSAGE ──────────────────────────────────────
 self.addEventListener('message', e => {
   if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
