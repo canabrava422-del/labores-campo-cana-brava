@@ -1,8 +1,8 @@
 // ══════════════════════════════════════════════════
-// LCampoR — Service Worker v4.6.2
+// LCampoR — Service Worker v4.6.3
 // ══════════════════════════════════════════════════
 
-const CACHE = 'lcampor-4.6.2';
+const CACHE = 'lcampor-4.6.3';
 const BASE = '/labores-campo-cana-brava';
 const SHELL = [
   BASE + '/index.html',
@@ -37,7 +37,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = e.request.url;
 
-  // Recursos externos → red directa
+  // 1. Recursos externos → red directa sin interceptar
   if (
     url.includes('supabase.co') ||
     url.includes('googleapis.com') ||
@@ -45,7 +45,19 @@ self.addEventListener('fetch', e => {
     url.includes('cdnjs.cloudflare.com')
   ) return;
 
-  // Stale-While-Revalidate para todo lo demás
+  // 2. Peticiones con cache-busting (_v= o nocache=) → SIEMPRE red
+  //    Esto permite que checkServerVersion() y doUpdate() siempre
+  //    vean la versión real del servidor, no la del caché del SW.
+  if (url.includes('_v=') || url.includes('nocache=')) {
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' })
+        .catch(() => caches.match(BASE + '/index.html'))
+    );
+    return;
+  }
+
+  // 3. Todo lo demás → Stale-While-Revalidate
+  //    Sirve desde caché inmediatamente, actualiza en background
   e.respondWith(
     caches.open(CACHE).then(cache =>
       cache.match(e.request).then(cached => {
