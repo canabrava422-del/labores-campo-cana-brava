@@ -1,15 +1,14 @@
 // ══════════════════════════════════════════════════
-// LCampoR — Service Worker v4.5.7
-// Estrategia:
-//   • NetworkFirst para index.html (siempre intenta red primero,
-//     cae a caché si no hay conexión) — esto garantiza que iOS
-//     siempre cargue la versión más nueva cuando hay red.
-//   • CacheFirst para manifest e iconos (cambian raramente)
+// LCampoR — Service Worker v4.6.0
+// Estrategia Stale-While-Revalidate para index.html:
+//   • Sirve desde caché inmediatamente (el SW controla
+//     la página → Chrome habilita instalación PWA)
+//   • Actualiza el caché en segundo plano silenciosamente
 //   • NetworkOnly para Supabase y fuentes externas
 // ══════════════════════════════════════════════════
 
-const CACHE_VERSION = 'lcampor-4.5.9';
-const SHELL_URLS = [
+const CACHE = 'lcampor-4.6.0';
+const SHELL = [
   './index.html',
   './manifest.json',
   './icons/icon-any-192.png',
@@ -18,75 +17,68 @@ const SHELL_URLS = [
   './icons/icon-maskable-512.png',
 ];
 
-// ── INSTALL: pre-cachear shell ───────────────────
+// ── INSTALL ──────────────────────────────────────
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_VERSION)
-      .then(cache => cache.addAll(SHELL_URLS))
+    caches.open(CACHE)
+      .then(c => c.addAll(SHELL))
       .then(() => self.skipWaiting())
   );
 });
 
-// ── ACTIVATE: limpiar cachés anteriores ─────────
+// ── ACTIVATE ─────────────────────────────────────
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
-        keys.filter(k => k !== CACHE_VERSION).map(k => caches.delete(k))
+        keys.filter(k => k !== CACHE).map(k => caches.delete(k))
       ))
-      .then(() => self.clients.claim())
+      .then(() => self.clients.claim()) // tomar control de páginas abiertas
   );
 });
 
-// ── FETCH ────────────────────────────────────────
+// ── FETCH ─────────────────────────────────────────
 self.addEventListener('fetch', e => {
   const url = e.request.url;
 
-  // Supabase, fuentes y recursos externos → siempre red directa
+  // Recursos externos → red directa sin interceptar
   if (
     url.includes('supabase.co') ||
     url.includes('googleapis.com') ||
     url.includes('gstatic.com') ||
     url.includes('cdnjs.cloudflare.com')
-  ) {
-    return; // sin interceptar
-  }
+  ) return;
 
-  // index.html → Network First: intenta red, cae a caché si offline
-  // Esto garantiza que siempre se cargue la versión más nueva cuando hay red
-  if (
-    url.includes('index.html') ||
-    url.endsWith('/') ||
-    url.split('?')[0].endsWith('/')
-  ) {
+  // Peticiones de actualización forzada → red, actualizar caché
+  if (url.includes('nocache=')) {
     e.respondWith(
-      fetch(e.request, { cache: 'no-store' })
+      fetch(e.request)
         .then(res => {
           if (res.ok) {
-            // Guardar el HTML fresco en caché para uso offline
-            const toCache = new Request(url.split('?')[0].replace(/\/$/, '/index.html') ||
-              url.split('?')[0]);
-            caches.open(CACHE_VERSION).then(c => c.put(toCache, res.clone()));
+            const clean = new Request(url.split('?')[0]);
+            caches.open(CACHE).then(c => c.put(clean, res.clone()));
           }
           return res;
         })
-        .catch(() =>
-          // Sin red: servir desde caché
-          caches.match('./index.html')
-        )
+        .catch(() => caches.match('./index.html'))
     );
     return;
   }
 
-  // Manifest e iconos → Cache First (cambian solo con nueva versión del SW)
+  // Todo lo demás → Stale-While-Revalidate
+  // 1. Responde desde caché inmediatamente
+  // 2. Actualiza caché en segundo plano
   e.respondWith(
-    caches.match(e.request)
-      .then(cached => cached || fetch(e.request)
-        .then(res => {
-          if (res.ok) caches.open(CACHE_VERSION).then(c => c.put(e.request, res.clone()));
+    caches.open(CACHE).then(cache =>
+      cache.match(e.request).then(cached => {
+        const networkFetch = fetch(e.request).then(res => {
+          if (res.ok) cache.put(e.request, res.clone());
           return res;
-        })
-      )
+        }).catch(() => null);
+
+        return cached || networkFetch;
+      })
+    )
   );
 });
 
