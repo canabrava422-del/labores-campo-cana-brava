@@ -1,20 +1,16 @@
 // ══════════════════════════════════════════════════
-// LCampoR — Service Worker v4.6.0
-// Estrategia Stale-While-Revalidate para index.html:
-//   • Sirve desde caché inmediatamente (el SW controla
-//     la página → Chrome habilita instalación PWA)
-//   • Actualiza el caché en segundo plano silenciosamente
-//   • NetworkOnly para Supabase y fuentes externas
+// LCampoR — Service Worker v4.6.2
 // ══════════════════════════════════════════════════
 
-const CACHE = 'lcampor-4.6.1';
+const CACHE = 'lcampor-4.6.2';
+const BASE = '/labores-campo-cana-brava';
 const SHELL = [
-  './index.html',
-  './manifest.json',
-  './icons/icon-any-192.png',
-  './icons/icon-any-512.png',
-  './icons/icon-maskable-192.png',
-  './icons/icon-maskable-512.png',
+  BASE + '/index.html',
+  BASE + '/manifest.json',
+  BASE + '/icons/icon-any-192.png',
+  BASE + '/icons/icon-any-512.png',
+  BASE + '/icons/icon-maskable-192.png',
+  BASE + '/icons/icon-maskable-512.png',
 ];
 
 // ── INSTALL ──────────────────────────────────────
@@ -33,7 +29,7 @@ self.addEventListener('activate', e => {
       .then(keys => Promise.all(
         keys.filter(k => k !== CACHE).map(k => caches.delete(k))
       ))
-      .then(() => self.clients.claim()) // tomar control de páginas abiertas
+      .then(() => self.clients.claim())
   );
 });
 
@@ -41,7 +37,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = e.request.url;
 
-  // Recursos externos → red directa sin interceptar
+  // Recursos externos → red directa
   if (
     url.includes('supabase.co') ||
     url.includes('googleapis.com') ||
@@ -49,25 +45,7 @@ self.addEventListener('fetch', e => {
     url.includes('cdnjs.cloudflare.com')
   ) return;
 
-  // Peticiones de actualización forzada → red, actualizar caché
-  if (url.includes('nocache=')) {
-    e.respondWith(
-      fetch(e.request)
-        .then(res => {
-          if (res.ok) {
-            const clean = new Request(url.split('?')[0]);
-            caches.open(CACHE).then(c => c.put(clean, res.clone()));
-          }
-          return res;
-        })
-        .catch(() => caches.match('./index.html'))
-    );
-    return;
-  }
-
-  // Todo lo demás → Stale-While-Revalidate
-  // 1. Responde desde caché inmediatamente
-  // 2. Actualiza caché en segundo plano
+  // Stale-While-Revalidate para todo lo demás
   e.respondWith(
     caches.open(CACHE).then(cache =>
       cache.match(e.request).then(cached => {
@@ -75,7 +53,6 @@ self.addEventListener('fetch', e => {
           if (res.ok) cache.put(e.request, res.clone());
           return res;
         }).catch(() => null);
-
         return cached || networkFetch;
       })
     )
