@@ -36,14 +36,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/labores-campo-cana-brava/icons/icon-any-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "LCampoR - Registro de labores"
-    }
   ]
 }
