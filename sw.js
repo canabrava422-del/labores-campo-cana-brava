@@ -1,8 +1,8 @@
 // ══════════════════════════════════════════════════
-// LCampoR — Service Worker v4.6.3
+// LCampoR — Service Worker v4.7.1
 // ══════════════════════════════════════════════════
 
-const CACHE = 'lcampor-4.7.0';
+const CACHE = 'lcampor-4.7.1';
 const BASE = '/labores-campo-cana-brava';
 const SHELL = [
   BASE + '/index.html',
@@ -14,11 +14,23 @@ const SHELL = [
 ];
 
 // ── INSTALL ──────────────────────────────────────
+// IMPORTANTE: cache.addAll() falla TODO si UN SOLO archivo de la lista
+// da error (404, red, etc.) — esto dejaba el SW en estado roto sin
+// ningún worker activo. Ahora cacheamos cada archivo individualmente:
+// si uno falla, los demás igual se guardan y el SW se instala bien.
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE)
-      .then(c => c.addAll(SHELL))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE).then(cache =>
+      Promise.allSettled(
+        SHELL.map(url =>
+          fetch(url, { cache: 'no-store' })
+            .then(res => {
+              if (res.ok) return cache.put(url, res);
+            })
+            .catch(err => console.warn('[SW] No se pudo cachear', url, err))
+        )
+      )
+    ).then(() => self.skipWaiting())
   );
 });
 
@@ -46,8 +58,6 @@ self.addEventListener('fetch', e => {
   ) return;
 
   // 2. Peticiones con cache-busting (_v= o nocache=) → SIEMPRE red
-  //    Esto permite que checkServerVersion() y doUpdate() siempre
-  //    vean la versión real del servidor, no la del caché del SW.
   if (url.includes('_v=') || url.includes('nocache=')) {
     e.respondWith(
       fetch(e.request, { cache: 'no-store' })
@@ -57,7 +67,6 @@ self.addEventListener('fetch', e => {
   }
 
   // 3. Todo lo demás → Stale-While-Revalidate
-  //    Sirve desde caché inmediatamente, actualiza en background
   e.respondWith(
     caches.open(CACHE).then(cache =>
       cache.match(e.request).then(cached => {
