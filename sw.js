@@ -2,7 +2,7 @@
 // LCampoR — Service Worker v4.6.3
 // ══════════════════════════════════════════════════
 
-const CACHE = 'lcampor-4.6.6';
+const CACHE = 'lcampor-4.6.7';
 const BASE = '/labores-campo-cana-brava';
 const SHELL = [
   BASE + '/index.html',
