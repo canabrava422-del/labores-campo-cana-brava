@@ -8,7 +8,7 @@
 //   • NetworkOnly para Supabase y fuentes externas
 // ══════════════════════════════════════════════════
 
-const CACHE_VERSION = 'lcampor-4.5.8';
+const CACHE_VERSION = 'lcampor-4.5.9';
 const SHELL_URLS = [
   './index.html',
   './manifest.json',
